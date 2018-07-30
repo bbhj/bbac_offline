@@ -1,0 +1,857 @@
+swagger: "2.0"
+info:
+  title: beego Test API
+  description: beego has a very cool tools to autogenerate documents for your API
+  version: 1.0.0
+  termsOfService: http://beego.me/
+  contact:
+    email: astaxie@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+basePath: /lastest
+paths:
+  /db/init/:
+    get:
+      tags:
+      - db/init
+      description: get user by uid
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Article'
+        "403":
+          description: :uid is empty
+  /wechatapi/customer/service/:
+    get:
+      tags:
+      - wechatapi/customer/service
+      description: Logs out current logged in user session
+      operationId: CustomerController.get
+      responses:
+        "200":
+          description: '{string} logout success'
+    post:
+      tags:
+      - wechatapi/customer/service
+      description: Logs out current logged in user session
+      operationId: CustomerController.upload
+      responses:
+        "200":
+          description: '{string} logout success'
+  /wechatapi/qcloud/wecos/auth:
+    get:
+      tags:
+      - wechatapi/qcloud/wecos
+      description: Logs out current logged in user session
+      operationId: WecosController.auth
+      responses:
+        "200":
+          description: '{string} logout success'
+  /wechatapi/qcloud/wecos/upload:
+    post:
+      tags:
+      - wechatapi/qcloud/wecos
+      description: Logs out current logged in user session
+      operationId: WecosController.upload
+      responses:
+        "200":
+          description: '{string} logout success'
+  /wechatapi/small/admin/:
+    get:
+      tags:
+      - wechatapi/small/admin
+      description: get all Admins
+      operationId: AdminController.GetAll
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/.Admin'
+    post:
+      tags:
+      - wechatapi/small/admin
+      description: create users
+      operationId: AdminController.CreateAdmin
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/.Admin'
+      responses:
+        "200":
+          description: '{int} models.Admin.Id'
+        "403":
+          description: body is empty
+  /wechatapi/small/admin/{openid}:
+    get:
+      tags:
+      - wechatapi/small/admin
+      description: get user by openid
+      operationId: AdminController.Get
+      parameters:
+      - in: path
+        name: openid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/.Admin'
+        "403":
+          description: :openid is empty
+  /wechatapi/small/admin/{uuid}:
+    delete:
+      tags:
+      - wechatapi/small/admin
+      description: delete the user
+      operationId: AdminController.Delete
+      parameters:
+      - in: path
+        name: uuid
+        description: The uid you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: uuid is empty
+  /wechatapi/small/admin/list:
+    get:
+      tags:
+      - wechatapi/small/admin
+      description: Logs user into the system
+      operationId: AdminController.Login
+      parameters:
+      - in: query
+        name: username
+        description: The username for login
+        required: true
+        type: string
+      - in: query
+        name: password
+        description: The password for login
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} login success'
+        "403":
+          description: user not exist
+  /wechatapi/small/admin/logout:
+    get:
+      tags:
+      - wechatapi/small/admin
+      description: Logs out current logged in user session
+      operationId: AdminController.logout
+      responses:
+        "200":
+          description: '{string} logout success'
+  /wechatapi/small/article/:
+    get:
+      tags:
+      - wechatapi/small/article
+      description: get all Articles
+      operationId: ArticleController.GetAll
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Article'
+    post:
+      tags:
+      - wechatapi/small/article
+      description: create users
+      operationId: ArticleController.CreateArticle
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Article'
+      responses:
+        "200":
+          description: '{int} models.Article.Id'
+        "403":
+          description: body is empty
+  /wechatapi/small/article/{uid}:
+    put:
+      tags:
+      - wechatapi/small/article
+      description: update the user
+      operationId: ArticleController.Update
+      parameters:
+      - in: path
+        name: uid
+        description: The uid you want to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Article'
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Article'
+        "403":
+          description: :uid is not int
+  /wechatapi/small/article/{uuid}:
+    get:
+      tags:
+      - wechatapi/small/article
+      description: get user by uid
+      operationId: ArticleController.Get Article Infomation
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Article'
+        "403":
+          description: :uid is empty
+    delete:
+      tags:
+      - wechatapi/small/article
+      description: delete the artile
+      operationId: ArticleController.Delete
+      parameters:
+      - in: path
+        name: uuid
+        description: The uuid you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: uid is empty
+  /wechatapi/small/article/checkid:
+    get:
+      tags:
+      - wechatapi/small/article
+      description: get all Articles
+      operationId: ArticleController.Check baby id exist or not
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Article'
+  /wechatapi/small/article/count:
+    get:
+      tags:
+      - wechatapi/small/article
+      description: get all Articles count
+      operationId: ArticleController.Get Articles Count
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Article'
+  /wechatapi/small/article/new:
+    post:
+      tags:
+      - wechatapi/small/article
+      description: Post Article API (For other system)
+      operationId: ArticleController.Create Article (API)
+      parameters:
+      - in: body
+        name: body
+        description: body for article content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Article'
+      responses:
+        "200":
+          description: 'status: {int} , msg: "",  errmsg:"",  data: models.Article.UUID'
+        "403":
+          description: body is empty
+  /wechatapi/small/article/topics:
+    get:
+      tags:
+      - wechatapi/small/article
+      description: get all Articles
+      operationId: ArticleController.GetAll
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Article'
+  /wechatapi/small/comment/:
+    get:
+      tags:
+      - wechatapi/small/comment
+      description: get all Users
+      operationId: CommentController.GetAll
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.User'
+    post:
+      tags:
+      - wechatapi/small/comment
+      description: create users
+      operationId: CommentController.CreateUser
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: '{int} models.User.Id'
+        "403":
+          description: body is empty
+  /wechatapi/small/comment/{uid}:
+    put:
+      tags:
+      - wechatapi/small/comment
+      description: update the user
+      operationId: CommentController.Update
+      parameters:
+      - in: path
+        name: uid
+        description: The uid you want to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: :uid is not int
+    delete:
+      tags:
+      - wechatapi/small/comment
+      description: delete the user
+      operationId: CommentController.Delete
+      parameters:
+      - in: path
+        name: uid
+        description: The uid you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: uid is empty
+  /wechatapi/small/comment/{uuid}:
+    get:
+      tags:
+      - wechatapi/small/comment
+      description: get user by uuid
+      operationId: CommentController.Get
+      parameters:
+      - in: path
+        name: uuid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: :uuid is empty
+  /wechatapi/small/comment/login:
+    get:
+      tags:
+      - wechatapi/small/comment
+      description: Logs user into the system
+      operationId: CommentController.Login
+      parameters:
+      - in: query
+        name: username
+        description: The username for login
+        required: true
+        type: string
+      - in: query
+        name: password
+        description: The password for login
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} login success'
+        "403":
+          description: user not exist
+  /wechatapi/small/comment/logout:
+    get:
+      tags:
+      - wechatapi/small/comment
+      description: Logs out current logged in user session
+      operationId: CommentController.logout
+      responses:
+        "200":
+          description: '{string} logout success'
+  /wechatapi/small/config/:
+    get:
+      tags:
+      - wechatapi/small/config
+      description: get user by uid
+      operationId: ConfigController.Get
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/main.Article'
+        "403":
+          description: :uid is empty
+    post:
+      tags:
+      - wechatapi/small/config
+      description: create users
+      operationId: ConfigController.CreateArticle
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Article'
+      responses:
+        "200":
+          description: '{int} models.Article.Id'
+        "403":
+          description: body is empty
+  /wechatapi/small/contact/:
+    get:
+      tags:
+      - wechatapi/small/contact
+      description: get all Users
+      operationId: ContactController.GetAll
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.User'
+    post:
+      tags:
+      - wechatapi/small/contact
+      description: create users
+      operationId: ContactController.CreateUser
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: '{int} models.User.Id'
+        "403":
+          description: body is empty
+  /wechatapi/small/contact/{uid}:
+    get:
+      tags:
+      - wechatapi/small/contact
+      description: get user by uid
+      operationId: ContactController.Get
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: :uid is empty
+    put:
+      tags:
+      - wechatapi/small/contact
+      description: update the user
+      operationId: ContactController.Update
+      parameters:
+      - in: path
+        name: uid
+        description: The uid you want to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: :uid is not int
+    delete:
+      tags:
+      - wechatapi/small/contact
+      description: delete the user
+      operationId: ContactController.Delete
+      parameters:
+      - in: path
+        name: uid
+        description: The uid you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: uid is empty
+  /wechatapi/small/contact/login:
+    get:
+      tags:
+      - wechatapi/small/contact
+      description: Logs user into the system
+      operationId: ContactController.Login
+      parameters:
+      - in: query
+        name: username
+        description: The username for login
+        required: true
+        type: string
+      - in: query
+        name: password
+        description: The password for login
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} login success'
+        "403":
+          description: user not exist
+  /wechatapi/small/contact/logout:
+    get:
+      tags:
+      - wechatapi/small/contact
+      description: Logs out current logged in user session
+      operationId: ContactController.logout
+      responses:
+        "200":
+          description: '{string} logout success'
+  /wechatapi/small/location/:
+    post:
+      tags:
+      - wechatapi/small/location
+      description: create users
+      operationId: LocationController.CreateArticle
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Article'
+      responses:
+        "200":
+          description: '{int} models.Article.Id'
+        "403":
+          description: body is empty
+  /wechatapi/small/location/markers:
+    get:
+      tags:
+      - wechatapi/small/location
+      description: get user by uid
+      operationId: LocationController.Markers
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.Article'
+        "403":
+          description: :uid is empty
+  /wechatapi/small/user/:
+    get:
+      tags:
+      - wechatapi/small/user
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.User'
+    post:
+      tags:
+      - wechatapi/small/user
+      description: create users
+      operationId: UserController.CreateUser
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: '{int} models.User.Id'
+        "403":
+          description: body is empty
+  /wechatapi/small/user/{uid}:
+    get:
+      tags:
+      - wechatapi/small/user
+      description: get user by uid
+      operationId: UserController.Get
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: :uid is empty
+    put:
+      tags:
+      - wechatapi/small/user
+      description: update the user
+      operationId: UserController.Update
+      parameters:
+      - in: path
+        name: uid
+        description: The uid you want to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: :uid is not int
+    delete:
+      tags:
+      - wechatapi/small/user
+      description: delete the user
+      operationId: UserController.Delete
+      parameters:
+      - in: path
+        name: uid
+        description: The uid you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: uid is empty
+  /wechatapi/small/user/login:
+    post:
+      tags:
+      - wechatapi/small/user
+      description: Logs user into the system
+      operationId: UserController.Login
+      parameters:
+      - in: query
+        name: username
+        description: The username for login
+        required: true
+        type: string
+      - in: query
+        name: password
+        description: The password for login
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} login success'
+        "403":
+          description: user not exist
+definitions:
+  .Admin:
+    type: object
+  .Model:
+    type: object
+  main.Article:
+    title: Article
+    type: object
+    properties:
+      Address:
+        type: string
+      Age:
+        type: integer
+        format: int64
+      Arcid:
+        type: string
+      AvatarUrl:
+        type: string
+      Characters:
+        type: string
+      City:
+        type: string
+      Country:
+        type: string
+      DataFrom:
+        type: string
+      Details:
+        type: string
+      Gender:
+        type: integer
+        format: int32
+      Nickname:
+        type: string
+      Province:
+        type: string
+      Title:
+        type: string
+      UUID:
+        type: string
+  models.Article:
+    title: Article
+    type: object
+    properties:
+      Address:
+        type: string
+      Age:
+        type: integer
+        format: int64
+      Arcid:
+        type: string
+      AvatarUrl:
+        type: string
+      Babyid:
+        type: integer
+        format: int64
+      BirthedAddress:
+        type: string
+      BirthedAt:
+        type: string
+        format: string
+      BirthedCity:
+        type: string
+      BirthedCountry:
+        type: string
+      BirthedProvince:
+        type: string
+      Category:
+        type: string
+      Characters:
+        type: string
+      City:
+        type: string
+      Country:
+        type: string
+      DataFrom:
+        type: string
+      Details:
+        type: string
+      Gender:
+        type: integer
+        format: int32
+      Handler:
+        type: string
+      Height:
+        type: string
+      MissedAddress:
+        type: string
+      MissedAt:
+        type: string
+        format: string
+      MissedCity:
+        type: string
+      MissedCountry:
+        type: string
+      MissedProvince:
+        type: string
+      Nickname:
+        type: string
+      Province:
+        type: string
+      Title:
+        type: string
+      UUID:
+        type: string
+  models.User:
+    title: User
+    type: object
+    properties:
+      AvatarUrl:
+        type: string
+      City:
+        type: string
+      Country:
+        type: string
+      Gender:
+        type: integer
+        format: int32
+      Language:
+        type: string
+      Nickname:
+        type: string
+      OpenID:
+        type: string
+      Province:
+        type: string
+      UnionID:
+        type: string
+tags:
+- name: db/init
+  description: |
+    Operations about Articles
+- name: wechatapi/small/admin
+  description: |
+    Operations about Admins
+- name: wechatapi/small/article
+  description: |
+    Operations about Articles
+- name: wechatapi/small/comment
+  description: |
+    Operations about Users
+- name: wechatapi/small/contact
+  description: |
+    Operations about Users
+- name: wechatapi/small/user
+  description: |
+    Operations about Users
+- name: wechatapi/small/location
+  description: |
+    Operations about Articles
+- name: wechatapi/small/config
+  description: |
+    Operations about Articles
+- name: wechatapi/qcloud/wecos
+  description: |
+    Operations about Users
+- name: wechatapi/customer/service
+  description: |
+    Operations about Users

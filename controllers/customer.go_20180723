@@ -1,0 +1,91 @@
+package controllers
+
+import (
+	_ "crypto/hmac"
+	"crypto/sha1"
+	_ "encoding/base64"
+	"encoding/json"
+	"fmt"
+	_ "github.com/airdb/baobeihuijia/models"
+	"github.com/astaxie/beego"
+	"github.com/esap/wechat"
+	"io"
+	"sort"
+	"strings"
+)
+
+type WechatMsg struct {
+	Event        string `json:"Event"`
+	SessionFrom  string `json:"SessionFrom"`
+	Content      string `json:"Content"`
+	CreateTime   int    `json:"CreateTime"`
+	FromUserName string `json:"FromUserName"`
+	MsgID        int    `json:"MsgId"`
+	MsgType      string `json:"MsgType"`
+	ToUserName   string `json:"ToUserName"`
+}
+
+// Operations about Users
+type CustomerController struct {
+	beego.Controller
+}
+
+// @Title get
+// @Description Logs out current logged in user session
+// @Success 200 {string} logout success
+// @router / [get]
+func (u *CustomerController) Get() {
+	signature := u.GetString("signature")
+	echostr := u.GetString("echostr")
+	timestamp := u.GetString("timestamp")
+	nonce := u.GetString("nonce")
+	// fmt.Println("customer service", signature, token, timestamp, nonce)
+	checkSignature(signature, timestamp, nonce)
+
+	u.Ctx.WriteString(echostr)
+}
+
+func checkSignature(signature, timestamp, nonce string) (flag bool) {
+	token := "deanhome"
+	arr := []string{token, timestamp, nonce}
+	fmt.Println("arr: ", arr)
+	sort.Sort(sort.StringSlice(arr))
+	fmt.Println("arr: ", arr)
+	bbb := strings.Join(arr, "")
+	fmt.Println("customer service", signature, arr, bbb)
+
+	// mac := hmac.New(sha1.New, []byte(bbb))
+	mac := sha1.New()
+	io.WriteString(mac, bbb)
+	// my_signature := ""
+	// mac.Write([]byte(my_signature))
+	// macSum := mac.Sum(nil)
+	macSum := fmt.Sprintf("%x", mac.Sum(nil))
+	if signature == macSum {
+		flag = true
+	} else {
+		fmt.Printf("signature check err, macSum: %s", macSum)
+	}
+	return
+}
+
+// @Title upload
+// @Description Logs out current logged in user session
+// @Success 200 {string} logout success
+// @router / [post]
+func (u *CustomerController) Post() {
+	// data := u.Ctx.Input.RequestBody
+	var wechatmsg WechatMsg
+	err := json.Unmarshal(u.Ctx.Input.RequestBody, &wechatmsg)
+	if err != nil {
+		fmt.Println("err: ", err)
+	}
+	wechat.Debug = true
+	wechat.Set(beego.AppConfig.String("wechat_token"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_appid"))
+	wechat.VerifyURL(u.Ctx.ResponseWriter, u.Ctx.Request).NewText("这是客服消息").Send().NewText("这是被动回复").Reply()
+	// fmt.Println("xxxx: :", wechatmsg)
+	// if "user_enter_tempsession" == wechatmsg.Event {
+	// }
+	u.Data["json"] = "success"
+	u.ServeJSON()
+}

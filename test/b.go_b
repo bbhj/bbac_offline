@@ -1,0 +1,27 @@
+package main
+
+import (
+	"github.com/airdb/aa/models"
+	"time"
+)
+
+func main() {
+	var aa models.LostBabyInfo
+
+	aa.UUID = "f74f0a2b-8413-4cff-b9cf-5dccdb171b76"
+	aa.AvatarUrl = "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTK476rqoy0zicVAxv1fJ9v9EaltE42WibKS7btmicQBkbwBFkeB6XVSFHF4CGmFlB5OaPeVft7WJcn9w/0"
+	aa.NickName = "熊建波"
+	aa.Gender = 1
+	aa.Province = "四川"
+	aa.City = "广安"
+	aa.Country = "中国"
+	aa.Address = "武胜县沿口镇城南市"
+	aa.Age = 10
+	aa.Characters = "大大的蓝色眼睛，升高约1米"
+	aa.Details  = "4月8日上午丢失于广场"
+	aa.Missingtime = time.Now()
+
+	models.AddArticle(aa)
+	models.GetArticle()
+
+}

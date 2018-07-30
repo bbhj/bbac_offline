@@ -1,0 +1,20 @@
+package main
+
+import (
+	"github.com/airdb/aa/models"
+)
+
+func main() {
+	var aa models.Summary
+
+	aa.UUID = "f74f0a2b-8413-4cff-b9cf-5dccdb171b76"
+	aa.Category = "寻找送养宝贝"
+	aa.OpenID = "oPPbr0M2h0geV-jgzUPve9g3x3jg"
+	aa.Status = 0
+	aa.Like = 1000
+	aa.Blow = 1000
+
+	models.AddSummary(aa)
+	models.GetSummarys()
+
+}
