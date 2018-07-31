@@ -5,9 +5,9 @@ MAINTAINER Dean dean@airdb.com
 # RUN go get github.com/astaxie/beego
 # RUN go get github.com/beego/bee
 RUN go get github.com/bbhj/baobeihuijia
+RUN godep get
 
 WORKDIR  /go/src/github.com/bbhj/baobeihuijia
-RUN godep get
 #RUN go build
 
 EXPOSE 8080
