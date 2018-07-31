@@ -1,4 +1,4 @@
-FROM beego:1.8.4
+FROM airdb/beego:1.8.4
 MAINTAINER Dean dean@airdb.com
 
 # RUN go get github.com/tools/godep
