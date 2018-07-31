@@ -7,6 +7,7 @@ MAINTAINER Dean dean@airdb.com
 RUN go get github.com/bbhj/baobeihuijia
 
 WORKDIR  /go/src/github.com/bbhj/baobeihuijia
+RUN godep get
 #RUN go build
 
 EXPOSE 8080
