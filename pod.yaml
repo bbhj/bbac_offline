@@ -7,18 +7,18 @@ metadata:
   creationTimestamp: 2018-08-01T06:48:47Z
   generation: 1
   labels:
-    qcloud-app: aa
-  name: aa
+    qcloud-app: test
+  name: test
   namespace: u42560779
   resourceVersion: "32447265795"
-  selfLink: /apis/extensions/v1beta1/namespaces/u42560779/deployments/aa
+  selfLink: /apis/extensions/v1beta1/namespaces/u42560779/deployments/test
   uid: f0c9c0b1-9556-11e8-99b3-52540015776a
 spec:
   replicas: 1
   revisionHistoryLimit: 5
   selector:
     matchLabels:
-      qcloud-app: aa
+      qcloud-app: test
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -28,7 +28,7 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        qcloud-app: aa
+        qcloud-app: test
     spec:
       containers:
       - env:
