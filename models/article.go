@@ -72,8 +72,9 @@ func GetArticle(uuid string) (article Article, err error) {
 
 func GetArticleBySearchBar(nickname, babyid string) (article []Article, err error) {
 	//keyword = fmt.Sprintf("\"%%%v%%\"", keyword)
-	nickname = fmt.Sprintf("%%%v%%", nickname)
-	babyid = fmt.Sprintf("%%%v%%", babyid)
+	// nickname = fmt.Sprintf("%%%v%%", nickname)
+	nickname = fmt.Sprintf("%%%s%%", nickname)
+	babyid = fmt.Sprintf("%%%s%%", babyid)
 	// conn.Debug().Where("nickname like ?", keyword).Order("missed_at desc").Limit(5).Find(&article)
 	conn.Debug().Where("nickname like ? and babyid like ?", nickname, babyid).Order("missed_at desc").Limit(5).Find(&article)
 	// conn.Last(&article)

@@ -29,6 +29,14 @@ func AddCustomerLogin(cl CustomerLogin) {
 	conn.Save(&cl)
 	return
 }
+func IsFirstLoginCustomeService(openid string) (flag bool) {
+	count := 0
+	conn.Where("openid = ?", openid).Count(&count)
+	if count > 0 {
+		flag = true
+	}
+	return
+}
 
 func GetCustomerLogin() {
 	var record CustomerLogin

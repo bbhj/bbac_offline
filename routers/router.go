@@ -8,7 +8,7 @@
 package routers
 
 import (
-	"github.com/airdb/baobeihuijia/controllers"
+	"github.com/bbhj/baobeihuijia/controllers"
 
 	"fmt"
 	"github.com/astaxie/beego"

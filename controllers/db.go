@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/airdb/baobeihuijia/models"
+	"github.com/bbhj/baobeihuijia/models"
 	"github.com/astaxie/beego"
 )
 

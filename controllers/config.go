@@ -2,7 +2,7 @@ package controllers
 
 import (
 	_ "encoding/json"
-	_ "github.com/airdb/baobeihuijia/models"
+	_ "github.com/bbhj/baobeihuijia/models"
 	_ "strings"
 
 	"fmt"

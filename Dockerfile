@@ -7,9 +7,9 @@ MAINTAINER Dean dean@airdb.com
 # RUN go get github.com/bbhj/baobeihuijia
 # RUN godep get
 
-ADD . /go/src
-WORKDIR  /go/src/baobeihuijia
-#RUN go build
+WORKDIR  /go/src/github.com/bbhj/baobeihuijia
+ADD . $WORKDIR
+RUN godep get -v
 
 EXPOSE 8080
 

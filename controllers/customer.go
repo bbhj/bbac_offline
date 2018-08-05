@@ -6,11 +6,13 @@ import (
 	_ "encoding/base64"
 	_ "encoding/json"
 	"fmt"
-	"github.com/airdb/baobeihuijia/models"
 	"github.com/astaxie/beego"
+	"github.com/bbhj/baobeihuijia/models"
 	"github.com/esap/wechat"
 	"io"
+	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -79,8 +81,9 @@ func (u *CustomerController) Post() {
 	fmt.Printf("openid: %s, msg: %s\n", openid, msg)
 
 	wechat.Debug = false
+	wechat_appid := beego.AppConfig.String("wechat_appid")
 
-	wechat.Set(beego.AppConfig.String("wechat_token"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), beego.AppConfig.String("wechat_aeskey"))
+	wechat.Set(beego.AppConfig.String("wechat_token"), wechat_appid, beego.AppConfig.String("wechat_secret"), beego.AppConfig.String("wechat_aeskey"))
 	wechat.SendText(openid, 0, msg)
 	ctx := wechat.VerifyURL(u.Ctx.ResponseWriter, u.Ctx.Request)
 
@@ -99,8 +102,14 @@ func (u *CustomerController) Post() {
 		fmt.Println(customerlogin)
 		models.AddCustomerLogin(customerlogin)
 		// 判断是否首次登录
-		msg := `欢迎智能问答系统。 <a href="CustomerBot" data-miniprogram-appid="wxc4e11081e3d5bdf7" data-miniprogram-path="pages/hr/main">使用帮助</a>   <a href="http://www.w3school.com.cn/index.html">W3School 在线教程</a>`
-		ctx.NewText(msg).Send()
+		if models.IsFirstLoginCustomeService(customerlogin.FromUser) {
+			// msg := `欢迎智能问答系统。 <a href="CustomerBot" data-miniprogram-appid="` + wechat_appid + `" data-miniprogram-path="pages/hr/main">使用帮助</a>   <a href="http://www.w3school.com.cn/index.html">W3School 在线教程</a>`
+			msg = `欢迎使用智能客服系统，您是新用户，建议使用帮助。 <a href="CustomerBot" data-miniprogram-appid="` + wechat_appid + `" data-miniprogram-path="pages/help/main">帮助(暂无此页, 下个版本发布)</a>`
+			ctx.NewText(msg).Send()
+		} else {
+			msg = "I am a robot, :)"
+		}
+		fmt.Println("Cunstomer return msg: ", msg)
 
 	} else {
 		var customertextmsg models.CustomerTextMsg
@@ -113,7 +122,24 @@ func (u *CustomerController) Post() {
 		customertextmsg.MsgId = ctx.Msg.MsgId
 		models.AddCustomerTextMsg(customertextmsg)
 		fmt.Println("customertextmsg: ", customertextmsg)
-		msg := `今天的天气还不错哦。外出的话请注意防晒。 <a href="http://www.w3school.com.cn/index.html">求官人打赏5毛，小的喝口茶。</a>`
+		msg = `<a href="http://bbhj.airdb.io">语义识别正在开发中, 敬请期待。 。</a>`
+
+		fmt.Println("isChinese debug:", customertextmsg.MsgType)
+		if "text" == customertextmsg.MsgType {
+			fmt.Println("isChinese debug:", customertextmsg.Content)
+			if isChinese(customertextmsg.Content) {
+				nickname := customertextmsg.Content
+				fmt.Println("isChinese true, nickname: ", nickname)
+				temp, _ := models.GetArticleBySearchBar(nickname, "")
+				msg = temp[0].Nickname + "地址：" + temp[0].Province + temp[0].City + temp[0].Address
+
+			} else if isInt(customertextmsg.Content) {
+				babyid := customertextmsg.Content
+				temp, _ := models.GetArticleBySearchBar("", babyid)
+				msg = temp[0].Nickname + "地址：" + temp[0].Province + temp[0].City + temp[0].Address
+				msg = `<a href="CustomerBot" data-miniprogram-appid="` + wechat_appid + `" data-miniprogram-path="pages/article/main?data=">` + strconv.FormatInt(temp[0].Babyid, 10) + "-" + temp[0].Nickname + `, 点击进入</a>`
+			}
+		}
 		ctx.NewText(msg).Send()
 
 		// 主动通知用户  48小时 5条，慎用。
@@ -126,4 +152,14 @@ func (u *CustomerController) Post() {
 	// if "user_enter_tempsession" == wechat.Event {
 	// }
 	// fmt.Printf("=====", wechat.WxMsg)
+}
+
+func isInt(str string) bool {
+	var reg = regexp.MustCompile("^[-\\+]?[\\d]+$")
+	return reg.MatchString(str)
+}
+
+func isChinese(str string) bool {
+	var reg = regexp.MustCompile("^[\u4e00-\u9fa5]+$")
+	return reg.MatchString(str)
 }

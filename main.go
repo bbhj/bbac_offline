@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/airdb/baobeihuijia/models"
-	_ "github.com/airdb/baobeihuijia/routers"
+	"github.com/bbhj/baobeihuijia/models"
+	_ "github.com/bbhj/baobeihuijia/routers"
 
 	"github.com/astaxie/beego"
 	"github.com/esap/wechat"

@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/airdb/baobeihuijia/models"
+	"github.com/bbhj/baobeihuijia/models"
 	"github.com/astaxie/beego"
 	"strings"
 )

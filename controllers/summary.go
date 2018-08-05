@@ -2,7 +2,7 @@ package controllers
 
 import (
 	_ "encoding/json"
-	"github.com/airdb/baobeihuijia/models"
+	"github.com/bbhj/baobeihuijia/models"
 
 	"github.com/astaxie/beego"
 )
