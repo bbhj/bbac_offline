@@ -139,6 +139,7 @@ func (u *CustomerController) Post() {
 				msg = temp[0].Nickname + "地址：" + temp[0].Province + temp[0].City + temp[0].Address
 				msg = `<a href="CustomerBot" data-miniprogram-appid="` + wechat_appid + `" data-miniprogram-path="pages/article/main?data=">` + strconv.FormatInt(temp[0].Babyid, 10) + "-" + temp[0].Nickname + `, 点击进入</a>`
 			}
+		} else {
 		}
 		ctx.NewText(msg).Send()
 

@@ -85,7 +85,7 @@ func GetArticleBySearchBar(nickname, babyid string) (article []Article, err erro
 func GetArticles(page int) (articles []Article) {
 	stepsize := 5
 	offset := (page - 1) * stepsize
-	conn.Offset(offset).Limit(stepsize).Find(&articles)
+	conn.Order("missed_at desc").Offset(offset).Limit(stepsize).Find(&articles)
 	fmt.Println("GetArticles: ", articles)
 	return
 }

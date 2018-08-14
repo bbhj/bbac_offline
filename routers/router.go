@@ -9,15 +9,19 @@ package routers
 
 import (
 	"github.com/bbhj/baobeihuijia/controllers"
+	"github.com/bbhj/baobeihuijia/models"
 
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
+	"github.com/ipipdotnet/datx-go"
 )
 
 func init() {
 	beego.InsertFilter("/*", beego.BeforeRouter, func(ctx *context.Context) {
 		fmt.Println("check token=====", ctx.Input.Header("Authorization"))
+		ipip(ctx.Input.IP())
 		// cookie, err := ctx.Request.Cookie("Authorization")
 		// fmt.Println("aaa", cookie, err)
 
@@ -44,4 +48,26 @@ func init() {
 		beego.NSNamespace("/wechatapi/customer/service", beego.NSInclude(&controllers.CustomerController{})),
 	)
 	beego.AddNamespace(ns)
+}
+
+func ipip(ip string) {
+	path := "keys/17monipdb.datx"
+	city, err := datx.NewCity(path) // For City Level IP Database
+	if err == nil {
+		var ipip models.Ipip
+		// loc, err := city.FindLocation("218.17.197.194")
+		loc, err := city.FindLocation(ip)
+		if err == nil {
+			// fmt.Println(string(loc.ToJSON()))
+			fmt.Println(loc)
+			err := json.Unmarshal(loc.ToJSON(), &ipip)
+			if err == nil {
+				ipip.IP = ip
+				fmt.Println(ipip)
+				models.InsertIpip(ipip)
+			} else {
+				fmt.Println("json unmarshal err: ", err)
+			}
+		}
+	}
 }

@@ -24,5 +24,6 @@ func Init() {
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Summary{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Image{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&CustomerLogin{})
-	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&CustomerTextMsg{})
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&CustomerTextMsg{})
+	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Ipip{})
 }

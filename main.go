@@ -21,9 +21,9 @@ func main() {
 	wechat.Debug = true
 	// wechat.Set(beego.AppConfig.String("wechat_token"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), beego.AppConfig.String("wechat_aeskey"))
 	wechat.Set(beego.AppConfig.String("wechat_token"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), beego.AppConfig.String("wechat_aeskey"))
-	openid := "oPPbr0M2h0geV-jgzUPve9g3x3j"
-	msg := "xxx"
-	wechat.SendText(openid, 0, msg)
+	// openid := "oPPbr0M2h0geV-jgzUPve9g3x3jg"
+	// msg := "xxx"
+	// wechat.SendText(openid, 0, msg)
 	if beego.BConfig.RunMode != "prod" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
