@@ -1,4 +1,4 @@
-conf/*
+conf/app.conf
 keys/
 crontab/
 nohup.out
