@@ -90,6 +90,17 @@ func GetArticles(page int) (articles []Article) {
 	return
 }
 
+func GetArticlesByCity(province, city string, page int) (articles []Article) {
+	stepsize := 5
+	offset := (page - 1) * stepsize
+	conn.Where("missed_province = ? or missed_city = ?", province, city).Order("missed_at desc").Offset(offset).Limit(stepsize).Find(&articles)
+	// fmt.Println("GetArticles: ", len(articles))
+	if 0 == len(articles) {
+		return GetArticles(page)
+	}
+	return
+}
+
 func IsExistsBabyid(babyid int64) (flag bool) {
 	count := 0
 	conn.Debug().Table("articles").Where("babyid = ?", babyid).Count(&count)

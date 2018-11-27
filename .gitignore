@@ -1,5 +1,8 @@
 conf/*
 keys/
+crontab/
 nohup.out
 baobeihuijia
 lastupdate.tmp
+routers/commentsRouter_____________*.go
+vendor/*

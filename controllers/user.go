@@ -4,12 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/bbhj/baobeihuijia/models"
-	"github.com/airdb/sailor/req"
+	"github.com/imroc/req"
 	"github.com/esap/wechat"
 	"time"
 
 	"github.com/astaxie/beego"
-	"github.com/juusechec/jwt-beego"
 )
 
 const (
@@ -19,36 +18,6 @@ const (
 	AESKEY      string = "RHtxqJ3CQyspdfT9GZSTReNfoOC58ocEzj47HYAU4Us"
 	TOKEN       string = "deanhome"
 )
-
-type postRecord struct {
-	IP string `json:"ip"`
-	// OpenID       string  `json:"open_id"`
-	// UionID       string  `json:"uion_id"`
-	WechatCode string `json:"code"`
-	WechatUserID
-	WechatUserInfo  string `json:"userInfo"`
-	WechatLoginInfo string `json:"loginInfo"`
-}
-
-type WechatLoginInfo struct {
-	PhoneNetwork string  `json:"phone_network"`
-	PhoneBrand   string  `json:"phone_brand"`
-	PhoneModel   string  `json:"phone_model"`
-	Longitude    float64 `json:"longitude"`
-	Latitude     float64 `json:"latitude"`
-}
-
-type WechatUserID struct {
-	OpenID  string `json:"openid"`
-	UnionID string `json:"unionid"`
-}
-
-type WechatUserSession struct {
-	Errcode     int    `json:"errcode"`
-	Errmsg      string `json:"errmsg"`
-	SesssionKey string `json:"session_key"`
-	WechatUserID
-}
 
 // Operations about Users
 type UserController struct {
@@ -116,63 +85,88 @@ func (u *UserController) Delete() {
 // @router /login [post]
 func (u *UserController) Login() {
 
-	var postValue postRecord
-	json.Unmarshal(u.Ctx.Input.RequestBody, &postValue)
-	// var userInfo UserInfo
-	// json.Unmarshal([]byte(postValue.WechatUserInfo), &userInfo)
-	wechat.Debug = true
-	wechat.Set(TOKEN, APPID, SECRET)
-	apiurl := fmt.Sprintf("%sappid=%s&secret=%s&&js_code=%s&grant_type=authorization_code", beego.AppConfig.String("WechatAuthUrl"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), postValue.WechatCode)
+	var wxlogin models.WechatLogin
+	json.Unmarshal(u.Ctx.Input.RequestBody, &wxlogin)
+
+	// beego.AppConfig.String("wehcat_getAnalysisDailySummary") + wechat.GetAccessToken()
+	param := req.Param{
+		"begin_date": "20181023",
+		"end_date":  "20181023",
+	}
+	a1, _ := req.Post(beego.AppConfig.String("wehcat_getAnalysisDailySummary") + wechat.GetAccessToken(), req.BodyJSON(param))
+	var analysisDaily models.AnalysisDailySummary
+	a1.ToJSON(&analysisDaily)
+	fmt.Printf("累计用户数: %d, 转发人数: %d, 转发次数: %d\n", analysisDaily.List[0].VisitTotal, analysisDaily.List[0].ShareUv, analysisDaily.List[0].SharePv)
+
+	apiurl := fmt.Sprintf("%sappid=%s&secret=%s&&js_code=%s&grant_type=authorization_code", beego.AppConfig.String("WechatAuthUrl"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), wxlogin.Code)
 
 	req.SetTimeout(50 * time.Second)
 	a, _ := req.Get(apiurl)
 
-	var usersession WechatUserSession
-	a.ToJSON(&usersession)
+	a.ToJSON(&wxlogin.User)
 
-	var user models.User
-	json.Unmarshal([]byte(postValue.WechatUserInfo), &user)
-	user.OpenID = usersession.OpenID
-	user.UnionID = usersession.UnionID
-	fmt.Println("wechat user info: ", user)
-	models.AddUserInfo(user)
+	models.AddUserInfo(wxlogin.User)
 
 	var login models.Login
-	fmt.Println("=====", postValue.WechatLoginInfo)
-	json.Unmarshal([]byte(postValue.WechatLoginInfo), &login)
 	login.IP = u.Ctx.Input.IP()
-	login.OpenID = usersession.OpenID
-	login.UnionID = usersession.UnionID
-	fmt.Println("wechat login info: ", login)
+	login.OpenID =  wxlogin.User.Openid
+	login.UnionID = wxlogin.User.Unionid
+	login.Platform = wxlogin.MobileInfo.Platform
+	login.NetworkType = wxlogin.MobileInfo.NetworkType
+	login.Brand = wxlogin.MobileInfo.PhoneBrand
+	login.Pmodel = wxlogin.MobileInfo.Model
+	login.Longitude = wxlogin.MobileInfo.Longitude
+	login.Latitude = wxlogin.MobileInfo.Latitude
+	fmt.Println("login record: ", login)
+
 	models.AddLogin(login)
 
-	tokenString := ""
-	if "" != usersession.OpenID {
-		et := jwtbeego.EasyToken{
-			Username: usersession.OpenID,
-			Expires:  time.Now().Unix() + 3, //Segundos
-			// Expires:  time.Now().Unix() + 3600, //Segundos
-		}
-		tokenString, _ = et.GetToken()
-	}
+	var st models.ServiceTime
+	st.Openid = wxlogin.User.Openid
+	st.Type = "login"
+	st.Duration = 3
+	models.AddServiceTime(st)
 
-	// ZZu.Header("Authorization", tokenString)
 	// u.Ctx.Output.Header("Authorization", tokenString)
-	u.Ctx.SetCookie("Authorization", tokenString)
-	u.Ctx.SetCookie("openid", usersession.OpenID)
-	data := fmt.Sprintf("{\"openid\": \"%s\", \"unionid\": \"%s\", \"token\": \"%s\"}", usersession.OpenID, usersession.UnionID, tokenString)
-	u.Data["json"] = data
+	// u.Ctx.SetCookie("Authorization", tokenString)
+	u.Ctx.SetCookie("openid", wxlogin.User.Openid)
+
+	var auth models.Auth
+	auth.Openid = wxlogin.User.Openid
+	auth.Unionid = wxlogin.User.Unionid
+	auth.YourCity = u.Ctx.Input.Header("city")
+	auth.IsAdmin = false
+	auth.IsVolunteer = true
+	auth.ServiceTime = "100.5"
+	auth.Rights = 3
+	fmt.Println("====auth: ", wechat.GetAccessToken())
+	auth.Token = "dean"
+	auth.AccessToken =  wechat.GetAccessToken()
+	auth.WeCosUrl = fmt.Sprintf("https://%s.file.myqcloud.com/files/v2/%s/%s/%s", beego.AppConfig.String("QcloudCosRegion"), beego.AppConfig.String("QcloudCosAPPID"), beego.AppConfig.String("QcloudCosBucket"), beego.AppConfig.String("QcloudCosUploadDir"))
+	fmt.Println("====auth: ", auth)
+
+	retData, _ := json.Marshal(auth)
+	u.Data["json"] = string(retData)
 
 	// time.Sleep(time.Second * 1)
-	et := jwtbeego.EasyToken{}
-	valido, _, _ := et.ValidateToken(tokenString)
-	if !valido {
-		u.Ctx.Output.SetStatus(401)
-		u.Data["json"] = "Permission Deny, jwt token error"
-		u.ServeJSON()
-	} else {
-		// fmt.Println("bbbbbb vaild")
-	}
 
+	u.ServeJSON()
+}
+
+// @Title FormID
+// @Description Colloect Wechet User Form Id, prepare for sending template message.
+// @Param	openid 	string	true		"wechat user openid"
+// @Param	formid 	string	true		"wechat formid"
+// @Success 200 {string} login success
+// @Failure 403 forbidden
+// @router /formid [post]
+func (u *UserController) FormID() {
+	fmt.Println("===form====:")
+	var tform models.TemplateFormID
+	json.Unmarshal(u.Ctx.Input.RequestBody, &tform)
+	fmt.Println("===form====:", tform)
+	models.AddTemplateFormID(tform)
+
+	u.Data["json"] = "status: 0" 
 	u.ServeJSON()
 }

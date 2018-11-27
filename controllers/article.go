@@ -151,7 +151,14 @@ func (u *ArticleController) Post() {
 // @Success 200 {object} models.Article
 // @router / [get]
 func (u *ArticleController) GetAll() {
-	aa := models.GetArticles(1)
+	// https://github.com/ipipdotnet/nginx-ipip-module
+	// ipip nginx header info: ip |country_code | country| province| city| owner| isp| latitude| longitude
+	// fmt.Println(u.Ctx.Request.Header)
+	province := u.Ctx.Input.Header("province")
+	city := u.Ctx.Input.Header("city")
+	// fmt.Printf("====%s, %s\n", province, city)
+
+	aa := models.GetArticlesByCity(province, city, 1)
 	u.Data["json"] = aa
 	// u.Data["json"] = map[string]string{"openid": openid}
 	u.ServeJSON()
@@ -182,6 +189,15 @@ func (u *ArticleController) GetTopics() {
 		page = 1
 	}
 	fmt.Println("get topics, page:", u.GetString("page"))
+
+	// https://github.com/ipipdotnet/nginx-ipip-module
+	// ipip nginx header info: ip |country_code | country| province| city| owner| isp| latitude| longitude
+	// fmt.Println(u.Ctx.Request.Header)
+	// province := u.Ctx.Input.Header("province")
+	// city := u.Ctx.Input.Header("city")
+	// fmt.Printf("====%s, %s\n", province, city)
+
+	// aa := models.GetArticlesByCity(province, city, page)
 	aa := models.GetArticles(page)
 	u.Data["json"] = aa
 	// u.Data["json"] = map[string]string{"openid": openid}

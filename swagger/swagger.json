@@ -32,6 +32,36 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Article"
+                        }
+                    },
+                    "403": {
+                        "description": ":uid is empty"
+                    }
+                }
+            }
+        },
+        "/lbs/": {
+            "get": {
+                "tags": [
+                    "lbs"
+                ],
+                "description": "get user by uid",
+                "operationId": "BaiduLBSController.Markers",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uid",
+                        "description": "The key for staticblock",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.Article"
                         }
@@ -60,7 +90,7 @@
                     "wechatapi/customer/service"
                 ],
                 "description": "Logs out current logged in user session",
-                "operationId": "CustomerController.upload",
+                "operationId": "CustomerController.wechat msg xml",
                 "responses": {
                     "200": {
                         "description": "{string} logout success"
@@ -105,6 +135,7 @@
                 "operationId": "AdminController.GetAll",
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/.Admin"
                         }
@@ -203,6 +234,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/.Admin"
                         }
@@ -248,6 +280,7 @@
                 "operationId": "ArticleController.GetAll",
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.Article"
                         }
@@ -290,6 +323,7 @@
                 "operationId": "ArticleController.Check baby id exist or not",
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.Article"
                         }
@@ -306,6 +340,24 @@
                 "operationId": "ArticleController.Get Articles Count",
                 "responses": {
                     "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Article"
+                        }
+                    }
+                }
+            }
+        },
+        "/wechatapi/small/article/keywords": {
+            "get": {
+                "tags": [
+                    "wechatapi/small/article"
+                ],
+                "description": "get all Articles",
+                "operationId": "ArticleController.Get Article by baby id",
+                "responses": {
+                    "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.Article"
                         }
@@ -350,6 +402,7 @@
                 "operationId": "ArticleController.GetAll",
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.Article"
                         }
@@ -384,6 +437,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.Article"
                         }
@@ -412,6 +466,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.Article"
                         }
@@ -455,6 +510,7 @@
                 "operationId": "CommentController.GetAll",
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
@@ -562,6 +618,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
@@ -614,6 +671,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
@@ -642,8 +700,9 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
-                            "$ref": "#/definitions/main.Article"
+                            "$ref": "#/definitions/models.Article"
                         }
                     },
                     "403": {
@@ -687,6 +746,7 @@
                 "operationId": "ContactController.GetAll",
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
@@ -785,6 +845,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
@@ -820,6 +881,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
@@ -900,6 +962,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.Article"
                         }
@@ -919,6 +982,7 @@
                 "operationId": "UserController.GetAll",
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
@@ -1003,6 +1067,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
@@ -1038,6 +1103,7 @@
                 ],
                 "responses": {
                     "200": {
+                        "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
@@ -1071,6 +1137,61 @@
                     }
                 }
             }
+        },
+        "/wechatapi/wechat/template/message/": {
+            "get": {
+                "tags": [
+                    "wechatapi/wechat/template/message"
+                ],
+                "description": "get user by uid",
+                "operationId": "SendWechatTemplateMessage.Get",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uid",
+                        "description": "The key for staticblock",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Article"
+                        }
+                    },
+                    "403": {
+                        "description": ":uid is empty"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "wechatapi/wechat/template/message"
+                ],
+                "description": "create users",
+                "operationId": "SendWechatTemplateMessage.CreateArticle",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for user content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Article"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{int} models.Article.Id"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1079,56 +1200,6 @@
         },
         ".Model": {
             "type": "object"
-        },
-        "main.Article": {
-            "title": "Article",
-            "type": "object",
-            "properties": {
-                "Address": {
-                    "type": "string"
-                },
-                "Age": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "Arcid": {
-                    "type": "string"
-                },
-                "AvatarUrl": {
-                    "type": "string"
-                },
-                "Characters": {
-                    "type": "string"
-                },
-                "City": {
-                    "type": "string"
-                },
-                "Country": {
-                    "type": "string"
-                },
-                "DataFrom": {
-                    "type": "string"
-                },
-                "Details": {
-                    "type": "string"
-                },
-                "Gender": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "Nickname": {
-                    "type": "string"
-                },
-                "Province": {
-                    "type": "string"
-                },
-                "Title": {
-                    "type": "string"
-                },
-                "UUID": {
-                    "type": "string"
-                }
-            }
         },
         "models.Article": {
             "title": "Article",
@@ -1156,7 +1227,7 @@
                 },
                 "BirthedAt": {
                     "type": "string",
-                    "format": "string"
+                    "format": "datetime"
                 },
                 "BirthedCity": {
                     "type": "string"
@@ -1200,7 +1271,7 @@
                 },
                 "MissedAt": {
                     "type": "string",
-                    "format": "string"
+                    "format": "datetime"
                 },
                 "MissedCity": {
                     "type": "string"
@@ -1266,6 +1337,10 @@
             "description": "Operations about Articles\n"
         },
         {
+            "name": "lbs",
+            "description": "Operations about Articles\n"
+        },
+        {
             "name": "wechatapi/small/admin",
             "description": "Operations about Admins\n"
         },
@@ -1300,6 +1375,10 @@
         {
             "name": "wechatapi/customer/service",
             "description": "Operations about Users\n"
+        },
+        {
+            "name": "wechatapi/wechat/template/message",
+            "description": "Operations about Articles\n"
         }
     ]
 }

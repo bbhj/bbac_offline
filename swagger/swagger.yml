@@ -24,6 +24,26 @@ paths:
         type: string
       responses:
         "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Article'
+        "403":
+          description: :uid is empty
+  /lbs/:
+    get:
+      tags:
+      - lbs
+      description: get user by uid
+      operationId: BaiduLBSController.Markers
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.Article'
         "403":
@@ -41,7 +61,7 @@ paths:
       tags:
       - wechatapi/customer/service
       description: Logs out current logged in user session
-      operationId: CustomerController.upload
+      operationId: CustomerController.wechat msg xml
       responses:
         "200":
           description: '{string} logout success'
@@ -71,6 +91,7 @@ paths:
       operationId: AdminController.GetAll
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/.Admin'
     post:
@@ -104,6 +125,7 @@ paths:
         type: string
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/.Admin'
         "403":
@@ -164,6 +186,7 @@ paths:
       operationId: ArticleController.GetAll
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.Article'
     post:
@@ -203,6 +226,7 @@ paths:
           $ref: '#/definitions/models.Article'
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.Article'
         "403":
@@ -221,6 +245,7 @@ paths:
         type: string
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.Article'
         "403":
@@ -249,6 +274,7 @@ paths:
       operationId: ArticleController.Check baby id exist or not
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.Article'
   /wechatapi/small/article/count:
@@ -259,6 +285,18 @@ paths:
       operationId: ArticleController.Get Articles Count
       responses:
         "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Article'
+  /wechatapi/small/article/keywords:
+    get:
+      tags:
+      - wechatapi/small/article
+      description: get all Articles
+      operationId: ArticleController.Get Article by baby id
+      responses:
+        "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.Article'
   /wechatapi/small/article/new:
@@ -287,6 +325,7 @@ paths:
       operationId: ArticleController.GetAll
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.Article'
   /wechatapi/small/comment/:
@@ -297,6 +336,7 @@ paths:
       operationId: CommentController.GetAll
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.User'
     post:
@@ -336,6 +376,7 @@ paths:
           $ref: '#/definitions/models.User'
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.User'
         "403":
@@ -370,6 +411,7 @@ paths:
         type: string
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.User'
         "403":
@@ -419,8 +461,9 @@ paths:
         type: string
       responses:
         "200":
+          description: ""
           schema:
-            $ref: '#/definitions/main.Article'
+            $ref: '#/definitions/models.Article'
         "403":
           description: :uid is empty
     post:
@@ -448,6 +491,7 @@ paths:
       operationId: ContactController.GetAll
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.User'
     post:
@@ -481,6 +525,7 @@ paths:
         type: string
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.User'
         "403":
@@ -504,6 +549,7 @@ paths:
           $ref: '#/definitions/models.User'
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.User'
         "403":
@@ -587,6 +633,7 @@ paths:
         type: string
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.Article'
         "403":
@@ -599,6 +646,7 @@ paths:
       operationId: UserController.GetAll
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.User'
     post:
@@ -632,6 +680,7 @@ paths:
         type: string
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.User'
         "403":
@@ -655,6 +704,7 @@ paths:
           $ref: '#/definitions/models.User'
       responses:
         "200":
+          description: ""
           schema:
             $ref: '#/definitions/models.User'
         "403":
@@ -697,45 +747,47 @@ paths:
           description: '{string} login success'
         "403":
           description: user not exist
+  /wechatapi/wechat/template/message/:
+    get:
+      tags:
+      - wechatapi/wechat/template/message
+      description: get user by uid
+      operationId: SendWechatTemplateMessage.Get
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Article'
+        "403":
+          description: :uid is empty
+    post:
+      tags:
+      - wechatapi/wechat/template/message
+      description: create users
+      operationId: SendWechatTemplateMessage.CreateArticle
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Article'
+      responses:
+        "200":
+          description: '{int} models.Article.Id'
+        "403":
+          description: body is empty
 definitions:
   .Admin:
     type: object
   .Model:
     type: object
-  main.Article:
-    title: Article
-    type: object
-    properties:
-      Address:
-        type: string
-      Age:
-        type: integer
-        format: int64
-      Arcid:
-        type: string
-      AvatarUrl:
-        type: string
-      Characters:
-        type: string
-      City:
-        type: string
-      Country:
-        type: string
-      DataFrom:
-        type: string
-      Details:
-        type: string
-      Gender:
-        type: integer
-        format: int32
-      Nickname:
-        type: string
-      Province:
-        type: string
-      Title:
-        type: string
-      UUID:
-        type: string
   models.Article:
     title: Article
     type: object
@@ -756,7 +808,7 @@ definitions:
         type: string
       BirthedAt:
         type: string
-        format: string
+        format: datetime
       BirthedCity:
         type: string
       BirthedCountry:
@@ -786,7 +838,7 @@ definitions:
         type: string
       MissedAt:
         type: string
-        format: string
+        format: datetime
       MissedCity:
         type: string
       MissedCountry:
@@ -828,6 +880,9 @@ tags:
 - name: db/init
   description: |
     Operations about Articles
+- name: lbs
+  description: |
+    Operations about Articles
 - name: wechatapi/small/admin
   description: |
     Operations about Admins
@@ -855,3 +910,6 @@ tags:
 - name: wechatapi/customer/service
   description: |
     Operations about Users
+- name: wechatapi/wechat/template/message
+  description: |
+    Operations about Articles

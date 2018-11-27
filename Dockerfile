@@ -1,3 +1,6 @@
+# This is the first stage, for building things that will be required by the
+# final stage (notably the binary)
+
 FROM airdb/beego:1.8.4
 MAINTAINER Dean dean@airdb.com
 
@@ -8,8 +11,17 @@ MAINTAINER Dean dean@airdb.com
 # RUN godep get
 
 WORKDIR  /go/src/github.com/bbhj/baobeihuijia
+COPY go.mod go.sum ./
+RUN go mod download
+
 ADD . $WORKDIR
 RUN godep get -v
+
+# The second and final stage
+FROM scratch
+
+# Copy the binary from the builder stage
+COPY --from=0 /myapp /myapp
 
 EXPOSE 8080
 
