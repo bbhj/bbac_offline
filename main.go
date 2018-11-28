@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/bbhj/baobeihuijia/models"
+	"github.com/bbhj/baobeihuijia/crontab"
 	_ "github.com/bbhj/baobeihuijia/routers"
 
 	"github.com/astaxie/beego"
@@ -42,6 +43,7 @@ func main() {
 	// openid := "oPPbr0M2h0geV-jgzUPve9g3x3jg"
 	// msg := "xxx"
 	// wechat.SendText(openid, 0, msg)
+	go crontab.CronTask()
 	if beego.BConfig.RunMode != "prod" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"

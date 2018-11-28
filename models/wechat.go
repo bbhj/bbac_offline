@@ -1,19 +1,27 @@
 package models
 
 import (
-	 "github.com/jinzhu/gorm"
+	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"time"
 )
 
 type (
 	AnalysisDailySummary struct {
-		List []struct {
-			RefDate    string `json:"ref_date"`
-			SharePv    int    `json:"share_pv"`
-			ShareUv    int    `json:"share_uv"`
-			VisitTotal int    `json:"visit_total"`
-		} `json:"list"`
+                List []struct {
+                        RefDate    string `json:"ref_date"`
+                        SharePv    int    `json:"share_pv"`
+                        ShareUv    int    `json:"share_uv"`
+                        VisitTotal int    `json:"visit_total"`
+                } `json:"list"`
+	}
+
+	WeixinDailySummary struct {
+		gorm.Model
+		RefDate    string `json:"ref_date"`
+		SharePv    int    `json:"share_pv"`
+		ShareUv    int    `json:"share_uv"`
+		VisitTotal int    `json:"visit_total"`
 	}
 
 	TemplateMessage struct {
@@ -44,8 +52,8 @@ type (
 	// 发送模板消息
 	TemplateFormID struct {
 		gorm.Model
-		OpenID string `json:"openid"`
-		FormID string `json:"formid"`
+		Openid string `json:"openid"`
+		Formid string `json:"formid"`
 		Status uint   // -1 发送消息失败， 0 已通知，1,初始化  2 已过期, 剩余保留
 	}
 
@@ -53,17 +61,17 @@ type (
 	// 参考：https://developers.weixin.qq.com/miniprogram/dev/api/open-api/qr-code/getWXACodeUnlimit.html
 	QRCodeRequestParms struct {
 		AccessToken string `json:"access_token"`
-		Scene string `json:"scene"`
-		Page string `json:"page"`
-		Width string `json:"width"`
-		AutoColor string `json:"auto_color"`
-		LineColor string `json:"line_color"`
-		IsHyaline string `json:"is_hyaline"`
+		Scene       string `json:"scene"`
+		Page        string `json:"page"`
+		Width       string `json:"width"`
+		AutoColor   string `json:"auto_color"`
+		LineColor   string `json:"line_color"`
+		IsHyaline   string `json:"is_hyaline"`
 	}
 
 	QRCodeReturn struct {
 		Errcode string `json:"errcode"`
-		Errmsg string `json:"errmsg"`
+		Errmsg  string `json:"errmsg"`
 	}
 
 	// 网页登录 access_token
@@ -76,31 +84,30 @@ type (
 		RefreshToken string `json:"refresh_token"`
 		Scope        string `json:"scope"`
 	}
-
 )
 
 func AddTemplateFormID(tformid TemplateFormID) {
-        tformid.CreatedAt = time.Now()
-        tformid.UpdatedAt = time.Now()
-        conn.Save(&tformid)
-        return
+	tformid.CreatedAt = time.Now()
+	tformid.UpdatedAt = time.Now()
+	conn.Save(&tformid)
+	return
 }
 
 func ValidateAccessToken(accessToken string) (flag bool) {
 	if "dean" == accessToken {
 		flag = true
 	}
-		flag = true
-        return
+	flag = true
+	return
 }
 
 func AddOpenWeixinAccessToken(wxlogin OpenWeixinAccessToken) (flag bool) {
-        // aaa := conn.Model(&user).Where("open_id = ?", user.OpenID).Updates(user)
-        // conn.Where("openid = ?", wxlogin.Openid).FirstOrCreate(&wxlogin)
-	if ("" != wxlogin.Openid) {
-        	conn.Save(&wxlogin)
+	// aaa := conn.Model(&user).Where("openid = ?", user.OpenID).Updates(user)
+	// conn.Where("openid = ?", wxlogin.Openid).FirstOrCreate(&wxlogin)
+	if "" != wxlogin.Openid {
+		conn.Save(&wxlogin)
 		flag = true
 	}
 
-        return
+	return
 }

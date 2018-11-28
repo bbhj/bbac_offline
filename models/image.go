@@ -13,8 +13,8 @@ type Image struct {
 	// ID        string `gorm:"primary_key"`
 	//  Timestamp int64
 	// CreatedAt    time.Time `sql:"DEFAULT:current_timestamp"`
-	OpenID  string
-	UnionID string
+	Openid  string `json:"openid"`
+	Unionid string `json:"unionid"`
 	UUID    string
 	URL     string `gorm:"not null;unique"`
 	Status  uint
