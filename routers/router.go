@@ -22,7 +22,7 @@ import (
 func init() {
 	// beego.InsertFilter(`((?!/lastest/wechatapi/wechat/login$).*)`, beego.BeforeRouter, func(ctx *context.Context) {
 	beego.InsertFilter("/*", beego.BeforeRouter, func(ctx *context.Context) {
-		if ("dev" != beego.AppConfig.String("runmode") ){
+		if "dev" != beego.AppConfig.String("runmode") {
 			return
 		}
 		accessToken := ctx.GetCookie("token")
@@ -32,7 +32,7 @@ func init() {
 		if "" == accessToken {
 			// fmt.Println("======token: ", accessToken)
 			if !strings.Contains(ctx.Request.RequestURI, loginPage) {
-				fmt.Println("======redirect: Contains" )
+				fmt.Println("======redirect: Contains")
 				loginPage = beego.AppConfig.String("loginPage")
 				http.Redirect(ctx.ResponseWriter, ctx.Request, loginPage, http.StatusMovedPermanently)
 			} else {
@@ -67,10 +67,12 @@ func init() {
 		// 机器人系统
 		beego.NSNamespace("/api/robot/", beego.NSInclude(&controllers.RobotController{})),
 
-		// web 
+		// webapi
 		beego.NSNamespace("/profile/userinfo", beego.NSInclude(&controllers.UserController{})),
-		beego.NSNamespace("/webapi/", beego.NSInclude(&controllers.UserController{})),
-		beego.NSNamespace("/webapi/", beego.NSInclude(&controllers.WechatController{})),
+
+		beego.NSNamespace("/webapi/robot", beego.NSInclude(&controllers.RobotController{})),
+		beego.NSNamespace("/webapi/report", beego.NSInclude(&controllers.ReportController{})),
+		beego.NSNamespace("/webapi/user", beego.NSInclude(&controllers.UserController{})),
 	)
 	beego.AddNamespace(ns)
 }

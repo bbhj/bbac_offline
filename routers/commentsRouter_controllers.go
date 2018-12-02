@@ -311,10 +311,26 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ReportController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ReportController"],
+		beego.ControllerComments{
+			Method: "SaveErrorLogger",
+			Router: `/save_error_logger`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:RobotController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:RobotController"],
 		beego.ControllerComments{
 			Method: "QQ",
 			Router: `/qq`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:RobotController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:RobotController"],
+		beego.ControllerComments{
+			Method: "Wechat",
+			Router: `/wechat`,
 			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})
@@ -465,9 +481,9 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
 		beego.ControllerComments{
-			Method: "SaveErrorLogger",
-			Router: `/save_error_logger`,
-			AllowHTTPMethods: []string{"post"},
+			Method: "WxLogin",
+			Router: `/login`,
+			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})
 

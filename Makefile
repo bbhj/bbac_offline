@@ -2,12 +2,10 @@ BUILD=dist
 DEPLOYMENT=$(BUILD).zip
 
 all: 
-	#go get github.com/tools/godep
-	#godep get
-	# bee generate docs
-	make test
+	go test tests/default_test.go
+run: 
+	#make test
 	#bee run -downdoc=true -gendoc=true
-	#bee run
 
 pack:
 	bee pack

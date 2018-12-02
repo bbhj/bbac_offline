@@ -12,9 +12,21 @@ var bbsconn *gorm.DB
 
 func Connect() (db *gorm.DB, err error) {
 	conn, err = gorm.Open("mysql", beego.AppConfig.String("gdbc"))
+	if ( err != nil ) {
+		beego.Error("Can't connect database, db info: ", beego.AppConfig.String("gdbc"))
+	}
+	
 	bbsconn, err = gorm.Open("mysql", beego.AppConfig.String("bbs_gdbc"))
+	if ( err != nil ) {
+		beego.Error("Can't connect database, db info: ", beego.AppConfig.String("gdbc"))
+	}
 
 	return
+}
+
+func Close() {
+	conn.Close()
+	bbsconn.Close()
 }
 
 func Init() {

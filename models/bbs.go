@@ -1,8 +1,8 @@
 package models
 
 import (
-	_ "fmt"
 	"github.com/jinzhu/gorm"
+	"github.com/astaxie/beego/logs"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
@@ -25,8 +25,9 @@ type (
 )
 
 func GetAllPreForumPostList() (preForumPost []PreForumPost) {
-	bbsconn.Table("pre_forum_post").Where("subject != ?", "").Order("tid desc").Limit(5).Find(&preForumPost)
-	// fmt.Println("aaaaa===",  preForumPost)
+	err := bbsconn.Table("pre_forum_post").Where("subject != ?", "").Order("tid desc").Limit(5).Find(&preForumPost)
+	// bbsconn.Table("pre_forum_post").Where("subject != ?", "").Order("tid desc").Limit(5).Find(preForumPost)
+	logs.Error("======bbs models====",err, preForumPost)
 	return
 }
 

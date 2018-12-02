@@ -4,6 +4,7 @@ import (
 	_ "fmt"
 	_ "github.com/google/uuid"
 	"github.com/jinzhu/gorm"
+"github.com/astaxie/beego/logs"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "time"
 )
@@ -110,4 +111,12 @@ func GetUserInfoList() (userInfoList []User) {
 	//         return GetUserInfoList(page)
 	// }
 	return
+}
+func TestGetUserInfo() (userInfo *User) {
+	user := &User{}
+	logs.Info("TestGetUserInfo=====",conn)
+	conn.Debug().First(&user)
+	logs.Info("TestGetUserInfo=====", user)
+	
+	return user
 }
