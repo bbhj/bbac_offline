@@ -8,9 +8,11 @@ import (
 )
 
 var conn *gorm.DB
+var bbsconn *gorm.DB
 
 func Connect() (db *gorm.DB, err error) {
 	conn, err = gorm.Open("mysql", beego.AppConfig.String("gdbc"))
+	bbsconn, err = gorm.Open("mysql", beego.AppConfig.String("bbs_gdbc"))
 
 	return
 }

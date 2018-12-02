@@ -11,6 +11,15 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 basePath: /lastest
 paths:
+  /api/robot//qq:
+    get:
+      tags:
+      - api/robot
+      description: Logs out current logged in user session
+      operationId: RobotController.QQ 聊天机器人
+      responses:
+        "200":
+          description: '{string} logout success'
   /db/init/:
     get:
       tags:
@@ -35,6 +44,367 @@ paths:
       - lbs
       description: get user by uid
       operationId: BaiduLBSController.Markers
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Article'
+        "403":
+          description: :uid is empty
+  /profile/userinfo/:
+    get:
+      tags:
+      - webapi
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+    post:
+      tags:
+      - webapi
+      description: create users
+      operationId: UserController.CreateUser
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: '{int} models.User.Id'
+        "403":
+          description: body is empty
+  /profile/userinfo/{uid}:
+    get:
+      tags:
+      - webapi
+      description: get user by uid
+      operationId: UserController.Get
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: :uid is empty
+    put:
+      tags:
+      - webapi
+      description: update the user
+      operationId: UserController.Update
+      parameters:
+      - in: path
+        name: uid
+        description: The uid you want to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: :uid is not int
+    delete:
+      tags:
+      - webapi
+      description: delete the user
+      operationId: UserController.Delete
+      parameters:
+      - in: path
+        name: uid
+        description: The uid you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: uid is empty
+  /profile/userinfo/formid:
+    post:
+      tags:
+      - webapi
+      description: Colloect Wechet User Form Id, prepare for sending template message.
+      operationId: UserController.FormID
+      parameters:
+      - in: string
+        name: openid
+        description: wechat user openid
+        schema:
+          $ref: '#/definitions/.true'
+      - in: string
+        name: formid
+        description: wechat formid
+        schema:
+          $ref: '#/definitions/.true'
+      responses:
+        "200":
+          description: '{string} login success'
+        "403":
+          description: forbidden
+  /profile/userinfo/get_drag_list:
+    get:
+      tags:
+      - webapi
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+  /profile/userinfo/get_info:
+    get:
+      tags:
+      - webapi
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+  /profile/userinfo/login:
+    post:
+      tags:
+      - webapi
+      description: Logs user into the system
+      operationId: UserController.Login
+      parameters:
+      - in: query
+        name: username
+        description: The username for login
+        required: true
+        type: string
+      - in: query
+        name: password
+        description: The password for login
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} login success'
+        "403":
+          description: user not exist
+  /profile/userinfo/save_error_logger:
+    post:
+      tags:
+      - webapi
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+  /webapi//:
+    get:
+      tags:
+      - webapi
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+    post:
+      tags:
+      - webapi
+      description: create users
+      operationId: UserController.CreateUser
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: '{int} models.User.Id'
+        "403":
+          description: body is empty
+  /webapi//{uid}:
+    get:
+      tags:
+      - webapi
+      description: get user by uid
+      operationId: UserController.Get
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: :uid is empty
+    put:
+      tags:
+      - webapi
+      description: update the user
+      operationId: UserController.Update
+      parameters:
+      - in: path
+        name: uid
+        description: The uid you want to update
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+        "403":
+          description: :uid is not int
+    delete:
+      tags:
+      - webapi
+      description: delete the user
+      operationId: UserController.Delete
+      parameters:
+      - in: path
+        name: uid
+        description: The uid you want to delete
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{string} delete success!'
+        "403":
+          description: uid is empty
+  /webapi//createqrcode:
+    post:
+      tags:
+      - webapi
+      description: create users
+      operationId: WechatController.CreateArticle
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Article'
+      responses:
+        "200":
+          description: '{int} models.Article.Id'
+        "403":
+          description: body is empty
+  /webapi//formid:
+    post:
+      tags:
+      - webapi
+      description: Colloect Wechet User Form Id, prepare for sending template message.
+      operationId: UserController.FormID
+      parameters:
+      - in: string
+        name: openid
+        description: wechat user openid
+        schema:
+          $ref: '#/definitions/.true'
+      - in: string
+        name: formid
+        description: wechat formid
+        schema:
+          $ref: '#/definitions/.true'
+      responses:
+        "200":
+          description: '{string} login success'
+        "403":
+          description: forbidden
+  /webapi//get_drag_list:
+    get:
+      tags:
+      - webapi
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+  /webapi//get_info:
+    get:
+      tags:
+      - webapi
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+  /webapi//login:
+    get:
+      tags:
+      - webapi
+      description: get user by uid
+      operationId: WechatController.Get
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Article'
+        "403":
+          description: :uid is empty
+  /webapi//save_error_logger:
+    post:
+      tags:
+      - webapi
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+  /webapi//userinfolist:
+    get:
+      tags:
+      - webapi
+      description: get user by uid
       parameters:
       - in: path
         name: uid
@@ -641,7 +1011,7 @@ paths:
   /wechatapi/small/user/:
     get:
       tags:
-      - wechatapi/small/user
+      - webapi
       description: get all Users
       operationId: UserController.GetAll
       responses:
@@ -651,7 +1021,7 @@ paths:
             $ref: '#/definitions/models.User'
     post:
       tags:
-      - wechatapi/small/user
+      - webapi
       description: create users
       operationId: UserController.CreateUser
       parameters:
@@ -669,7 +1039,7 @@ paths:
   /wechatapi/small/user/{uid}:
     get:
       tags:
-      - wechatapi/small/user
+      - webapi
       description: get user by uid
       operationId: UserController.Get
       parameters:
@@ -687,7 +1057,7 @@ paths:
           description: :uid is empty
     put:
       tags:
-      - wechatapi/small/user
+      - webapi
       description: update the user
       operationId: UserController.Update
       parameters:
@@ -711,7 +1081,7 @@ paths:
           description: :uid is not int
     delete:
       tags:
-      - wechatapi/small/user
+      - webapi
       description: delete the user
       operationId: UserController.Delete
       parameters:
@@ -725,10 +1095,54 @@ paths:
           description: '{string} delete success!'
         "403":
           description: uid is empty
+  /wechatapi/small/user/formid:
+    post:
+      tags:
+      - webapi
+      description: Colloect Wechet User Form Id, prepare for sending template message.
+      operationId: UserController.FormID
+      parameters:
+      - in: string
+        name: openid
+        description: wechat user openid
+        schema:
+          $ref: '#/definitions/.true'
+      - in: string
+        name: formid
+        description: wechat formid
+        schema:
+          $ref: '#/definitions/.true'
+      responses:
+        "200":
+          description: '{string} login success'
+        "403":
+          description: forbidden
+  /wechatapi/small/user/get_drag_list:
+    get:
+      tags:
+      - webapi
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+  /wechatapi/small/user/get_info:
+    get:
+      tags:
+      - webapi
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
   /wechatapi/small/user/login:
     post:
       tags:
-      - wechatapi/small/user
+      - webapi
       description: Logs user into the system
       operationId: UserController.Login
       parameters:
@@ -747,6 +1161,72 @@ paths:
           description: '{string} login success'
         "403":
           description: user not exist
+  /wechatapi/small/user/save_error_logger:
+    post:
+      tags:
+      - webapi
+      description: get all Users
+      operationId: UserController.GetAll
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.User'
+  /wechatapi/wechat//createqrcode:
+    post:
+      tags:
+      - webapi
+      description: create users
+      operationId: WechatController.CreateArticle
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.Article'
+      responses:
+        "200":
+          description: '{int} models.Article.Id'
+        "403":
+          description: body is empty
+  /wechatapi/wechat//login:
+    get:
+      tags:
+      - webapi
+      description: get user by uid
+      operationId: WechatController.Get
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Article'
+        "403":
+          description: :uid is empty
+  /wechatapi/wechat//userinfolist:
+    get:
+      tags:
+      - webapi
+      description: get user by uid
+      parameters:
+      - in: path
+        name: uid
+        description: The key for staticblock
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Article'
+        "403":
+          description: :uid is empty
   /wechatapi/wechat/template/message/:
     get:
       tags:
@@ -787,6 +1267,8 @@ definitions:
   .Admin:
     type: object
   .Model:
+    type: object
+  .true:
     type: object
   models.Article:
     title: Article
@@ -857,24 +1339,31 @@ definitions:
     title: User
     type: object
     properties:
-      AvatarUrl:
+      avatarUrl:
         type: string
-      City:
+      city:
         type: string
-      Country:
+      country:
         type: string
-      Gender:
+      gender:
         type: integer
         format: int32
-      Language:
+      headimgurl:
         type: string
-      Nickname:
+      language:
         type: string
-      OpenID:
+      nickName:
         type: string
-      Province:
+      openid:
         type: string
-      UnionID:
+      privilege:
+        type: string
+      province:
+        type: string
+      sex:
+        type: integer
+        format: int32
+      unionid:
         type: string
 tags:
 - name: db/init
@@ -907,9 +1396,26 @@ tags:
 - name: wechatapi/qcloud/wecos
   description: |
     Operations about Users
+- name: wechatapi/wechat/template/message
+  description: |
+    Operations about Articles
 - name: wechatapi/customer/service
   description: |
     Operations about Users
-- name: wechatapi/wechat/template/message
+- name: wechatapi/wechat
   description: |
+    https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=ACCESS_TOKEN
+    Operations about Articles
+- name: api/robot
+  description: |
+    Operations about Users
+- name: profile/userinfo
+  description: |
+    Operations about Users
+- name: webapi
+  description: |
+    Operations about Users
+- name: webapi
+  description: |
+    https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=ACCESS_TOKEN
     Operations about Articles

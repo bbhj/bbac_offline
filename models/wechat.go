@@ -7,13 +7,22 @@ import (
 )
 
 type (
+	WechatAuth struct {
+		gorm.Model
+		Code        string `json:"code"`
+		State       string `json:"code"`
+		Scene       string `json:"scene"`
+		Path        string `json:"path"`
+		ShareTicket string `json:"shareTicket"`
+	}
+
 	AnalysisDailySummary struct {
-                List []struct {
-                        RefDate    string `json:"ref_date"`
-                        SharePv    int    `json:"share_pv"`
-                        ShareUv    int    `json:"share_uv"`
-                        VisitTotal int    `json:"visit_total"`
-                } `json:"list"`
+		List []struct {
+			RefDate    string `json:"ref_date"`
+			SharePv    int    `json:"share_pv"`
+			ShareUv    int    `json:"share_uv"`
+			VisitTotal int    `json:"visit_total"`
+		} `json:"list"`
 	}
 
 	WeixinDailySummary struct {
@@ -83,6 +92,7 @@ type (
 		ExpiresIn    int    `json:"expires_in"`
 		RefreshToken string `json:"refresh_token"`
 		Scope        string `json:"scope"`
+		SessionKey   string `json:"session_key"` // 小程序登录session_key
 	}
 )
 
@@ -102,7 +112,7 @@ func ValidateAccessToken(accessToken string) (flag bool) {
 }
 
 func AddOpenWeixinAccessToken(wxlogin OpenWeixinAccessToken) (flag bool) {
-	// aaa := conn.Model(&user).Where("openid = ?", user.OpenID).Updates(user)
+	// aaa := conn.Model(&user).Where("openid = ?", user.Openid).Updates(user)
 	// conn.Where("openid = ?", wxlogin.Openid).FirstOrCreate(&wxlogin)
 	if "" != wxlogin.Openid {
 		conn.Save(&wxlogin)

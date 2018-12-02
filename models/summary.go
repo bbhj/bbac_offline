@@ -14,7 +14,7 @@ type Summary struct {
 	//  Timestamp int64
 	// CreatedAt    time.Time `sql:"DEFAULT:current_timestamp"`
 	UUID     string
-	OpenID   string
+	Openid   string
 	Category string
 	PicUrl   string
 	Title    string

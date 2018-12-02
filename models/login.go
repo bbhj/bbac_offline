@@ -15,8 +15,8 @@ type Login struct {
 	// CreatedAt    time.Time `sql:"DEFAULT:current_timestamp"`
 	// {"platform":"devtools","brand":"devtools","model":"iPhone 7 Plus"}
 	IP          string
-	OpenID      string
-	UnionID     string
+	Openid      string `json:"openid"`
+	Unionid     string `json:"unionid"`
 	Platform    string
 	NetworkType string
 	Brand       string
@@ -26,7 +26,7 @@ type Login struct {
 }
 
 func (lr *Login) String() string {
-	return fmt.Sprintf("IP: %s, OpenID: %s, UnionID: %s , Location: {%f, %f}", lr.IP, lr.OpenID, lr.UnionID, lr.Longitude, lr.Latitude)
+	return fmt.Sprintf("IP: %s, Openid: %s, Unionid: %s , Location: {%f, %f}", lr.IP, lr.Openid, lr.Unionid, lr.Longitude, lr.Latitude)
 }
 
 func init() {
@@ -47,5 +47,4 @@ func GetLogin() {
 	var record Login
 	conn.First(&record, 3)
 	fmt.Println("==============", record.String())
-
 }

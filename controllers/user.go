@@ -109,8 +109,8 @@ func (u *UserController) Login() {
 
 	var login models.Login
 	login.IP = u.Ctx.Input.IP()
-	login.OpenID =  wxlogin.User.Openid
-	login.UnionID = wxlogin.User.Unionid
+	login.Openid =  wxlogin.User.Openid
+	login.Unionid = wxlogin.User.Unionid
 	login.Platform = wxlogin.MobileInfo.Platform
 	login.NetworkType = wxlogin.MobileInfo.NetworkType
 	login.Brand = wxlogin.MobileInfo.PhoneBrand
@@ -167,6 +167,37 @@ func (u *UserController) FormID() {
 	fmt.Println("===form====:", tform)
 	models.AddTemplateFormID(tform)
 
+	u.Data["json"] = "status: 0" 
+	u.ServeJSON()
+}
+
+// @Title GetAll
+// @Description get all Users
+// @Success 200 {object} models.User
+// @router /get_info [get]
+func (u *UserController) GetInfo() {
+	var userinfo  models.UserInfo
+	userinfo.Avator = "https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJuPPo6bJsib4LVLTfDCaI5Q3yULbiciaDDnxoq5uKejypd8xMM3qFbSdkogLSSpgXw7ZFSPBhpzUcPA/132"
+	userinfo.Name = "xxxxx"
+	userinfo.UserId = "1"
+	userinfo.Access = `["super_admin", "admin"]`
+	u.Data["json"] = userinfo
+	u.ServeJSON()
+}
+
+// @Title GetAll
+// @Description get all Users
+// @Success 200 {object} models.User
+// @router /save_error_logger [post]
+func (u *UserController) SaveErrorLogger() {
+	u.Data["json"] = "status: 0" 
+	u.ServeJSON()
+}
+// @Title GetAll
+// @Description get all Users
+// @Success 200 {object} models.User
+// @router /get_drag_list [get]
+func (u *UserController) GetDragList() {
 	u.Data["json"] = "status: 0" 
 	u.ServeJSON()
 }

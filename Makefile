@@ -5,14 +5,15 @@ all:
 	#go get github.com/tools/godep
 	#godep get
 	# bee generate docs
-	bee run -downdoc=true -gendoc=true
-	bee run
+	make test
+	#bee run -downdoc=true -gendoc=true
+	#bee run
 
 pack:
 	bee pack
 
 test:
-	go run test/post.go
+	go test tests/default_test.go
 
 .PHONY: clean
 clean:

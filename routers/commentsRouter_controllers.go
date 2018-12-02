@@ -311,6 +311,14 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:RobotController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:RobotController"],
+		beego.ControllerComments{
+			Method: "QQ",
+			Router: `/qq`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SendWechatTemplateMessage"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SendWechatTemplateMessage"],
 		beego.ControllerComments{
 			Method: "Post",
@@ -433,8 +441,32 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
 		beego.ControllerComments{
+			Method: "GetDragList",
+			Router: `/get_drag_list`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+		beego.ControllerComments{
+			Method: "GetInfo",
+			Router: `/get_info`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+		beego.ControllerComments{
 			Method: "Login",
 			Router: `/login`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+		beego.ControllerComments{
+			Method: "SaveErrorLogger",
+			Router: `/save_error_logger`,
 			AllowHTTPMethods: []string{"post"},
 			MethodParams: param.Make(),
 			Params: nil})

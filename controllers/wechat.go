@@ -4,11 +4,13 @@ import (
 	_ "encoding/json"
 	"reflect"
 
+	_ "fmt"
+	"github.com/astaxie/beego/logs"
 	"github.com/bbhj/baobeihuijia/models"
-	_ "strings"
 	"github.com/esap/wechat"
 	"github.com/imroc/req"
-	"github.com/astaxie/beego/logs"
+	_ "strings"
+	"time"
 
 	"github.com/astaxie/beego"
 )
@@ -38,17 +40,17 @@ func (u *WechatController) CreateQRcode() {
 
 	param := req.Param{
 		// "access_token": wechat.GetAccessToken(),
-		"page": "pages/home/main",
+		"page":  "pages/home/main",
 		"scene": "foward=test&uuid=1111111111111111",
 		"width": "",
 		// "auto_color": false,
 		// "is_hyaline": false,
 	}
-	logs.Info("=========%s\n",param)
+	logs.Info("=========%s\n", param)
 
 	// req.Debug = false
 	// r, err:= req.Post(apiurl, "application/x-www-form-urlencoded", param)
-	r, err:= req.Post(apiurl, "application/json", req.BodyJSON(param))
+	r, err := req.Post(apiurl, "application/json", req.BodyJSON(param))
 	if err != nil {
 		logs.Error(err)
 	}
@@ -68,51 +70,84 @@ func (u *WechatController) CreateQRcode() {
 // @Failure 403 :uid is empty
 // @router /login [get]
 func (u *WechatController) Login() {
-	// uri?code=021cljRR1DUhk81klvSR1xCxRR1cljRM&state=bbhj 
-	code := u.GetString("code")
-	// state := u.GetString("state")
-	logs.Info("=====code====", code)
-
-	apiurl := beego.AppConfig.String("weixin_oauth") + code
-
-	r, _ := req.Get(apiurl)
-	// logs.Info(r)
 	var wxlogin models.OpenWeixinAccessToken
-	r.ToJSON(&wxlogin)
-	if wxlogin.Openid == "" {
+
+	// uri?code=021cljRR1DUhk81klvSR1xCxRR1cljRM&state=bbhj
+	var wxauth models.WechatAuth
+	wxauth.Code = u.GetString("code")
+	wxauth.State = u.GetString("state")
+	wxauth.Scene = u.GetString("scene")
+	wxauth.Path = u.GetString("path")
+	wxauth.ShareTicket = u.GetString("shareTicket")
+
+	// json.Unmarshal(u.Ctx.Input.RequestBody, &wxauth)
+	logs.Info("-------------", wxauth)
+	if "" == wxauth.Code {
 		return
 	}
-	models.AddOpenWeixinAccessToken(wxlogin)
-	logs.Info("weixin login: ", wxlogin)
 
-	// get userinfo
-	apiurl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + wxlogin.AccessToken + "&openid=" + wxlogin.Openid
-	r, _ = req.Get(apiurl)
-	var webuserinfo models.User
-	r.ToJSON(&webuserinfo)
-	models.AddUserInfo(webuserinfo)
-	logs.Info("get weixin userinfo: ", webuserinfo)
+	if "" != wxauth.Scene {
+		// apiurl := fmt.Sprintf("%sappid=%s&secret=%s&js_code=%s&grant_type=authorization_code", beego.AppConfig.String("WechatAuthUrl"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), wxauth.Code)
+		apiurl := beego.AppConfig.String("wechat_mina") + wxauth.Code
 
-	u.Ctx.ResponseWriter.Header().Set("Authorization", wxlogin.AccessToken)
-	// u.Data["json"] = map[string]string{"status": ""}
-	// u.Ctx.RequestWriter.Header.Set("Authorization", wxlogin.AccessToken)
-	u.Ctx.Request.Header.Set("Authorization", wxlogin.AccessToken)
-	// aa.Header.Set("Authorization", wxlogin.AccessToken)
-	// http.Redirect(ctx.ResponseWriter, aa, loginPage, http.StatusMovedPermanently)
-	u.Ctx.SetCookie("access_token", wxlogin.AccessToken, 7200)
-	// u.Ctx.Redirect(302, "https://wechat.baobeihuijia.com/dev/lastest/wechatapi/small/config")
+		req.SetTimeout(50 * time.Second)
+		a, _ := req.Get(apiurl)
+
+		logs.Debug(a)
+		a.ToJSON(&wxlogin)
+		logs.Debug("xxxxx", wxlogin)
+
+		return
+	} else {
+		apiurl := beego.AppConfig.String("weixin_oauth") + wxauth.Code
+
+		r, _ := req.Get(apiurl)
+		// logs.Info(r)
+		r.ToJSON(&wxlogin)
+		if wxlogin.Openid == "" {
+			return
+		}
+		models.AddOpenWeixinAccessToken(wxlogin)
+		logs.Info("weixin login: ", wxlogin)
+
+		// get userinfo
+		apiurl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + wxlogin.AccessToken + "&openid=" + wxlogin.Openid
+		r, _ = req.Get(apiurl)
+		var webuserinfo models.User
+		r.ToJSON(&webuserinfo)
+		models.AddUserInfo(webuserinfo)
+		logs.Info("get weixin userinfo: ", webuserinfo)
+
+		// u.Ctx.SetCookie("access_token", wxlogin.AccessToken, 7200)
+		u.Ctx.SetCookie("token", wxlogin.AccessToken, 7200)
+	}
+	// u.Ctx.Redirect(302, "https://wechat.baobeihuijia.com/index.html")
 	u.Data["json"] = wxlogin
+        u.Data["json"] = map[string]string{"status": "0"}
 	u.ServeJSON()
 }
 
+// // @Title Get
+// // @Description get user by uid
+// // @Param	uid		path 	string	true		"The key for staticblock"
+// // @Success 200 {object} models.Article
+// // @Failure 403 :uid is empty
+// // @router /login [post]
+// func (u *WechatController) Login() {
+// 	// uri?code=021cljRR1DUhk81klvSR1xCxRR1cljRM&state=bbhj
+// 	code := u.GetString("code")
+// 	logs.Info("=====code====", code)
+// 	u.ServeJSON()
+// }
 // @Title Get
+
 // @Description get user by uid
 // @Param	uid		path 	string	true		"The key for staticblock"
 // @Success 200 {object} models.Article
 // @Failure 403 :uid is empty
 // @router /userinfolist [get]
 func (u *WechatController) UserInfoList() {
-	// uri?code=021cljRR1DUhk81klvSR1xCxRR1cljRM&state=bbhj 
+	// uri?code=021cljRR1DUhk81klvSR1xCxRR1cljRM&state=bbhj
 	var userInfoList []models.User
 	userInfoList = models.GetUserInfoList()
 	u.Data["json"] = userInfoList

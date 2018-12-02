@@ -25,15 +25,14 @@ func init() {
 		if ("dev" != beego.AppConfig.String("runmode") ){
 			return
 		}
-		// cookie, _ := ctx.Request.Cookie("access_token")
-		accessToken := ctx.GetCookie("access_token")
-		fmt.Println("======access_token: ", accessToken)
+		accessToken := ctx.GetCookie("token")
 
 		// loginPage := "/lastest/wechatapi/wechat/login?"
-		loginPage := "/wechatapi/wechat/login?"
+		loginPage := "/wechatapi/wechat/login"
 		if "" == accessToken {
+			// fmt.Println("======token: ", accessToken)
 			if !strings.Contains(ctx.Request.RequestURI, loginPage) {
-				fmt.Println("======redirect: Contains")
+				fmt.Println("======redirect: Contains" )
 				loginPage = beego.AppConfig.String("loginPage")
 				http.Redirect(ctx.ResponseWriter, ctx.Request, loginPage, http.StatusMovedPermanently)
 			} else {
@@ -65,6 +64,13 @@ func init() {
 		// 客服系统
 		beego.NSNamespace("/wechatapi/customer/service", beego.NSInclude(&controllers.CustomerController{})),
 		beego.NSNamespace("/wechatapi/wechat/", beego.NSInclude(&controllers.WechatController{})),
+		// 机器人系统
+		beego.NSNamespace("/api/robot/", beego.NSInclude(&controllers.RobotController{})),
+
+		// web 
+		beego.NSNamespace("/profile/userinfo", beego.NSInclude(&controllers.UserController{})),
+		beego.NSNamespace("/webapi/", beego.NSInclude(&controllers.UserController{})),
+		beego.NSNamespace("/webapi/", beego.NSInclude(&controllers.WechatController{})),
 	)
 	beego.AddNamespace(ns)
 }

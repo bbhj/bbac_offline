@@ -30,17 +30,17 @@ type (
 	// mplogin: Gender, AvatarUrl
 	User struct {
 		gorm.Model
-		Openid    string  `json:"openid"`
-		Unionid   string `json:"unionid"`
-		Nickname  string `json:"nickName"`
-		Gender    uint   `json:"gender"`
-		Sex        uint    `json:"sex"`
-		Language  string `json:"language"`
-		City      string `json:"city"`
-		Province  string `json:"province"`
-		Country   string `json:"country"`
+		Openid     string `json:"openid"`
+		Unionid    string `json:"unionid"`
+		Nickname   string `json:"nickName"`
+		Gender     uint   `json:"gender"`
+		Sex        uint   `json:"sex"`
+		Language   string `json:"language"`
+		City       string `json:"city"`
+		Province   string `json:"province"`
+		Country    string `json:"country"`
 		Privilege  string `json:"privilege"`
-		AvatarUrl string `json:"avatarUrl"`
+		AvatarUrl  string `json:"avatarUrl"`
 		Headimgurl string `json:"headimgurl"`
 	}
 
@@ -75,17 +75,24 @@ type (
 
 	Volunteer struct {
 		gorm.Model
-		OpenID  string `gorm:"column:openid;size:64";json:"openid"`
+		Openid  string `gorm:"column:openid;size:64";json:"openid"`
 		Email   string
 		QQ      string `gorm:"type:varchar(20);unique_index"`
 		Phone   string `gorm:"type:varchar(20);unique_index"`
 		Address string
 		name    string
 	}
+
+	UserInfo struct {
+		Avator string `json:"avator"`
+		Name   string `json:"name"`
+		UserId string `json:"user_id"`
+		Access string `json:"access"`
+	}
 )
 
 func AddUserInfo(user User) (openid string) {
-	// aaa := conn.Model(&user).Where("open_id = ?", user.OpenID).Updates(user)
+	// aaa := conn.Model(&user).Where("openid = ?", user.OpenID).Updates(user)
 	conn.Where("openid = ?", user.Openid).FirstOrCreate(&user)
 
 	// update user info
@@ -95,13 +102,12 @@ func AddUserInfo(user User) (openid string) {
 
 func GetUserInfoList() (userInfoList []User) {
 	page := 1
-        stepsize := 5
-        offset := (page - 1) * stepsize
-        conn.Order("created_at desc").Offset(offset).Limit(stepsize).Find(&userInfoList)
-        // fmt.Println("GetArticles: ", len(articles))
-        // if 0 == len(articles) {
-        //         return GetUserInfoList(page)
-        // }
-        return
+	stepsize := 5
+	offset := (page - 1) * stepsize
+	conn.Order("created_at desc").Offset(offset).Limit(stepsize).Find(&userInfoList)
+	// fmt.Println("GetArticles: ", len(articles))
+	// if 0 == len(articles) {
+	//         return GetUserInfoList(page)
+	// }
+	return
 }
-

@@ -1,37 +1,41 @@
 package test
 
 import (
-	"github.com/astaxie/beego"
 	"net/http"
 	"net/http/httptest"
-	"path/filepath"
-	"runtime"
 	"testing"
+	"runtime"
+	"path/filepath"
+	_ "github.com/bbhj/baobeihuijia/routers"
 
+	"github.com/astaxie/beego"
 	. "github.com/smartystreets/goconvey/convey"
-	_ "github.com/someuser/somerepo/tests/setup"
 )
 
 func init() {
 	_, file, _, _ := runtime.Caller(1)
-	apppath, _ := filepath.Abs(filepath.Dir(filepath.Join(file, ".."+string(filepath.Separator))))
+	apppath, _ := filepath.Abs(filepath.Dir(filepath.Join(file, ".." + string(filepath.Separator))))
 	beego.TestBeegoInit(apppath)
 }
 
-// TestGet is a sample to run an endpoint test
-func TestGet(t *testing.T) {
-	r, _ := http.NewRequest("GET", "/v1/object", nil)
+
+// TestBeego is a sample to run an endpoint test
+func TestBeego(t *testing.T) {
+	apiurl := "/lastest/api/robot/qq"
+	r, _ := http.NewRequest("GET", apiurl, nil)
+	r.Header.Add("Cookie", "token=test")
 	w := httptest.NewRecorder()
 	beego.BeeApp.Handlers.ServeHTTP(w, r)
 
-	beego.Trace("testing", "TestGet", "Code[%d]\n%s", w.Code, w.Body.String())
+	beego.Trace("testing", "TestBeego", "Code[%d]\n%s", w.Code, w.Body.String())
 
 	Convey("Subject: Test Station Endpoint\n", t, func() {
-		Convey("Status Code Should Be 200", func() {
-			So(w.Code, ShouldEqual, 200)
-		})
-		Convey("The Result Should Not Be Empty", func() {
-			So(w.Body.Len(), ShouldBeGreaterThan, 0)
-		})
+	        Convey("Status Code Should Be 200", func() {
+	                So(w.Code, ShouldEqual, 200)
+	        })
+	        Convey("The Result Should Not Be Empty", func() {
+	                So(w.Body.Len(), ShouldBeGreaterThan, 0)
+	        })
 	})
 }
+
