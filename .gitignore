@@ -3,6 +3,8 @@ keys/
 crontab/
 nohup.out
 baobeihuijia
+bbac
+logs/*
 lastupdate.tmp
-routers/commentsRouter_____________*.go
+routers/commentsRouter_*.go
 vendor/*

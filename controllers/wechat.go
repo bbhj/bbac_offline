@@ -6,7 +6,7 @@ import (
 
 	_ "fmt"
 	"github.com/astaxie/beego/logs"
-	"github.com/bbhj/baobeihuijia/models"
+	"github.com/bbhj/bbac/models"
 	"github.com/esap/wechat"
 	"github.com/imroc/req"
 	_ "strings"

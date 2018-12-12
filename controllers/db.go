@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/bbhj/baobeihuijia/models"
+	"github.com/bbhj/bbac/models"
 	"github.com/astaxie/beego"
 )
 

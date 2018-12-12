@@ -2,7 +2,7 @@ package controllers
 
 import (
 	_ "encoding/json"
-	_ "github.com/bbhj/baobeihuijia/models"
+	_ "github.com/bbhj/bbac/models"
 	_ "strings"
 
 	"fmt"

@@ -7,7 +7,7 @@ import (
 
 func init() {
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/`,
@@ -15,7 +15,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "GetAll",
 			Router: `/`,
@@ -23,7 +23,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/:openid`,
@@ -31,7 +31,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "Delete",
 			Router: `/:uuid`,
@@ -39,7 +39,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "List",
 			Router: `/list`,
@@ -47,7 +47,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:AdminController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:AdminController"],
 		beego.ControllerComments{
 			Method: "Logout",
 			Router: `/logout`,
@@ -55,7 +55,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/`,
@@ -63,7 +63,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
 		beego.ControllerComments{
 			Method: "GetAll",
 			Router: `/`,
@@ -71,7 +71,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
 		beego.ControllerComments{
 			Method: "Put",
 			Router: `/:uid`,
@@ -79,7 +79,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/:uuid`,
@@ -87,7 +87,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
 		beego.ControllerComments{
 			Method: "Delete",
 			Router: `/:uuid`,
@@ -95,7 +95,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
 		beego.ControllerComments{
 			Method: "CheckId",
 			Router: `/checkid`,
@@ -103,7 +103,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
 		beego.ControllerComments{
 			Method: "GetCount",
 			Router: `/count`,
@@ -111,7 +111,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
 		beego.ControllerComments{
 			Method: "GetArticleByKeywords",
 			Router: `/keywords`,
@@ -119,7 +119,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
 		beego.ControllerComments{
 			Method: "PostArticle",
 			Router: `/new`,
@@ -127,7 +127,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
 		beego.ControllerComments{
 			Method: "Summary",
 			Router: `/summary`,
@@ -135,7 +135,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
 		beego.ControllerComments{
 			Method: "GetTopics",
 			Router: `/topics`,
@@ -143,7 +143,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:BaiduLBSController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:BaiduLBSController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:BaiduLBSController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:BaiduLBSController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/`,
@@ -151,7 +151,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/`,
@@ -159,7 +159,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"],
 		beego.ControllerComments{
 			Method: "GetAll",
 			Router: `/`,
@@ -167,7 +167,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"],
 		beego.ControllerComments{
 			Method: "Put",
 			Router: `/:uid`,
@@ -175,7 +175,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"],
 		beego.ControllerComments{
 			Method: "Delete",
 			Router: `/:uid`,
@@ -183,7 +183,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/:uuid`,
@@ -191,7 +191,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"],
 		beego.ControllerComments{
 			Method: "Login",
 			Router: `/login`,
@@ -199,7 +199,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CommentController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CommentController"],
 		beego.ControllerComments{
 			Method: "Logout",
 			Router: `/logout`,
@@ -207,7 +207,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ConfigController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ConfigController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ConfigController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ConfigController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/`,
@@ -215,7 +215,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ConfigController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ConfigController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ConfigController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ConfigController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/`,
@@ -223,7 +223,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/`,
@@ -231,7 +231,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"],
 		beego.ControllerComments{
 			Method: "GetAll",
 			Router: `/`,
@@ -239,7 +239,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/:uid`,
@@ -247,7 +247,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"],
 		beego.ControllerComments{
 			Method: "Put",
 			Router: `/:uid`,
@@ -255,7 +255,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"],
 		beego.ControllerComments{
 			Method: "Delete",
 			Router: `/:uid`,
@@ -263,7 +263,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"],
 		beego.ControllerComments{
 			Method: "Login",
 			Router: `/login`,
@@ -271,7 +271,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ContactController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ContactController"],
 		beego.ControllerComments{
 			Method: "Logout",
 			Router: `/logout`,
@@ -279,7 +279,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CustomerController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CustomerController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CustomerController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CustomerController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/`,
@@ -287,7 +287,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CustomerController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CustomerController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CustomerController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CustomerController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/`,
@@ -295,7 +295,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CustomerController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CustomerController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CustomerController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:CustomerController"],
 		beego.ControllerComments{
 			Method: "UserMsg",
 			Router: `/usermsg`,
@@ -303,7 +303,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:DBController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:DBController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:DBController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:DBController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/`,
@@ -311,7 +311,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:LocationController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:LocationController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:LocationController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:LocationController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/`,
@@ -319,7 +319,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:LocationController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:LocationController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:LocationController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:LocationController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/markers`,
@@ -327,7 +327,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ReportController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ReportController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ReportController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ReportController"],
 		beego.ControllerComments{
 			Method: "SaveErrorLogger",
 			Router: `/save_error_logger`,
@@ -335,7 +335,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:RobotController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:RobotController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:RobotController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:RobotController"],
 		beego.ControllerComments{
 			Method: "QQ",
 			Router: `/qq`,
@@ -343,7 +343,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:RobotController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:RobotController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:RobotController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:RobotController"],
 		beego.ControllerComments{
 			Method: "Wechat",
 			Router: `/wechat`,
@@ -351,7 +351,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SendWechatTemplateMessage"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SendWechatTemplateMessage"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SendWechatTemplateMessage"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SendWechatTemplateMessage"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/`,
@@ -359,7 +359,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SendWechatTemplateMessage"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SendWechatTemplateMessage"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SendWechatTemplateMessage"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SendWechatTemplateMessage"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/`,
@@ -367,7 +367,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/`,
@@ -375,7 +375,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"],
 		beego.ControllerComments{
 			Method: "GetAll",
 			Router: `/`,
@@ -383,7 +383,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/:uid`,
@@ -391,7 +391,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"],
 		beego.ControllerComments{
 			Method: "Put",
 			Router: `/:uid`,
@@ -399,7 +399,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"],
 		beego.ControllerComments{
 			Method: "Delete",
 			Router: `/:uid`,
@@ -407,7 +407,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"],
 		beego.ControllerComments{
 			Method: "List",
 			Router: `/list`,
@@ -415,7 +415,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:SummaryController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:SummaryController"],
 		beego.ControllerComments{
 			Method: "Logout",
 			Router: `/logout`,
@@ -423,7 +423,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "Post",
 			Router: `/`,
@@ -431,7 +431,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "GetAll",
 			Router: `/`,
@@ -439,7 +439,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "Get",
 			Router: `/:uid`,
@@ -447,7 +447,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "Put",
 			Router: `/:uid`,
@@ -455,7 +455,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "Delete",
 			Router: `/:uid`,
@@ -463,7 +463,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "FormID",
 			Router: `/formid`,
@@ -471,7 +471,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "GetDragList",
 			Router: `/get_drag_list`,
@@ -479,7 +479,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "GetInfo",
 			Router: `/get_info`,
@@ -487,7 +487,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "Login",
 			Router: `/login`,
@@ -495,7 +495,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "WxLogin",
 			Router: `/login`,
@@ -503,7 +503,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
 			Method: "Logout",
 			Router: `/logout`,
@@ -511,7 +511,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:WechatController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:WechatController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:WechatController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:WechatController"],
 		beego.ControllerComments{
 			Method: "CreateQRcode",
 			Router: `/createqrcode`,
@@ -519,7 +519,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:WechatController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:WechatController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:WechatController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:WechatController"],
 		beego.ControllerComments{
 			Method: "Login",
 			Router: `/login`,
@@ -527,7 +527,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:WechatController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:WechatController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:WechatController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:WechatController"],
 		beego.ControllerComments{
 			Method: "UserInfoList",
 			Router: `/userinfolist`,
@@ -535,7 +535,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:WecosController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:WecosController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:WecosController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:WecosController"],
 		beego.ControllerComments{
 			Method: "Auth",
 			Router: `/auth`,
@@ -543,7 +543,7 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
-	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:WecosController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:WecosController"],
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:WecosController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:WecosController"],
 		beego.ControllerComments{
 			Method: "Upload",
 			Router: `/upload`,

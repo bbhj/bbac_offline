@@ -7,7 +7,7 @@ import (
 	"crypto/sha1"
 	"encoding/base64"
 	"fmt"
-	"github.com/bbhj/baobeihuijia/models"
+	"github.com/bbhj/bbac/models"
 	"github.com/astaxie/beego"
 	_ "io"
 	"math/rand"

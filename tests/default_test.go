@@ -1,8 +1,8 @@
 package test
 
 import (
-	"github.com/bbhj/baobeihuijia/models"
-	_ "github.com/bbhj/baobeihuijia/routers"
+	"github.com/bbhj/bbac/models"
+	_ "github.com/bbhj/bbac/routers"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"

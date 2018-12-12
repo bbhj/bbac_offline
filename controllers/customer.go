@@ -7,7 +7,7 @@ import (
 	_ "encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/bbhj/baobeihuijia/models"
+	"github.com/bbhj/bbac/models"
 	"github.com/esap/wechat"
 	"io"
 	"regexp"

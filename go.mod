@@ -1,4 +1,4 @@
-module github.com/bbhj/baobeihuijia
+module github.com/bbhj/bbac
 
 require (
 	cloud.google.com/go v0.30.0 // indirect

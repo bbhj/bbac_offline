@@ -3,7 +3,7 @@ package controllers
 import (
 	_ "encoding/json"
 	_ "fmt"
-	_ "github.com/bbhj/baobeihuijia/models"
+	_ "github.com/bbhj/bbac/models"
 	_ "github.com/imroc/req"
 	_ "github.com/esap/wechat"
 	_ "time"

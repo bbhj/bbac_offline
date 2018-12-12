@@ -8,8 +8,8 @@
 package routers
 
 import (
-	"github.com/bbhj/baobeihuijia/controllers"
-	"github.com/bbhj/baobeihuijia/models"
+	"github.com/bbhj/bbac/controllers"
+	"github.com/bbhj/bbac/models"
 
 	_ "encoding/json"
 	"fmt"

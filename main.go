@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/bbhj/baobeihuijia/models"
-	"github.com/bbhj/baobeihuijia/crontab"
-	_ "github.com/bbhj/baobeihuijia/routers"
+	"github.com/bbhj/bbac/models"
+	"github.com/bbhj/bbac/crontab"
+	_ "github.com/bbhj/bbac/routers"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
