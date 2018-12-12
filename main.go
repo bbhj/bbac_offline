@@ -17,14 +17,15 @@ var conn *gorm.DB
 
 func main() {
 
-	conn, _ := models.Connect()
-	defer conn.Close()
-
-	beego.SetLogger("file", `{"filename":"logs/bbhj.log", "level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
+	logfile := "logs/" + beego.AppConfig.String("appname") + ".log"
+	beego.SetLogger("file", `{"filename":"` + logfile + `", "level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
+	// beego.SetLogger("file", `{"filename":"logs/bbhj.log", "level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
 	beego.SetLogFuncCall(true)
 
+	conn, _ := models.Connect()
+	defer conn.Close()
+	beego.Info("applicatoin start...")
 
-	logs.Info("applicatoin start...")
 	wechat.Debug = true
 	// wechat.Set(beego.AppConfig.String("wechat_token"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), beego.AppConfig.String("wechat_aeskey"))
 	wechat.Set(beego.AppConfig.String("wechat_token"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), beego.AppConfig.String("wechat_aeskey"))
