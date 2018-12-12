@@ -25,3 +25,10 @@ func AddCustomerTextMsg(cTextMsg CustomerTextMsg) {
 	conn.Save(&cTextMsg)
 	return
 }
+func GetCustomerTextMsg(cTextMsg CustomerTextMsg) {
+	page := 1
+	stepsize := 5
+	offset := (page - 1) * stepsize
+	conn.Order("created_at desc").Offset(offset).Limit(stepsize).Find(&cTextMsg)
+	return
+}

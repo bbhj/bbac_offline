@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/bbhj/baobeihuijia/models"
-	"github.com/imroc/req"
 	"github.com/esap/wechat"
+	"github.com/imroc/req"
 	"time"
 
 	"github.com/astaxie/beego"
@@ -102,7 +102,7 @@ func (u *UserController) Login() {
 
 	var login models.Login
 	login.IP = u.Ctx.Input.IP()
-	login.Openid =  wxlogin.User.Openid
+	login.Openid = wxlogin.User.Openid
 	login.Unionid = wxlogin.User.Unionid
 	login.Platform = wxlogin.MobileInfo.Platform
 	login.NetworkType = wxlogin.MobileInfo.NetworkType
@@ -134,7 +134,7 @@ func (u *UserController) Login() {
 	auth.Rights = 3
 	fmt.Println("====auth: ", wechat.GetAccessToken())
 	auth.Token = "dean"
-	auth.AccessToken =  wechat.GetAccessToken()
+	auth.AccessToken = wechat.GetAccessToken()
 	auth.WeCosUrl = fmt.Sprintf("https://%s.file.myqcloud.com/files/v2/%s/%s/%s", beego.AppConfig.String("QcloudCosRegion"), beego.AppConfig.String("QcloudCosAPPID"), beego.AppConfig.String("QcloudCosBucket"), beego.AppConfig.String("QcloudCosUploadDir"))
 	fmt.Println("====auth: ", auth)
 
@@ -161,7 +161,7 @@ func (u *UserController) FormID() {
 	logs.Info("wechat formid: ", tform)
 	models.AddTemplateFormID(tform)
 
-	u.Data["json"] = "status: 0" 
+	u.Data["json"] = "status: 0"
 	u.ServeJSON()
 }
 
@@ -170,7 +170,7 @@ func (u *UserController) FormID() {
 // @Success 200 {object} models.User
 // @router /get_info [get]
 func (u *UserController) GetInfo() {
-	var userinfo  models.UserInfo
+	var userinfo models.UserInfo
 	userinfo.Avator = "https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJuPPo6bJsib4LVLTfDCaI5Q3yULbiciaDDnxoq5uKejypd8xMM3qFbSdkogLSSpgXw7ZFSPBhpzUcPA/132"
 	userinfo.Name = "xxxxx"
 	userinfo.UserId = "1"
@@ -184,11 +184,10 @@ func (u *UserController) GetInfo() {
 // @Success 200 {object} models.User
 // @router /get_drag_list [get]
 func (u *UserController) GetDragList() {
-        msg := "xxx"
-        u.Ctx.WriteString(msg)
+	msg := "xxx"
+	u.Ctx.WriteString(msg)
 	return
 }
-
 
 // @Title for webapi user login
 // @Description get user by uid
@@ -214,32 +213,40 @@ func (u *UserController) WxLogin() {
 	}
 
 	if "" != wxauth.Scene {
-		// apiurl := fmt.Sprintf("%sappid=%s&secret=%s&js_code=%s&grant_type=authorization_code", beego.AppConfig.String("WechatAuthUrl"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), wxauth.Code)
+		// 小程序登录入口
 		apiurl := beego.AppConfig.String("wechat_mina") + wxauth.Code
-
 		req.SetTimeout(50 * time.Second)
 		a, _ := req.Get(apiurl)
 
-		logs.Debug(a)
+		// beego.Debug(a)
 		a.ToJSON(&wxlogin)
-		logs.Debug("xxxxx", wxlogin)
 
+		var profile models.Profile
+		profile.Openid = wxlogin.Openid
+		profile.IsFirstLogin = true
+		profile.IsVolunteer = true
+		beego.Debug("=====return info=======", profile)
+		u.Data["json"] =  profile
+		u.ServeJSON()
 		return
 	} else {
+		// web 登录入口
 		apiurl := beego.AppConfig.String("weixin_oauth") + wxauth.Code
 
-		r, _ := req.Get(apiurl)
-		// logs.Info(r)
-		r.ToJSON(&wxlogin)
-		if wxlogin.Openid == "" {
-			return
-		}
+		// r, _ := req.Get(apiurl)
+		// beego.Error("=========nul == wxauth.Scene", r)
+		// // logs.Info(r)
+		// r.ToJSON(&wxlogin)
+		// if wxlogin.Openid == "" {
+		// 	wxlogin.Openid = "oa05b03KtOVAv8OeGbx11iYjZHHU"
+		// }
+		wxlogin.Openid = "oa05b03KtOVAv8OeGbx11iYjZHHU"
 		models.AddOpenWeixinAccessToken(wxlogin)
 		logs.Info("weixin login: ", wxlogin)
 
 		// get userinfo
 		apiurl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + wxlogin.AccessToken + "&openid=" + wxlogin.Openid
-		r, _ = req.Get(apiurl)
+		r, _ := req.Get(apiurl)
 		var webuserinfo models.User
 		r.ToJSON(&webuserinfo)
 		models.AddUserInfo(webuserinfo)
@@ -247,9 +254,23 @@ func (u *UserController) WxLogin() {
 
 		// u.Ctx.SetCookie("access_token", wxlogin.AccessToken, 7200)
 		u.Ctx.SetCookie("token", wxlogin.AccessToken, 7200)
+		// u.Ctx.Redirect(302, "https://wechat.baobeihuijia.com/")
 	}
-	// u.Ctx.Redirect(302, "https://wechat.baobeihuijia.com/index.html")
 	u.Data["json"] = wxlogin
 	u.ServeJSON()
+	return
 }
 
+// @Title GetAll
+// @Description get all Users
+// @Success 200 {object} models.User
+// @router /logout [post]
+func (u *UserController) Logout() {
+	rbody := u.Ctx.Input.RequestBody
+	beego.Info("error log:", string(rbody))
+	// {"type":"script","code":0,"mes":"Cannot read property 'then' of undefined","url":"https://wechat.baobeihuijia.com/#/home"}
+	// u.Data["json"] = "status: 0"
+	msg := "xxx"
+	u.Ctx.WriteString(msg)
+	u.ServeJSON()
+}

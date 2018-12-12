@@ -37,3 +37,8 @@ func GetAllPreForumPostByKeyword(keyword string) (preForumPost []PreForumPost) {
 	bbsconn.Table("pre_forum_post").Where("subject like ?", keyword).Order("tid desc").Limit(5).Find(&preForumPost)
 	return
 }
+
+func GetLastBBSInfo() (preForumPost []PreForumPost) {
+	bbsconn.Table("pre_forum_post").Raw("select * from pre_forum_post where message like '%登记信息%宝贝回家编号%' order by pid desc limit 1").Scan(&preForumPost)
+	return
+}

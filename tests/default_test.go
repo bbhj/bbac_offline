@@ -20,6 +20,7 @@ var apiurlMap = map[string]string{
 	"/lastest/webapi/user/get_drag_list": "GET",
 	"/lastest/webapi/user/get_info": "GET",
 	"/lastest/webapi/user/login": "POST",
+	"/lastest/webapi/user/logout": "POST",
 }
 
 func init() {

@@ -260,3 +260,21 @@ func (u *ArticleController) Delete() {
 	u.Data["json"] = "delete success!"
 	u.ServeJSON()
 }
+
+// @Title 返回文章的浏览、评论、转发等数量
+// @Description get all Articles
+// @Success 200 {object} models.Article
+// @router /summary [get]
+func (u *ArticleController) Summary() {
+	models.GetArticleSummary()
+	var article models.ArticleSummary
+	// article.Babyid = 111
+	// article.UUID = "xxx-xx-xxx"
+	// article.Status = 1
+	article.Visit = 50
+	article.Forward = 51
+	article.Comment = 52
+
+	u.Data["json"] = article
+	u.ServeJSON()
+}

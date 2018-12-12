@@ -129,6 +129,14 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
 		beego.ControllerComments{
+			Method: "Summary",
+			Router: `/summary`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:ArticleController"],
+		beego.ControllerComments{
 			Method: "GetTopics",
 			Router: `/topics`,
 			AllowHTTPMethods: []string{"get"},
@@ -284,6 +292,14 @@ func init() {
 			Method: "Post",
 			Router: `/`,
 			AllowHTTPMethods: []string{"post"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CustomerController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:CustomerController"],
+		beego.ControllerComments{
+			Method: "UserMsg",
+			Router: `/usermsg`,
+			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})
 
@@ -484,6 +500,14 @@ func init() {
 			Method: "WxLogin",
 			Router: `/login`,
 			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/baobeihuijia/controllers:UserController"],
+		beego.ControllerComments{
+			Method: "Logout",
+			Router: `/logout`,
+			AllowHTTPMethods: []string{"post"},
 			MethodParams: param.Make(),
 			Params: nil})
 

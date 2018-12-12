@@ -28,11 +28,11 @@ func init() {
 		accessToken := ctx.GetCookie("token")
 
 		// loginPage := "/lastest/wechatapi/wechat/login?"
-		loginPage := "/wechatapi/wechat/login"
+		loginPage := "/user/login"
 		if "" == accessToken {
 			// fmt.Println("======token: ", accessToken)
 			if !strings.Contains(ctx.Request.RequestURI, loginPage) {
-				fmt.Println("======redirect: Contains")
+				beego.Info("======redirect: Contains")
 				loginPage = beego.AppConfig.String("loginPage")
 				http.Redirect(ctx.ResponseWriter, ctx.Request, loginPage, http.StatusMovedPermanently)
 			} else {
@@ -56,6 +56,7 @@ func init() {
 		beego.NSNamespace("/wechatapi/small/comment", beego.NSInclude(&controllers.CommentController{})),
 		beego.NSNamespace("/wechatapi/small/contact", beego.NSInclude(&controllers.ContactController{})),
 		beego.NSNamespace("/wechatapi/small/user", beego.NSInclude(&controllers.UserController{})),
+		beego.NSNamespace("/wechatapi/user", beego.NSInclude(&controllers.UserController{})),
 		beego.NSNamespace("/wechatapi/small/location", beego.NSInclude(&controllers.LocationController{})),
 		beego.NSNamespace("/wechatapi/small/config", beego.NSInclude(&controllers.ConfigController{})),
 		beego.NSNamespace("/wechatapi/qcloud/wecos", beego.NSInclude(&controllers.WecosController{})),

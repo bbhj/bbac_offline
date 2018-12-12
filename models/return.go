@@ -3,8 +3,8 @@ package models
 import ()
 
 type RetMsg struct {
-	Status int
-	Msg    string
-	Errmsg string
-	Data   string
+	Status int8 `json:"status"`
+	Msg    string `json:"msg"`
+	Errmsg string `json:"errmsg"`
+	Data   string `json:"data"`
 }

@@ -1,7 +1,7 @@
 package models
 
 import (
-	_ "fmt"
+	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -29,12 +29,14 @@ func Close() {
 	bbsconn.Close()
 }
 
-func Init() {
-	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Article{})
-	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Comment{})
+func Init() (flag bool, errmsg string) {
+	
+	var db *gorm.DB
+	db = conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Article{})
+	db = conn.Debug().Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ArticleSummary{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Contact{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Login{})
-	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&User{})
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&User{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Summary{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Image{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&CustomerLogin{})
@@ -42,8 +44,17 @@ func Init() {
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Ipip{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&BaiduLBS{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&TemplateFormID{})
-	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ServiceTime{})
-	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Volunteer{})
-	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Profile{})
-	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&OpenWeixinAccessToken{})
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ServiceTime{})
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Volunteer{})
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Profile{})
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&OpenWeixinAccessToken{})
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Comment{})
+
+	if (db.Error == nil){
+		flag = true
+	} else {
+		errmsg = fmt.Sprintf("%s", db.Error)
+	}
+	beego.Info("models init info, status:", flag, ", errmsg:", db.Error)
+	return
 }

@@ -32,7 +32,7 @@ func (u *WecosController) Auth() {
 		beego.AppConfig.String("qcloud_bucket"),
 		beego.AppConfig.String("qcloud_secretid"),
 		curtime+60, curtime, randnum)
-	fmt.Println(multi_effect_signature)
+	beego.Info(multi_effect_signature)
 
 	mac := hmac.New(sha1.New, []byte(beego.AppConfig.String("qcloud_secretkey")))
 	mac.Write([]byte(multi_effect_signature))
@@ -50,7 +50,6 @@ func (u *WecosController) Auth() {
 // @router /upload [post]
 func (u *WecosController) Upload() {
 	var image models.Image
-	// fmt.Println("=====", u.Ctx.Input.RequestBody)
 	json.Unmarshal(u.Ctx.Input.RequestBody, &image)
 	models.UploadImage(image)
 	u.Data["json"] = "upload success"

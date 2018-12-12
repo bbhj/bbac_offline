@@ -155,6 +155,9 @@ func (u *CustomerController) Post() {
 	// fmt.Printf("=====", wechat.WxMsg)
 }
 
+
+
+
 func isInt(str string) bool {
 	var reg = regexp.MustCompile("^[-\\+]?[\\d]+$")
 	return reg.MatchString(str)
@@ -164,3 +167,12 @@ func isChinese(str string) bool {
 	var reg = regexp.MustCompile("^[\u4e00-\u9fa5]+$")
 	return reg.MatchString(str)
 }
+
+
+// @Title get
+// @Description Logs out current logged in user session
+// @Success 200 {string} logout success
+// @router /usermsg [get]
+func (u *CustomerController) UserMsg() {
+}
+

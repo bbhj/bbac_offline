@@ -2,48 +2,68 @@ package models
 
 import (
 	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"time"
 )
 
-type Article struct {
-	gorm.Model
-	// ID        string `gorm:"primary_key"`
-	//  Timestamp int64
-	// CreatedAt    time.Time `sql:"DEFAULT:current_timestamp"`
-	UUID      string
-	AvatarUrl string
-	Nickname  string
-	// 值为1时是男性，值为2时是女性，值为0时是未知
-	Gender   uint
-	Province string
-	City     string
-	Country  string
-	Address  string
-	// Title      string `gorm:"size:60"`
-	Title           string
-	Arcid           string // 规档编号
-	Age             int
-	Characters      string
-	Details         string
-	DataFrom        string
-	BirthedProvince string
-	BirthedCity     string
-	BirthedCountry  string
-	BirthedAddress  string
-	BirthedAt       time.Time
+type (
+	Article struct {
+		gorm.Model
+		// ID        string `gorm:"primary_key"`
+		//  Timestamp int64
+		// CreatedAt    time.Time `sql:"DEFAULT:current_timestamp"`
+		UUID      string
+		AvatarUrl string
+		Nickname  string
+		// 值为1时是男性，值为2时是女性，值为0时是未知
+		Gender   uint
+		Province string
+		City     string
+		Country  string
+		Address  string
+		// Title      string `gorm:"size:60"`
+		Title           string
+		Arcid           string // 规档编号
+		Age             int
+		Characters      string
+		Details         string
+		DataFrom        string
+		BirthedProvince string
+		BirthedCity     string
+		BirthedCountry  string
+		BirthedAddress  string
+		BirthedAt       time.Time
 
-	MissedProvince string
-	MissedCity     string
-	MissedCountry  string
-	MissedAddress  string
-	MissedAt       time.Time
-	Handler        string
-	Babyid         int64 `gorm:"type:int64;unique_index"`
-	Category       string
-	Height         string
-}
+		MissedProvince string
+		MissedCity     string
+		MissedCountry  string
+		MissedAddress  string
+		MissedAt       time.Time
+		Handler        string
+		Babyid         int64 `gorm:"type:int64;unique_index"`
+		// Babyid   ArticleSummary `gorm:"ForeignKey:BabyidRefer"`
+		// Summary ArticleSummary `gorm:"ForeignKey:BabyidRefer"`
+		// Summary  ArticleSummary `gorm:"ForeignKey:Babyid;"`
+		Category string
+		Height   string
+		// status, 0 未找到， 1 已找回, 其他预留，如紧急
+		Status int `gorm:"type:int;default:0"`
+	}
+
+	ArticleSummary struct {
+		gorm.Model
+		Babyid int64 // `gorm:"type:int64"`
+		// UUID        string `gorm:"type:string;unique_index"`
+		UUID 	string
+		// status, 0 未找到， 1 已找回, 其他预留，如紧急
+		Status  int `gorm:"type:int;default:0"`
+		Visit   int64
+		Forward int64
+		Comment int64
+	}
+)
 
 func AddArticle(article Article) (uuid string) {
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Article{})
@@ -117,12 +137,27 @@ func GetArticlesCount() (count int64) {
 	return
 }
 
-func UpdateArticle() {
+func UpdateArticle(article Article) {
+	// article.CreatedAt = time.Now()
+	// article.UpdatedAt = time.Now()
+	// article.MissedAt = time.Now()
+
+	beego.Info(article)
+	conn.Debug().Save(&article)
 }
+
 func DeleteArticle(uuid string) (flag bool) {
-	// var lbis []LostBabyInfo
-	fmt.Println("delete uuid", uuid)
+	beego.Info("delete uuid:", uuid)
 	conn.Debug().Where("uuid = ?", uuid).Delete(Article{})
 
 	return
+}
+
+func GetArticleSummary() {
+	var article Article
+	// conn.First(&article).Preload("Summary").Related(&article.Summary)
+	// var articleSummary ArticleSummary
+	// conn.Debug().Model(&article).Related(&articleSummary)
+	// conn.Raw(select * from articles as a , article_summaries as b  where a.babyid = b.babyid").Scan(
+	beego.Info("============GetArticleSummary=========:", article)
 }
