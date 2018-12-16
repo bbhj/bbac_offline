@@ -13,17 +13,16 @@ import (
 
 // var Pool *models.Pool
 
-var conn *gorm.DB
-
 func main() {
 
 	logfile := "logs/" + beego.AppConfig.String("appname") + ".log"
-	beego.SetLogger("file", `{"filename":"` + logfile + `", "level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
 	// beego.SetLogger("file", `{"filename":"logs/bbhj.log", "level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
 	beego.SetLogFuncCall(true)
+	beego.SetLogger("file", `{"filename":"` + logfile + `", "level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
 
-	conn, _ := models.Connect()
-	defer conn.Close()
+
+	models.Connect()
+	defer modeles.Close()
 	beego.Info("applicatoin start...")
 
 	wechat.Debug = true
