@@ -221,11 +221,10 @@ func (u *UserController) WxLogin() {
 		// beego.Debug(a)
 		a.ToJSON(&wxlogin)
 
-		var profile models.Profile
-		profile.Openid = wxlogin.Openid
-		profile.IsFirstLogin = true
-		profile.IsVolunteer = true
+		profile := models.GetUserProfile(wxlogin.Openid)
 		beego.Debug("=====return info=======", profile)
+
+		u.Ctx.SetCookie("token", "wechat-mina", 300)
 		u.Data["json"] =  profile
 		u.ServeJSON()
 		return
@@ -272,5 +271,63 @@ func (u *UserController) Logout() {
 	// u.Data["json"] = "status: 0"
 	msg := "xxx"
 	u.Ctx.WriteString(msg)
+	u.ServeJSON()
+}
+
+// @Title UpdateUserInfo
+// @Description 更新用户信息
+// @Param	username		query 	string	true		"The username for login"
+// @Param	password		query 	string	true		"The password for login"
+// @Success 200 {string} login success
+// @Failure 403 user not exist
+// @router /updateUserInfo [post]
+func (u *UserController) UpdateUserInfo() {
+	var wxlogin models.WechatLogin
+	json.Unmarshal(u.Ctx.Input.RequestBody, &wxlogin)
+	beego.Info("=====wxlogin.User========", wxlogin.User)
+
+	models.AddUserInfo(wxlogin.User)
+
+	var login models.Login
+	login.IP = u.Ctx.Input.IP()
+	login.Openid = wxlogin.User.Openid
+	login.Unionid = wxlogin.User.Unionid
+	login.Platform = wxlogin.MobileInfo.Platform
+	login.NetworkType = wxlogin.MobileInfo.NetworkType
+	login.Brand = wxlogin.MobileInfo.PhoneBrand
+	login.Pmodel = wxlogin.MobileInfo.Model
+	login.Longitude = wxlogin.MobileInfo.Longitude
+	login.Latitude = wxlogin.MobileInfo.Latitude
+	fmt.Println("login record: ", login)
+
+	models.AddLogin(login)
+
+	var st models.ServiceTime
+	st.Openid = wxlogin.User.Openid
+	st.Type = "login"
+	st.Duration = 3
+	models.AddServiceTime(st)
+
+	// u.Ctx.Output.Header("Authorization", tokenString)
+	// u.Ctx.SetCookie("Authorization", tokenString)
+	u.Ctx.SetCookie("openid", wxlogin.User.Openid)
+
+	var auth models.Auth
+	auth.Openid = wxlogin.User.Openid
+	auth.Unionid = wxlogin.User.Unionid
+	auth.YourCity = u.Ctx.Input.Header("city")
+	auth.YourCity = u.Ctx.Input.Header("city")
+	auth.IsAdmin = false
+	auth.IsVolunteer = true
+	auth.ServiceTime = "100.5"
+	auth.Rights = 3
+	auth.Token = "dean"
+	auth.AccessToken = "xxxxx"
+	auth.WeCosUrl = fmt.Sprintf("https://%s.file.myqcloud.com/files/v2/%s/%s/%s", beego.AppConfig.String("QcloudCosRegion"), beego.AppConfig.String("QcloudCosAPPID"), beego.AppConfig.String("QcloudCosBucket"), beego.AppConfig.String("QcloudCosUploadDir"))
+	fmt.Println("====auth: ", auth)
+
+	retData, _ := json.Marshal(auth)
+	u.Data["json"] = string(retData)
+
 	u.ServeJSON()
 }

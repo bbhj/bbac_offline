@@ -42,3 +42,14 @@ func GetLastBBSInfo() (preForumPost []PreForumPost) {
 	bbsconn.Table("pre_forum_post").Raw("select * from pre_forum_post where message like '%登记信息%宝贝回家编号%' order by pid desc limit 1").Scan(&preForumPost)
 	return
 }
+
+func GetAllBBSInfo() (preForumPost []PreForumPost) {
+	sqltext := ""
+	// sqltext = "select * from pre_forum_post where message like '%登记信息%宝贝回家编号%' order by pid limit 5 offset 12"
+	sqltext = "select * from pre_forum_post where  subject != '' and  message like '%登记信息%宝贝回家编号%' order by pid"
+	// sqltext = "select * from pre_forum_post where message like '%登记信息%宝贝回家编号%' and subject like '%韩风喜351569%' "
+	// sqltext = "select * from pre_forum_post where subject != '' and tid = 425499 "
+	// bbsconn.Table("pre_forum_post").Debug().Raw(sqltext).Scan(&preForumPost)
+	bbsconn.Table("pre_forum_post").Raw(sqltext).Scan(&preForumPost)
+	return
+}

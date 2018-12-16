@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"time"
+	"strconv"
 )
 
 type (
@@ -36,32 +37,50 @@ type (
 		BirthedAddress  string
 		BirthedAt       time.Time
 
+		MissedCountry  string
 		MissedProvince string
 		MissedCity     string
-		MissedCountry  string
 		MissedAddress  string
 		MissedAt       time.Time
 		Handler        string
 		Babyid         int64 `gorm:"type:int64;unique_index"`
-		// Babyid   ArticleSummary `gorm:"ForeignKey:BabyidRefer"`
-		// Summary ArticleSummary `gorm:"ForeignKey:BabyidRefer"`
-		// Summary  ArticleSummary `gorm:"ForeignKey:Babyid;"`
-		Category string
-		Height   string
-		// status, 0 未找到， 1 已找回, 其他预留，如紧急
-		Status int `gorm:"type:int;default:0"`
+		Category       string
+		Height         string
 	}
 
 	ArticleSummary struct {
 		gorm.Model
 		Babyid int64 // `gorm:"type:int64"`
 		// UUID        string `gorm:"type:string;unique_index"`
-		UUID 	string
+		UUID string
 		// status, 0 未找到， 1 已找回, 其他预留，如紧急
 		Status  int `gorm:"type:int;default:0"`
 		Visit   int64
 		Forward int64
 		Comment int64
+	}
+
+	ArticleOverview struct {
+		Babyid int64
+		UUID   string
+		// status, 0 未找到， 1 已找回, 其他预留，如紧急
+		Status    int `gorm:"type:int;default:0"`
+		Visit     int64
+		Forward   int64
+		Comment   int64
+		DataFrom  string
+		Title     string
+		Nickname  string
+		AvatarUrl string
+		// 值为1时是男性，值为2时是女性，值为0时是未知
+		Gender         uint
+		BirthedAt      time.Time
+		Characters     string
+		Details        string
+		MissedProvince string
+		MissedCity     string
+		MissedAddress  string
+		MissedAt       time.Time
 	}
 )
 
@@ -154,10 +173,93 @@ func DeleteArticle(uuid string) (flag bool) {
 }
 
 func GetArticleSummary() {
-	var article Article
+	// var article Article
 	// conn.First(&article).Preload("Summary").Related(&article.Summary)
 	// var articleSummary ArticleSummary
+	var overview ArticleOverview
+	// rows, _ := conn.Debug().Table("articles").Joins("left join article_summaries on articles.babyid = article_summaries.babyid").Rows()
+	rows, _ := conn.Debug().Raw("select * from articles, article_summaries where articles.babyid = article_summaries.babyid limit 1;").Rows()
+	for rows.Next() {
+		// rows.Scan(&name, &age, &email)
+		// conn.ScanRows(rows, &article )
+		// beego.Info("=======", article)
+
+		conn.ScanRows(rows, &overview)
+		beego.Info("=======", overview)
+		break
+	}
 	// conn.Debug().Model(&article).Related(&articleSummary)
 	// conn.Raw(select * from articles as a , article_summaries as b  where a.babyid = b.babyid").Scan(
-	beego.Info("============GetArticleSummary=========:", article)
+	// conn.Preload("Article.Summary").First(&article)
+	// conn.Debug().Preload("ArticleSummary").Where("babyid = ?", 319169).Find(&articleSummary)
+	// conn.Debug().Preload("ArticleSummary").Where("babyid = ?", 319169).First(&article)
+	// conn.Debug().Preload("Article").Where("babyid = ?", 319169).First(&articleSummary)
+	// beego.Info("============GetArticleSummary=========:", article)
+	// beego.Info("============GetArticleSummary=========:", articleSummary)
+}
+
+func GetArticleOverview() (overviews []ArticleOverview) {
+	sqltext := "select * from articles, article_summaries where articles.babyid = article_summaries.babyid limit 5;"
+	rows, _ := conn.Debug().Raw(sqltext).Rows()
+	var overview ArticleOverview
+	for rows.Next() {
+		conn.ScanRows(rows, &overview)
+		overviews = append(overviews, overview)
+		beego.Info("=======", overview)
+	}
+	return
+}
+
+func GetArticleOverviewByPage(page int) (overviews []ArticleOverview) {
+	step := 2
+	sqltext := "select * from articles, article_summaries where articles.babyid = article_summaries.babyid"
+	sqltext += " limit " + strconv.Itoa(step)
+	sqltext += " offset " + strconv.Itoa(step * page)
+	sqltext += " ;"
+	rows, _ := conn.Debug().Raw(sqltext).Rows()
+	var overview ArticleOverview
+	for rows.Next() {
+		conn.ScanRows(rows, &overview)
+		overviews = append(overviews, overview)
+		beego.Info("=======", overview)
+	}
+	return
+}
+
+// 更新总览
+func UpdateArticleVisit(babyid int64) ( status int8) {
+	db := conn.Table("article_summaries").Where("babyid = ?", babyid).UpdateColumn("Visit", gorm.Expr("visit + ?", 1))
+	if db.Error != nil {
+		// db有错误，则为-1
+		status = -1
+	}
+	return
+}
+
+func UpdateArticleComment(babyid int64) (status int8) {
+	db := conn.Table("article_summaries").Where("babyid = ?", babyid).UpdateColumn("Comment", gorm.Expr("comment + ?", 1))
+	if db.Error != nil {
+		// db有错误，则为-1
+		status = -1
+	}
+	return
+}
+
+func UpdateArticleForward(babyid int64) (status int8) {
+	db := conn.Table("article_summaries").Where("babyid = ?", babyid).UpdateColumn("Forward", gorm.Expr("forward + ?", 1))
+	if db.Error != nil {
+		// db有错误，则为-1
+		status = -1
+	}
+	return
+}
+
+func UpdateArticleStatus(babyid int64) (status int8) {
+	// 设置为1表示已找回。
+	db := conn.Table("article_summaries").Where("babyid = ?", babyid).Update("Status", 1)
+	if db.Error != nil {
+		// db有错误，则为-1
+		status = -1
+	}
+	return
 }

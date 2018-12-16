@@ -143,6 +143,14 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ArticleController"],
+		beego.ControllerComments{
+			Method: "UpdateCount",
+			Router: `/updateCount`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:BaiduLBSController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:BaiduLBSController"],
 		beego.ControllerComments{
 			Method: "Get",
@@ -507,6 +515,14 @@ func init() {
 		beego.ControllerComments{
 			Method: "Logout",
 			Router: `/logout`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
+		beego.ControllerComments{
+			Method: "UpdateUserInfo",
+			Router: `/updateUserInfo`,
 			AllowHTTPMethods: []string{"post"},
 			MethodParams: param.Make(),
 			Params: nil})

@@ -46,7 +46,7 @@ func Init() (flag bool, errmsg string) {
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&TemplateFormID{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ServiceTime{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Volunteer{})
-	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Profile{})
+	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Profile{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&OpenWeixinAccessToken{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Comment{})
 

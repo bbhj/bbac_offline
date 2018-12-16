@@ -2,7 +2,7 @@ package models
 
 import (
 	_ "fmt"
-	"github.com/astaxie/beego/logs"
+	"github.com/astaxie/beego"
 	_ "github.com/google/uuid"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -108,11 +108,19 @@ func GetUserInfoList() (userInfoList []User) {
 	// }
 	return
 }
+
 func TestGetUserInfo() (userInfo *User) {
 	user := &User{}
-	logs.Info("TestGetUserInfo=====", conn)
+	beego.Info("TestGetUserInfo=====", conn)
 	conn.Debug().First(&user)
-	logs.Info("TestGetUserInfo=====", user)
+	beego.Info("TestGetUserInfo=====", user)
 
 	return user
+}
+
+func GetUserProfile(openid string) (profile Profile) {
+	conn.Debug().Where("openid = ?", openid).Order("created_at desc").First(&profile)
+	// conn.Debug().Where("openid =", openid).First(&profile)
+	beego.Info("=====", openid, profile)
+	return
 }

@@ -22,6 +22,7 @@ import (
 func init() {
 	// beego.InsertFilter(`((?!/lastest/wechatapi/wechat/login$).*)`, beego.BeforeRouter, func(ctx *context.Context) {
 	beego.InsertFilter("/*", beego.BeforeRouter, func(ctx *context.Context) {
+		beego.Info("request cookie token:", ctx.GetCookie("token"))
 		if "dev" != beego.AppConfig.String("runmode") {
 			return
 		}

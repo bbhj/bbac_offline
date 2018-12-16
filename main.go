@@ -3,10 +3,10 @@ package main
 import (
 	"github.com/bbhj/bbac/models"
 	"github.com/bbhj/bbac/crontab"
+	"github.com/bbhj/bbac/controllers"
 	_ "github.com/bbhj/bbac/routers"
 
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
 	"github.com/esap/wechat"
 	"github.com/jinzhu/gorm"
 )
@@ -27,7 +27,6 @@ func main() {
 	beego.Info("applicatoin start...")
 
 	wechat.Debug = true
-	// wechat.Set(beego.AppConfig.String("wechat_token"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), beego.AppConfig.String("wechat_aeskey"))
 	wechat.Set(beego.AppConfig.String("wechat_token"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), beego.AppConfig.String("wechat_aeskey"))
 
 	// openid := "oPPbr0M2h0geV-jgzUPve9g3x3jg"
@@ -39,5 +38,6 @@ func main() {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
+	beego.ErrorController(&controllers.ErrorController{})
 	beego.Run()
 }

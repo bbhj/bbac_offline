@@ -266,15 +266,46 @@ func (u *ArticleController) Delete() {
 // @Success 200 {object} models.Article
 // @router /summary [get]
 func (u *ArticleController) Summary() {
-	models.GetArticleSummary()
-	var article models.ArticleSummary
-	// article.Babyid = 111
-	// article.UUID = "xxx-xx-xxx"
-	// article.Status = 1
-	article.Visit = 50
-	article.Forward = 51
-	article.Comment = 52
+	page, _ := u.GetInt("page")
 
-	u.Data["json"] = article
+	var overview []models.ArticleOverview
+	if (page >= 0) {
+		overview = models.GetArticleOverviewByPage(page)	
+	} else {
+		overview = models.GetArticleOverview()
+	}
+	u.Data["json"] = overview
+	u.ServeJSON()
+}
+
+// @Title 访问量自增
+// @Description 文章访问量增加 +1
+// @Success 200 {object} models.Article
+// @router /updateCount [get]
+func (u *ArticleController) UpdateCount() {
+	babyid, _ := u.GetInt64("babyid")
+	column := u.GetString("column")
+
+	var retmsg models.RetMsg
+	retmsg.Status = -2
+	if ("" != column) {
+		switch column {
+			case "visit":
+				retmsg.Status = models.UpdateArticleVisit(babyid)
+			case "comment":
+				retmsg.Status = models.UpdateArticleComment(babyid)
+			case "forward":
+				retmsg.Status = models.UpdateArticleForward(babyid)
+			default:
+				retmsg.Status = models.UpdateArticleVisit(babyid)
+		}
+	}
+	if (0 == retmsg.Status) {
+		retmsg.Msg = column + "count update +1 succcessfully!"
+	} else {
+		retmsg.Errmsg = column + "count update +1 failed!"
+		beego.Error("update failed, column:", column)
+	}
+	u.Data["json"] = retmsg
 	u.ServeJSON()
 }
