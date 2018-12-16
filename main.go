@@ -8,10 +8,7 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/esap/wechat"
-	"github.com/jinzhu/gorm"
 )
-
-// var Pool *models.Pool
 
 func main() {
 
@@ -22,7 +19,7 @@ func main() {
 
 
 	models.Connect()
-	defer modeles.Close()
+	defer models.Close()
 	beego.Info("applicatoin start...")
 
 	wechat.Debug = true
