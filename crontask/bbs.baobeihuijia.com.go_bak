@@ -1,0 +1,174 @@
+package main
+
+import (
+	"fmt"
+	_ "github.com/PuerkitoBio/goquery"
+	"github.com/bbhj/bbac/models"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "log"
+	"regexp"
+	"strconv"
+	_ "strings"
+	"time"
+)
+
+var conn *gorm.DB
+
+type (
+	PreForumPost struct {
+		gorm.Model
+		Message string `json:"message"`
+		Subject string `json:"subject"`
+		Useip   string `json:"useip"`
+		Pid     int64  `json:"pid"`
+		Tid     int64  `json:"tid"`
+	}
+)
+
+func main() {
+	conn, _ := gorm.Open("mysql", beego.AppConfig.String("bbs_gdbc"))
+
+	var preForumPost []PreForumPost
+	conn.Table("pre_forum_post").Raw("select * from pre_forum_post where message like '%登记信息%宝贝回家编号%' order by pid desc limit 10").Scan(&preForumPost)
+
+	for i, _ := range preForumPost {
+		datafrom := fmt.Sprintf("https://bbs.baobeihuijia.com/thread-%s-1-1.html", strconv.FormatInt(int64(preForumPost[i].Tid), 10))
+		parseHtml(datafrom, preForumPost[i].Subject, preForumPost[i].Message)
+	}
+	return
+}
+
+func parseHtml(datafrom, title, msg string) {
+	// 剔除msg中无用的头尾
+	// 登记信息/d ---.*-- /d站务电话
+	reg := regexp.MustCompile(`(.*\n)*.*登记信息.*\n`)
+	msg = reg.ReplaceAllString(msg, "")
+
+	reg = regexp.MustCompile(`站务电话(.*\n)*`)
+	msg = reg.ReplaceAllString(msg, "")
+
+	// fmt.Println("======================================msg============================================")
+	// fmt.Println(msg)
+	fmt.Println("=====================================================================================")
+
+	// 获取前半部分
+	exp := regexp.MustCompile(`.*：`)
+	keyList := exp.FindAllString(msg, -1)
+
+	// 获取后半部分
+	exp = regexp.MustCompile(`：.*`)
+	valueList := exp.FindAllString(msg, -1)
+
+	// 获取其他资料部分
+	exp = regexp.MustCompile(`(?s:其他资料.*注册时间)`)
+	detailValueList := exp.FindAllString(msg, -1)
+
+	// 对其他资料部分进行处理
+	exp = regexp.MustCompile(`(\[.+?\])|(\^M)|其他资料：|注册时间`)
+	detailValue := exp.ReplaceAllString(detailValueList[0], "")
+
+	// fmt.Println("----------------------------keyList and valueList------------------------------------")
+	// fmt.Println(keyList)
+	// fmt.Println(len(keyList))
+	// fmt.Println(valueList)
+	// fmt.Println(len(valueList))
+	// fmt.Println("-------------------------------------------------------------------------------------")
+
+	var article models.Article
+	article.DataFrom = datafrom
+	article.Title = title
+	for i := range keyList {
+		// 删除key和value中的[..]、^M和中文冒号
+		exp = regexp.MustCompile(`(\[.+?\])|(\^M)|：`)
+		value := exp.ReplaceAllString(valueList[i], "")
+		key := exp.ReplaceAllString(keyList[i], "")
+
+		// 删除key中的非汉字和空格
+		exp = regexp.MustCompile(`[^\p{Han}]| `)
+		key = exp.ReplaceAllString(key, "")
+
+		// fmt.Println("key:", key, "------value:", value)
+
+		if "姓名" == key {
+			article.Nickname = value
+		}
+		if "性别" == key {
+			// /* 值为1时是男性，值为2时是女性，值为0时是未知 */
+			if "女" == value {
+				// 1 --> 2
+				article.Gender = 2
+			} else if "男" == value {
+				// 0 -> 1
+				article.Gender = 1
+			}
+		}
+		if "失踪人所在省" == key || "籍贯" == key {
+			article.Province = value
+		}
+		if "城市" == key {
+			article.City = value
+		}
+		if "国家" == key {
+			article.Country = value
+		}
+		if "失踪地点" == key || "失踪地址" == key || "地址" == key {
+			article.Address = value
+		}
+		if "规档编号" == key {
+			article.Arcid = value
+		}
+		if "失踪年龄" == key {
+			exp = regexp.MustCompile(`[^0-9]`)
+			value = exp.ReplaceAllString(value, "")
+			article.Age, _ = strconv.Atoi(value)
+		}
+		if "失踪者特征描述" == key {
+			article.Characters = value
+		}
+		if "其他资料" == key || "其他情况" == key {
+			article.Details = detailValue
+		}
+		if "" == key {
+			article.DataFrom = value
+		}
+		if "失踪人户籍所在地" == key {
+			article.BirthedProvince = value
+		}
+		if "出生城市" == key {
+			article.BirthedCity = value
+		}
+		if "出生国家" == key {
+			article.BirthedCountry = value
+		}
+		if "" == key {
+			article.BirthedAddress = value
+		}
+		if "出生日期" == key {
+			article.BirthedAt, _ = time.ParseInLocation("2006年01月02日", value, time.Local)
+		}
+		if "失踪时所在省" == key {
+			article.MissedProvince = value
+		}
+		if "失踪地址" == key {
+			article.MissedCity = value
+		}
+		if "失踪地点" == key || "失踪地址" == key {
+			article.MissedAddress = value
+		}
+		if "失踪日期" == key {
+			article.MissedAt, _ = time.ParseInLocation("2006年01月02日", value, time.Local)
+		}
+		if "失踪时身高" == key {
+			article.Height = value
+		}
+		if "寻亲类别" == key {
+			article.Category = value
+		}
+		if "宝贝回家编号" == key {
+			article.Babyid, _ = strconv.ParseInt(value, 10, 64)
+		}
+	}
+	fmt.Println("-----------------------------result-------------------------")
+	fmt.Println("article info: ", article)
+}

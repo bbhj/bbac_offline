@@ -49,6 +49,7 @@ func Init() (flag bool, errmsg string) {
 	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Profile{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&OpenWeixinAccessToken{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Comment{})
+	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&PictureInfo{})
 
 	if (db.Error == nil){
 		flag = true

@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/bbhj/bbac/models"
-	"github.com/bbhj/bbac/crontab"
+	"github.com/bbhj/bbac/task"
 	"github.com/bbhj/bbac/controllers"
 	_ "github.com/bbhj/bbac/routers"
 
@@ -21,6 +21,7 @@ func main() {
 	models.Connect()
 	defer models.Close()
 	beego.Info("applicatoin start...")
+	beego.Info("applicatoin runmode: ", beego.BConfig.RunMode)
 
 	wechat.Debug = true
 	wechat.Set(beego.AppConfig.String("wechat_token"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), beego.AppConfig.String("wechat_aeskey"))
@@ -29,7 +30,7 @@ func main() {
 	// msg := "xxx"
 	// wechat.SendText(openid, 0, msg)
 
-	go crontab.CronTask()
+	go task.CronTask()
 	if beego.BConfig.RunMode != "prod" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"

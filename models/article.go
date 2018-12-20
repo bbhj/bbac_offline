@@ -87,17 +87,20 @@ type (
 func AddArticle(article Article) (uuid string) {
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Article{})
 
-	article.CreatedAt = time.Now()
-	article.UpdatedAt = time.Now()
-	article.MissedAt = time.Now()
+	// article.CreatedAt = time.Now()
+	// article.UpdatedAt = time.Now()
+	// article.MissedAt = time.Now()
 
-	fmt.Println("db=====", article)
-	err := conn.Create(&article)
+	// err := conn.FirstOrCreate(&article, Article{Babyid, article.Babyid})
+	// err := conn.Debug().Where(Article{Babyid: article.Babyid}).FirstOrCreate(&article)
+	err := conn.Debug().FirstOrCreate(&article, Article{Babyid: article.Babyid})
 	if err.Error != nil {
 		fmt.Println("xxxxx, db", err.Error)
 	} else {
 		uuid = article.UUID
 	}
+	beego.Info("===!!!!=", article)
+	
 	// db.Save(&lbi)
 	return
 }

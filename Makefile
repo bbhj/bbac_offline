@@ -2,7 +2,9 @@ BUILD=dist
 DEPLOYMENT=$(BUILD).zip
 
 all: 
-	go test tests/default_test.go
+	go build --buildmode=plugin -o plugins/print.so plugins/print.go
+	bee run
+	#go test tests/default_test.go
 run: 
 	#make test
 	#bee run -downdoc=true -gendoc=true

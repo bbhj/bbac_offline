@@ -1,0 +1,263 @@
+package main
+
+import (
+	_ "fmt"
+	_ "github.com/PuerkitoBio/goquery"
+	"github.com/astaxie/beego"
+	"github.com/bbhj/bbac/models"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	_ "log"
+	"regexp"
+	"strconv"
+	"strings"
+	"time"
+)
+
+type (
+	PreForumPost struct {
+		gorm.Model
+		Message string `json:"message"`
+		Subject string `json:"subject"`
+		Useip   string `json:"useip"`
+		Pid     int64  `json:"pid"`
+		Tid     int64  `json:"tid"`
+	}
+)
+
+// 去掉html中所有标签
+func trimHtml(src string) string {
+
+    //将HTML标签全转换成小写
+    re, _ := regexp.Compile("\\<[\\S\\s]+?\\>")
+    src = re.ReplaceAllStringFunc(src, strings.ToLower)
+
+    // //去除STYLE
+    re, _ = regexp.Compile("\\<style[\\S\\s]+?\\</style\\>")
+    src = re.ReplaceAllString(src, "")
+
+    //去除SCRIPT
+    re, _ = regexp.Compile("\\<script[\\S\\s]+?\\</script\\>")
+    src = re.ReplaceAllString(src, "")
+
+    // [attach]
+    // src = strings.Replace(src, "[attach]", "[attach]图片ID：", -1)
+
+    // 去掉[]标签, 如 [color=#000000]
+    re, _ = regexp.Compile("\\[[\\S\\s]+?\\]")
+    src = re.ReplaceAllString(src, "")
+
+    //去除所有尖括号内的HTML代码，并换成换行符
+    re, _ = regexp.Compile("\\<[\\S\\s]+?\\>")
+    // src = re.ReplaceAllString(src, "\n")
+    src = re.ReplaceAllString(src, "")
+
+
+    // //去除连续的换行符
+    re, _ = regexp.Compile("\\s{4,}")
+    src = re.ReplaceAllString(src, "\n")
+
+    return strings.TrimSpace(src)
+}
+
+func main() {
+	models.Connect()
+	defer models.Close()
+
+	// preForumPosts := models.GetLastBBSInfo()
+	preForumPosts := models.GetAllBBSInfo()
+
+	for _, preForumPost := range preForumPosts {
+		datafrom := "https://bbs.baobeihuijia.com/thread-"
+		datafrom += strconv.FormatInt(int64(preForumPost.Tid), 10) + "-1-1.html"
+		// beego.Info("====", datafrom)
+
+		// beego.Info(preForumPost.Message)
+		// 去掉html标签
+		msg := trimHtml(preForumPost.Message)
+		parseHtml(datafrom, preForumPost.Subject, msg)
+	}
+}
+
+func parseHtml(datafrom, title, msg string) {
+	// 剔除msg中无用的头尾
+	// 登记信息/d ---.*-- /d站务电话
+	reg := regexp.MustCompile(`(.*\n)*.*登记信息.*\n`)
+	msg = reg.ReplaceAllString(msg, "")
+
+	// reg = regexp.MustCompile(`站务电话(.*\n)*`)
+	reg = regexp.MustCompile(`站务电话(.*\n)*.*`)
+	msg = reg.ReplaceAllString(msg, "")
+	msg = strings.Trim(msg, "\n")
+
+	beego.Info("=======", title, "==========")
+	beego.Error(msg)
+	return
+
+	// 获取后半部分value, 因为value会再次有冒号分隔符号，所以把value去掉
+	exp := regexp.MustCompile(`：.*`)
+	valueList := exp.FindAllString(msg, -1)
+	for _, value := range valueList {
+		value =  strings.TrimLeft(value, "：")
+		msg = strings.Replace(msg, value, "", -1)
+	}
+
+	// 获取前半部分, key
+	// exp := regexp.MustCompile(`.*：`)
+	exp = regexp.MustCompile(`[\p{Han}]+：`)
+	keyList := exp.FindAllString(msg, -1)
+
+
+	// 获取其他资料部分
+	// 有一些是有注册时间，有一些是没有的
+	exp = regexp.MustCompile(`(?s:其他资料.*注册时间)`)
+	detailValueList := exp.FindAllString(msg, -1)
+	detailValue := ""
+	if (len(detailValueList) >0) {
+		// 对其他资料部分进行处理
+		exp = regexp.MustCompile(`(\[.+?\])|(\^M)|其他资料：|注册时间`)
+		detailValue = exp.ReplaceAllString(detailValueList[0], "")
+	}
+
+
+	var article models.Article
+	article.DataFrom = datafrom
+	article.Title = title
+
+	var err error
+	timeFormats := []string{"2006-01-02 15:04:05", "2006-01-0215:04:05", "2006-01-02", "2006年1月2日", "2006年1月02日", "2006年01月2日", "2006年01月02日", "2006年"}
+	beego.Error(err, timeFormats)
+
+	beego.Info("Babyid:", article.Babyid, ", 数据来源:", article.DataFrom)
+	// models.UpdateArticle(article)
+}
+
+
+func nouse() {
+
+	var err error
+	timeFormats := []string{"2006-01-02 15:04:05", "2006-01-0215:04:05", "2006-01-02", "2006年1月2日", "2006年1月02日", "2006年01月2日", "2006年01月02日", "2006年"}
+	if (len(keyList) != len(valueList)) {
+		beego.Error(msg)
+		beego.Error("key and value list length not equal!!", len(keyList), len(valueList), article.DataFrom)
+		return
+	}
+	for i := range keyList {
+		// 删除key和value中的[..]、^M和中文冒号
+		exp = regexp.MustCompile(`(\[.+?\])|(\^M)|：|(\s)|(\r)`)
+		value := exp.ReplaceAllString(valueList[i], "")
+		key := exp.ReplaceAllString(keyList[i], "")
+
+		// 删除key中的非汉字和空格
+		exp = regexp.MustCompile(`[^\p{Han}]| `)
+		key = exp.ReplaceAllString(key, "")
+
+		// fmt.Println("key:", key, "------value:", value)
+
+		if "姓名" == key {
+			article.Nickname = value
+		}
+		if "性别" == key {
+			// /* 值为1时是男性，值为2时是女性，值为0时是未知 */
+			if "女" == value {
+				// 1 --> 2
+				article.Gender = 2
+			} else if "男" == value {
+				// 0 -> 1
+				article.Gender = 1
+			}
+		}
+		if "失踪人所在省" == key || "籍贯" == key {
+			article.Province = value
+		}
+		if "城市" == key {
+			article.City = value
+		}
+		if "国家" == key {
+			article.Country = value
+		}
+		if "失踪地点" == key || "失踪地址" == key || "地址" == key {
+			article.Address = value
+		}
+		if "规档编号" == key {
+			article.Arcid = value
+		}
+		if "失踪年龄" == key {
+			exp = regexp.MustCompile(`[^0-9]`)
+			value = exp.ReplaceAllString(value, "")
+			article.Age, _ = strconv.Atoi(value)
+		}
+		if "失踪者特征描述" == key {
+			article.Characters = value
+		}
+		if "其他资料" == key || "其他情况" == key {
+			article.Details = detailValue
+			article.Details = ""
+		}
+		if "" == key {
+			article.DataFrom = value
+		}
+		if "失踪人户籍所在地" == key {
+			article.BirthedProvince = value
+		}
+		if "出生城市" == key {
+			article.BirthedCity = value
+		}
+		if "出生国家" == key {
+			article.BirthedCountry = value
+		}
+		if "" == key {
+			article.BirthedAddress = value
+		}
+		if "出生日期" == key {
+			for _, timeFormat := range timeFormats {
+				article.BirthedAt, err = time.ParseInLocation(timeFormat, value, time.Local)
+				if err == nil {
+					break
+				}
+			}
+			if err != nil {
+				beego.Error(value, err)
+			}
+			beego.Info("出生日期:", value, ", 格式化:", article.BirthedAt)
+
+		}
+		if "失踪时所在省" == key {
+			article.MissedProvince = value
+		}
+		if "失踪地址" == key {
+			article.MissedCity = value
+		}
+		if "失踪地点" == key || "失踪地址" == key {
+			article.MissedAddress = value
+		}
+		if "失踪日期" == key || "失踪时间" == key{
+			for _, timeFormat := range timeFormats {
+				article.BirthedAt, err = time.ParseInLocation(timeFormat, value, time.Local)
+				if err == nil {
+					break
+				}
+			}
+			if err != nil {
+				beego.Error(value, err)
+			}
+			beego.Info("失踪日期:", value, ", 格式化:", article.BirthedAt)
+		}
+		if "失踪时身高" == key {
+			article.Height = value
+		}
+		if "寻亲类别" == key {
+			article.Category = value
+		}
+		if "宝贝回家编号" == key {
+			value = strings.Trim(value, "\r")
+			value = strings.Trim(value, " ")
+			article.Babyid, err = strconv.ParseInt(value, 10, 64)
+			if (err != nil) {
+				beego.Error("宝贝回家编号", value, err)
+			}
+		}
+	}
+	beego.Info("Babyid:", article.Babyid, ", 数据来源:", article.DataFrom)
+	// models.UpdateArticle(article)
+}

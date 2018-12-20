@@ -23,7 +23,7 @@ func init() {
 	// beego.InsertFilter(`((?!/lastest/wechatapi/wechat/login$).*)`, beego.BeforeRouter, func(ctx *context.Context) {
 	beego.InsertFilter("/*", beego.BeforeRouter, func(ctx *context.Context) {
 		beego.Info("request cookie token:", ctx.GetCookie("token"))
-		if "dev" != beego.AppConfig.String("runmode") {
+		if "dev" == beego.AppConfig.String("runmode") {
 			return
 		}
 		accessToken := ctx.GetCookie("token")
@@ -50,6 +50,7 @@ func init() {
 	})
 
 	ns := beego.NewNamespace("/lastest",
+		beego.NSNamespace("/pass", beego.NSInclude(&controllers.MainController{})),
 		beego.NSNamespace("/db/init", beego.NSInclude(&controllers.DBController{})),
 		beego.NSNamespace("/lbs", beego.NSInclude(&controllers.BaiduLBSController{})),
 		beego.NSNamespace("/wechatapi/small/admin", beego.NSInclude(&controllers.AdminController{})),
