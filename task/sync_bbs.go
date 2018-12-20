@@ -210,11 +210,16 @@ func syncFrombbs() {
 		// beego.Error(preForumPost.Tid, preForumPost.Pid)
 		msg := trimHtml(preForumPost.Message)
 		article := parseHtml(datafrom, preForumPost.Subject, msg)
-		// save into
-	
+		if article.Babyid == 0 {
+			beego.Critical("this babyid is null.", article.DataFrom)
+			continue
+		}
+
+		if beego.BConfig.RunMode == "prod" {
 		article.UUID = uuid.New().String()
 		models.AddArticle(article)
 		models.SyncPictureFromBbs(preForumPost.Tid, preForumPost.Pid, article.Babyid, article.UUID)
+		}
 		return
 	}
 }
