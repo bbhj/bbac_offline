@@ -26,8 +26,6 @@ type (
 		Address  string
 		// Title      string `gorm:"size:60"`
 		Title           string
-		Arcid           string // 规档编号
-		Age             int
 		Characters      string
 		Details         string
 		DataFrom        string
@@ -81,6 +79,7 @@ type (
 		MissedCity     string
 		MissedAddress  string
 		MissedAt       time.Time
+		Handler        string
 	}
 )
 
@@ -88,7 +87,7 @@ func AddArticle(article Article) (uuid string) {
 	// err := conn.Debug().Where(Article{Babyid: article.Babyid}).FirstOrCreate(&article)
 	// err := conn.Debug().FirstOrCreate(&article, Article{Babyid: article.Babyid})
 	beego.Error(article.Babyid)
-	err := conn.Debug().FirstOrCreate(&article, Article{Babyid: 12248})
+	err := conn.Debug().FirstOrCreate(&article, Article{Babyid: article.Babyid})
 	if err.Error != nil {
 		fmt.Println("xxxxx, db", err.Error)
 	} else {
@@ -104,6 +103,7 @@ func AddArticle(article Article) (uuid string) {
 }
 
 func AddArticleSummary(articleSummary ArticleSummary) {
+	conn.Debug().FirstOrCreate(&articleSummary , ArticleSummary{Babyid: articleSummary.Babyid})
 	conn.Save(&articleSummary)
 	return
 }
