@@ -78,9 +78,13 @@ func SyncPictureFromBbs (tid, pid, babyid int64, uuid string) () {
 
 	var picInfoList []PictureInfo
 	bbsconn.Raw(sqltext).Scan(&picInfoList)
-	for _, picInfo := range picInfoList {
+	for i, picInfo := range picInfoList {
 		picInfo.UUID = uuid
 		picInfo.Babyid = babyid
+		if i == 0 {
+			UpdateArticleAvatarUrl(babyid, "https://attachment-10016990.file.myqcloud.com/forum/" + picInfo.Attachment)
+		}
+		
 		err := conn.Where(PictureInfo{Attachment: picInfo.Attachment}).FirstOrCreate(&picInfo)
 		if err.Value != nil {
 			beego.Error("Update picture form bbs failed, msg:", err.Error)

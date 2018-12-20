@@ -269,3 +269,10 @@ func UpdateArticleStatus(babyid int64) (status int8) {
 	}
 	return
 }
+
+func UpdateArticleAvatarUrl(babyid int64, avatarUrl string) {
+	var article Article
+	article.Babyid = babyid
+	article.AvatarUrl = avatarUrl
+	conn.Debug().Model(&article).Where("babyid = ?", babyid).Update("avatar_url", avatarUrl)
+}

@@ -218,8 +218,8 @@ func syncFrombbs() {
 			article.UUID = uuid.New().String()
 			models.AddArticle(article)
 			models.SyncPictureFromBbs(preForumPost.Tid, preForumPost.Pid, article.Babyid, article.UUID)
-		if beego.BConfig.RunMode == "prod" {
-		}
-		return
+		// if beego.BConfig.RunMode == "prod" {
+		// }
+		// return
 	}
 }
