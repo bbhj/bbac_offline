@@ -4,6 +4,7 @@ keys/
 crontab/
 nohup.out
 baobeihuijia
+plugins/*.so
 bbac
 logs/*
 lastupdate.tmp
