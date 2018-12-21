@@ -73,6 +73,8 @@ type (
 		// 值为1时是男性，值为2时是女性，值为0时是未知
 		Gender         uint
 		BirthedAt      time.Time
+		Category       string
+		Height         string
 		Characters     string
 		Details        string
 		MissedProvince string
@@ -89,7 +91,7 @@ func AddArticle(article Article) (uuid string) {
 	beego.Error(article.Babyid)
 	err := conn.Debug().FirstOrCreate(&article, Article{Babyid: article.Babyid})
 	if err.Error != nil {
-		fmt.Println("xxxxx, db", err.Error)
+		beego.Error("AddArticle error", err.Error)
 	} else {
 		uuid = article.UUID
 		var articleSummary ArticleSummary
@@ -97,8 +99,6 @@ func AddArticle(article Article) (uuid string) {
 		articleSummary.Babyid = article.Babyid
 		AddArticleSummary(articleSummary)
 	}
-	beego.Info("===!!!!=", article)
-	
 	return
 }
 

@@ -1,6 +1,9 @@
-# baobeihuijia
-https://bbs.baobeihui.com
+# Baby Come Back Websit Acess Layer.
 
+How to Run
 
-swagger生成
+make
+
+swagger文档生成
+
 bee run -downdoc=true

@@ -17,7 +17,9 @@ func CronTask() {
 	t1 := toolbox.NewTask("timeTask", timeStr, func() error {
 
 		// todo do what you want
-		syncFrombbs()
+		if beego.BConfig.RunMode == "dev" {
+			syncFrombbs()
+		}
 		// msg := models.Message{Message: "这是向页面发送的数据 " + time.Now().Format("2006-01-02 15:04:05")}
 		/// logs.Info("this is crontab task....")
 		// weixinData()
