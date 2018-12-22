@@ -248,18 +248,38 @@ func (u *ArticleController) Put() {
 	u.ServeJSON()
 }
 
-// @Title Delete
-// @Description delete the artile
-// @Param	uuid		path 	string	true		"The uuid you want to delete"
+// @Title Delete article by uuid
+// @Description delete the artile by uuid
+// @Param	uuid		query 	string	true		"The uuid you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 uid is empty
-// @router /:uuid [delete]
+// @router /delete [get]
 func (u *ArticleController) Delete() {
-	uuid := u.GetString(":uuid")
+	uuid := u.GetString("uuid")
 	models.DeleteArticle(uuid)
 	u.Data["json"] = "delete success!"
 	u.ServeJSON()
 }
+
+// @Title Delete by babyid
+// @Description delete the article and article_summary by babyid
+// @Param	babyid		query 	int64	true	"The babyid you want to delete"
+// @Success 200 {string} delete success!
+// @Failure 403 babyid is empty
+// @router /deleteByBabyId [get]
+func (u *ArticleController) DeleteByBabyId() {
+	babyid, _ := u.GetInt64("babyid")
+	// fmt.Println("====receive babyid:", babyid)
+	res1 := models.DeleteArticleByBabyId(babyid)
+	res2 := models.DeleteArticleSumByBabyId(babyid)
+	if res1 && res2 {
+		u.Data["json"] = "delete success!"
+	} else {
+		u.Data["json"] = "delete fail!"
+	}
+	u.ServeJSON()
+}
+
 
 // @Title 返回文章的浏览、评论、转发等数量
 // @Description get all Articles
@@ -309,3 +329,4 @@ func (u *ArticleController) UpdateCount() {
 	u.Data["json"] = retmsg
 	u.ServeJSON()
 }
+

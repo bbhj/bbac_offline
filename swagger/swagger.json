@@ -18,7 +18,21 @@
         "/api/robot//qq": {
             "get": {
                 "tags": [
-                    "api/robot"
+                    "webapi/robot"
+                ],
+                "description": "Logs out current logged in user session",
+                "operationId": "RobotController.QQ 聊天机器人",
+                "responses": {
+                    "200": {
+                        "description": "{string} logout success"
+                    }
+                }
+            }
+        },
+        "/api/robot//wechat": {
+            "get": {
+                "tags": [
+                    "webapi/robot"
                 ],
                 "description": "Logs out current logged in user session",
                 "operationId": "RobotController.QQ 聊天机器人",
@@ -86,10 +100,38 @@
                 }
             }
         },
+        "/pass/": {
+            "get": {
+                "tags": [
+                    "pass"
+                ],
+                "description": "create users",
+                "operationId": "MainController.CreateUser",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for user content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{int} models.User.Id"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
         "/profile/userinfo/": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -104,7 +146,7 @@
             },
             "post": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "create users",
                 "operationId": "UserController.CreateUser",
@@ -132,7 +174,7 @@
         "/profile/userinfo/formid": {
             "post": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "Colloect Wechet User Form Id, prepare for sending template message.",
                 "operationId": "UserController.FormID",
@@ -142,7 +184,7 @@
                         "name": "openid",
                         "description": "wechat user openid",
                         "schema": {
-                            "$ref": "#/definitions/.true"
+                            "$ref": "#/definitions/true"
                         }
                     },
                     {
@@ -150,7 +192,7 @@
                         "name": "formid",
                         "description": "wechat formid",
                         "schema": {
-                            "$ref": "#/definitions/.true"
+                            "$ref": "#/definitions/true"
                         }
                     }
                 ],
@@ -167,7 +209,7 @@
         "/profile/userinfo/get_drag_list": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -184,7 +226,7 @@
         "/profile/userinfo/get_info": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -199,9 +241,36 @@
             }
         },
         "/profile/userinfo/login": {
+            "get": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "get user by uid",
+                "operationId": "UserController.for webapi user login",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uid",
+                        "description": "The key for staticblock",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Article"
+                        }
+                    },
+                    "403": {
+                        "description": ":uid is empty"
+                    }
+                }
+            },
             "post": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "Logs user into the system",
                 "operationId": "UserController.Login",
@@ -231,10 +300,10 @@
                 }
             }
         },
-        "/profile/userinfo/save_error_logger": {
+        "/profile/userinfo/logout": {
             "post": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -248,10 +317,43 @@
                 }
             }
         },
+        "/profile/userinfo/updateUserInfo": {
+            "post": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "更新用户信息",
+                "operationId": "UserController.UpdateUserInfo",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "username",
+                        "description": "The username for login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "The password for login",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} login success"
+                    },
+                    "403": {
+                        "description": "user not exist"
+                    }
+                }
+            }
+        },
         "/profile/userinfo/{uid}": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get user by uid",
                 "operationId": "UserController.Get",
@@ -278,7 +380,7 @@
             },
             "put": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "update the user",
                 "operationId": "UserController.Update",
@@ -314,7 +416,7 @@
             },
             "delete": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "delete the user",
                 "operationId": "UserController.Delete",
@@ -337,10 +439,55 @@
                 }
             }
         },
-        "/webapi//": {
+        "/webapi/report/save_error_logger": {
+            "post": {
+                "tags": [
+                    "webapi/report"
+                ],
+                "description": "get all Users",
+                "operationId": "ReportController.GetAll",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/webapi/robot/qq": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/robot"
+                ],
+                "description": "Logs out current logged in user session",
+                "operationId": "RobotController.QQ 聊天机器人",
+                "responses": {
+                    "200": {
+                        "description": "{string} logout success"
+                    }
+                }
+            }
+        },
+        "/webapi/robot/wechat": {
+            "get": {
+                "tags": [
+                    "webapi/robot"
+                ],
+                "description": "Logs out current logged in user session",
+                "operationId": "RobotController.QQ 聊天机器人",
+                "responses": {
+                    "200": {
+                        "description": "{string} logout success"
+                    }
+                }
+            }
+        },
+        "/webapi/user/": {
+            "get": {
+                "tags": [
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -355,7 +502,7 @@
             },
             "post": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "create users",
                 "operationId": "UserController.CreateUser",
@@ -380,38 +527,10 @@
                 }
             }
         },
-        "/webapi//createqrcode": {
+        "/webapi/user/formid": {
             "post": {
                 "tags": [
-                    "webapi"
-                ],
-                "description": "create users",
-                "operationId": "WechatController.CreateArticle",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "body for user content",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.Article"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{int} models.Article.Id"
-                    },
-                    "403": {
-                        "description": "body is empty"
-                    }
-                }
-            }
-        },
-        "/webapi//formid": {
-            "post": {
-                "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "Colloect Wechet User Form Id, prepare for sending template message.",
                 "operationId": "UserController.FormID",
@@ -421,7 +540,7 @@
                         "name": "openid",
                         "description": "wechat user openid",
                         "schema": {
-                            "$ref": "#/definitions/.true"
+                            "$ref": "#/definitions/true"
                         }
                     },
                     {
@@ -429,7 +548,7 @@
                         "name": "formid",
                         "description": "wechat formid",
                         "schema": {
-                            "$ref": "#/definitions/.true"
+                            "$ref": "#/definitions/true"
                         }
                     }
                 ],
@@ -443,10 +562,10 @@
                 }
             }
         },
-        "/webapi//get_drag_list": {
+        "/webapi/user/get_drag_list": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -460,10 +579,10 @@
                 }
             }
         },
-        "/webapi//get_info": {
+        "/webapi/user/get_info": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -477,13 +596,13 @@
                 }
             }
         },
-        "/webapi//login": {
+        "/webapi/user/login": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get user by uid",
-                "operationId": "WechatController.Get",
+                "operationId": "UserController.for webapi user login",
                 "parameters": [
                     {
                         "in": "path",
@@ -504,12 +623,43 @@
                         "description": ":uid is empty"
                     }
                 }
-            }
-        },
-        "/webapi//save_error_logger": {
+            },
             "post": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
+                ],
+                "description": "Logs user into the system",
+                "operationId": "UserController.Login",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "username",
+                        "description": "The username for login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "The password for login",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} login success"
+                    },
+                    "403": {
+                        "description": "user not exist"
+                    }
+                }
+            }
+        },
+        "/webapi/user/logout": {
+            "post": {
+                "tags": [
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -523,38 +673,43 @@
                 }
             }
         },
-        "/webapi//userinfolist": {
-            "get": {
+        "/webapi/user/updateUserInfo": {
+            "post": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
-                "description": "get user by uid",
+                "description": "更新用户信息",
+                "operationId": "UserController.UpdateUserInfo",
                 "parameters": [
                     {
-                        "in": "path",
-                        "name": "uid",
-                        "description": "The key for staticblock",
+                        "in": "query",
+                        "name": "username",
+                        "description": "The username for login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "The password for login",
                         "required": true,
                         "type": "string"
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.Article"
-                        }
+                        "description": "{string} login success"
                     },
                     "403": {
-                        "description": ":uid is empty"
+                        "description": "user not exist"
                     }
                 }
             }
         },
-        "/webapi//{uid}": {
+        "/webapi/user/{uid}": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get user by uid",
                 "operationId": "UserController.Get",
@@ -581,7 +736,7 @@
             },
             "put": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "update the user",
                 "operationId": "UserController.Update",
@@ -617,7 +772,7 @@
             },
             "delete": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "delete the user",
                 "operationId": "UserController.Delete",
@@ -666,6 +821,20 @@
                 }
             }
         },
+        "/wechatapi/customer/service/usermsg": {
+            "get": {
+                "tags": [
+                    "wechatapi/customer/service"
+                ],
+                "description": "Logs out current logged in user session",
+                "operationId": "CustomerController.get",
+                "responses": {
+                    "200": {
+                        "description": "{string} logout success"
+                    }
+                }
+            }
+        },
         "/wechatapi/qcloud/wecos/auth": {
             "get": {
                 "tags": [
@@ -705,7 +874,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/.Admin"
+                            "$ref": "#/definitions/models.Admin"
                         }
                     }
                 }
@@ -723,7 +892,7 @@
                         "description": "body for user content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/.Admin"
+                            "$ref": "#/definitions/models.Admin"
                         }
                     }
                 ],
@@ -804,7 +973,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/.Admin"
+                            "$ref": "#/definitions/models.Admin"
                         }
                     },
                     "403": {
@@ -916,6 +1085,59 @@
                 }
             }
         },
+        "/wechatapi/small/article/delete": {
+            "get": {
+                "tags": [
+                    "wechatapi/small/article"
+                ],
+                "description": "delete the artile by uuid",
+                "operationId": "ArticleController.Delete article by uuid",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "uuid",
+                        "description": "The uuid you want to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "uid is empty"
+                    }
+                }
+            }
+        },
+        "/wechatapi/small/article/deleteByBabyId": {
+            "get": {
+                "tags": [
+                    "wechatapi/small/article"
+                ],
+                "description": "delete the article and article_summary by babyid",
+                "operationId": "ArticleController.Delete by babyid",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "babyid",
+                        "description": "The babyid you want to delete",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "babyid is empty"
+                    }
+                }
+            }
+        },
         "/wechatapi/small/article/keywords": {
             "get": {
                 "tags": [
@@ -961,6 +1183,23 @@
                 }
             }
         },
+        "/wechatapi/small/article/summary": {
+            "get": {
+                "tags": [
+                    "wechatapi/small/article"
+                ],
+                "description": "get all Articles",
+                "operationId": "ArticleController.返回文章的浏览、评论、转发等数量",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Article"
+                        }
+                    }
+                }
+            }
+        },
         "/wechatapi/small/article/topics": {
             "get": {
                 "tags": [
@@ -968,6 +1207,23 @@
                 ],
                 "description": "get all Articles",
                 "operationId": "ArticleController.GetAll",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Article"
+                        }
+                    }
+                }
+            }
+        },
+        "/wechatapi/small/article/updateCount": {
+            "get": {
+                "tags": [
+                    "wechatapi/small/article"
+                ],
+                "description": "文章访问量增加 +1",
+                "operationId": "ArticleController.访问量自增",
                 "responses": {
                     "200": {
                         "description": "",
@@ -1041,30 +1297,6 @@
                     },
                     "403": {
                         "description": ":uid is empty"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "wechatapi/small/article"
-                ],
-                "description": "delete the artile",
-                "operationId": "ArticleController.Delete",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "uuid",
-                        "description": "The uuid you want to delete",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{string} delete success!"
-                    },
-                    "403": {
-                        "description": "uid is empty"
                     }
                 }
             }
@@ -1484,6 +1716,20 @@
                 }
             }
         },
+        "/wechatapi/small/image/getList": {
+            "get": {
+                "tags": [
+                    "wechatapi/small/image"
+                ],
+                "description": "Logs out current logged in user session",
+                "operationId": "ImageController.Get Image info List",
+                "responses": {
+                    "200": {
+                        "description": "{string} logout success"
+                    }
+                }
+            }
+        },
         "/wechatapi/small/location/": {
             "post": {
                 "tags": [
@@ -1544,7 +1790,7 @@
         "/wechatapi/small/user/": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -1559,7 +1805,7 @@
             },
             "post": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "create users",
                 "operationId": "UserController.CreateUser",
@@ -1587,7 +1833,7 @@
         "/wechatapi/small/user/formid": {
             "post": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "Colloect Wechet User Form Id, prepare for sending template message.",
                 "operationId": "UserController.FormID",
@@ -1597,7 +1843,7 @@
                         "name": "openid",
                         "description": "wechat user openid",
                         "schema": {
-                            "$ref": "#/definitions/.true"
+                            "$ref": "#/definitions/true"
                         }
                     },
                     {
@@ -1605,7 +1851,7 @@
                         "name": "formid",
                         "description": "wechat formid",
                         "schema": {
-                            "$ref": "#/definitions/.true"
+                            "$ref": "#/definitions/true"
                         }
                     }
                 ],
@@ -1622,7 +1868,7 @@
         "/wechatapi/small/user/get_drag_list": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -1639,7 +1885,7 @@
         "/wechatapi/small/user/get_info": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -1654,9 +1900,36 @@
             }
         },
         "/wechatapi/small/user/login": {
+            "get": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "get user by uid",
+                "operationId": "UserController.for webapi user login",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uid",
+                        "description": "The key for staticblock",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Article"
+                        }
+                    },
+                    "403": {
+                        "description": ":uid is empty"
+                    }
+                }
+            },
             "post": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "Logs user into the system",
                 "operationId": "UserController.Login",
@@ -1686,10 +1959,10 @@
                 }
             }
         },
-        "/wechatapi/small/user/save_error_logger": {
+        "/wechatapi/small/user/logout": {
             "post": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get all Users",
                 "operationId": "UserController.GetAll",
@@ -1703,10 +1976,43 @@
                 }
             }
         },
+        "/wechatapi/small/user/updateUserInfo": {
+            "post": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "更新用户信息",
+                "operationId": "UserController.UpdateUserInfo",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "username",
+                        "description": "The username for login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "The password for login",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} login success"
+                    },
+                    "403": {
+                        "description": "user not exist"
+                    }
+                }
+            }
+        },
         "/wechatapi/small/user/{uid}": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "get user by uid",
                 "operationId": "UserController.Get",
@@ -1733,7 +2039,7 @@
             },
             "put": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
                 ],
                 "description": "update the user",
                 "operationId": "UserController.Update",
@@ -1769,7 +2075,318 @@
             },
             "delete": {
                 "tags": [
-                    "webapi"
+                    "webapi/user"
+                ],
+                "description": "delete the user",
+                "operationId": "UserController.Delete",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uid",
+                        "description": "The uid you want to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "uid is empty"
+                    }
+                }
+            }
+        },
+        "/wechatapi/user/": {
+            "get": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "get all Users",
+                "operationId": "UserController.GetAll",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "create users",
+                "operationId": "UserController.CreateUser",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for user content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{int} models.User.Id"
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/wechatapi/user/formid": {
+            "post": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "Colloect Wechet User Form Id, prepare for sending template message.",
+                "operationId": "UserController.FormID",
+                "parameters": [
+                    {
+                        "in": "string",
+                        "name": "openid",
+                        "description": "wechat user openid",
+                        "schema": {
+                            "$ref": "#/definitions/true"
+                        }
+                    },
+                    {
+                        "in": "string",
+                        "name": "formid",
+                        "description": "wechat formid",
+                        "schema": {
+                            "$ref": "#/definitions/true"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} login success"
+                    },
+                    "403": {
+                        "description": "forbidden"
+                    }
+                }
+            }
+        },
+        "/wechatapi/user/get_drag_list": {
+            "get": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "get all Users",
+                "operationId": "UserController.GetAll",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/wechatapi/user/get_info": {
+            "get": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "get all Users",
+                "operationId": "UserController.GetAll",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/wechatapi/user/login": {
+            "get": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "get user by uid",
+                "operationId": "UserController.for webapi user login",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uid",
+                        "description": "The key for staticblock",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Article"
+                        }
+                    },
+                    "403": {
+                        "description": ":uid is empty"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "Logs user into the system",
+                "operationId": "UserController.Login",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "username",
+                        "description": "The username for login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "The password for login",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} login success"
+                    },
+                    "403": {
+                        "description": "user not exist"
+                    }
+                }
+            }
+        },
+        "/wechatapi/user/logout": {
+            "post": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "get all Users",
+                "operationId": "UserController.GetAll",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/wechatapi/user/updateUserInfo": {
+            "post": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "更新用户信息",
+                "operationId": "UserController.UpdateUserInfo",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "username",
+                        "description": "The username for login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "The password for login",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} login success"
+                    },
+                    "403": {
+                        "description": "user not exist"
+                    }
+                }
+            }
+        },
+        "/wechatapi/user/{uid}": {
+            "get": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "get user by uid",
+                "operationId": "UserController.Get",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uid",
+                        "description": "The key for staticblock",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "403": {
+                        "description": ":uid is empty"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "webapi/user"
+                ],
+                "description": "update the user",
+                "operationId": "UserController.Update",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uid",
+                        "description": "The uid you want to update",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for user content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "403": {
+                        "description": ":uid is not int"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "webapi/user"
                 ],
                 "description": "delete the user",
                 "operationId": "UserController.Delete",
@@ -1795,7 +2412,7 @@
         "/wechatapi/wechat//createqrcode": {
             "post": {
                 "tags": [
-                    "webapi"
+                    "wechatapi/wechat"
                 ],
                 "description": "create users",
                 "operationId": "WechatController.CreateArticle",
@@ -1823,7 +2440,7 @@
         "/wechatapi/wechat//login": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "wechatapi/wechat"
                 ],
                 "description": "get user by uid",
                 "operationId": "WechatController.Get",
@@ -1852,7 +2469,7 @@
         "/wechatapi/wechat//userinfolist": {
             "get": {
                 "tags": [
-                    "webapi"
+                    "wechatapi/wechat"
                 ],
                 "description": "get user by uid",
                 "parameters": [
@@ -1934,13 +2551,12 @@
         }
     },
     "definitions": {
-        ".Admin": {
+        "gorm.Model": {
+            "title": "Model",
             "type": "object"
         },
-        ".Model": {
-            "type": "object"
-        },
-        ".true": {
+        "models.Admin": {
+            "title": "Admin",
             "type": "object"
         },
         "models.Article": {
@@ -1948,13 +2564,6 @@
             "type": "object",
             "properties": {
                 "Address": {
-                    "type": "string"
-                },
-                "Age": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "Arcid": {
                     "type": "string"
                 },
                 "AvatarUrl": {
@@ -2081,6 +2690,10 @@
                     "type": "string"
                 }
             }
+        },
+        "true": {
+            "title": "true",
+            "type": "object"
         }
     },
     "tags": [
@@ -2101,6 +2714,10 @@
             "description": "Operations about Articles\n"
         },
         {
+            "name": "wechatapi/small/image",
+            "description": "Operations about images\n"
+        },
+        {
             "name": "wechatapi/small/comment",
             "description": "Operations about Users\n"
         },
@@ -2110,6 +2727,10 @@
         },
         {
             "name": "wechatapi/small/user",
+            "description": "Operations about Users\n"
+        },
+        {
+            "name": "wechatapi/user",
             "description": "Operations about Users\n"
         },
         {
@@ -2145,12 +2766,16 @@
             "description": "Operations about Users\n"
         },
         {
-            "name": "webapi",
+            "name": "webapi/robot",
             "description": "Operations about Users\n"
         },
         {
-            "name": "webapi",
-            "description": "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=ACCESS_TOKEN\nOperations about Articles\n"
+            "name": "webapi/report",
+            "description": "Operations about Users\n"
+        },
+        {
+            "name": "webapi/user",
+            "description": "Operations about Users\n"
         }
     ]
 }

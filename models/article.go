@@ -108,6 +108,7 @@ func AddArticleSummary(articleSummary ArticleSummary) {
 	return
 }
 
+// 根据 uuid 找到对应的 article
 func GetArticle(uuid string) (article Article, err error) {
 
 	conn.Where("uuid = ?", uuid).Last(&article)
@@ -171,10 +172,25 @@ func UpdateArticle(article Article) {
 	conn.Debug().Save(&article)
 }
 
+// 根据 uuid 删除 article
 func DeleteArticle(uuid string) (flag bool) {
 	beego.Info("delete uuid:", uuid)
 	conn.Debug().Where("uuid = ?", uuid).Delete(Article{})
 
+	return
+}
+
+// 根据 babyid 删除 article
+func DeleteArticleByBabyId(babyid int64) (isSuccess bool) {
+	beego.Info("delete article by babyid:", babyid)
+	err := conn.Debug().Where("babyid = ?", babyid).Delete(Article{})
+	if err.Error != nil {
+		beego.Error("delete article by babyid fail, error:", err.Error)
+		isSuccess = false
+	} else {
+		beego.Info("delete article by babyid successfully")
+		isSuccess = true
+	}
 	return
 }
 
@@ -232,6 +248,20 @@ func GetArticleOverviewByPage(page int) (overviews []ArticleOverview) {
 	return
 }
 
+// 根据 babyid 删除 article_summary
+func DeleteArticleSumByBabyId(babyid int64) (isSuccess bool) {
+	beego.Info("delete article_summary by babyid:", babyid)
+	err := conn.Debug().Where("babyid = ?", babyid).Delete(ArticleSummary{})
+	if err.Error != nil {
+		beego.Error("delete article_summary by babyid fail, error:", err.Error)
+		isSuccess = false
+	} else {
+		beego.Info("delete article_summary by babyid successfully")
+		isSuccess = true
+	}
+	return
+}
+
 // 更新总览
 func UpdateArticleVisit(babyid int64) ( status int8) {
 	db := conn.Table("article_summaries").Where("babyid = ?", babyid).UpdateColumn("Visit", gorm.Expr("visit + ?", 1))
@@ -276,3 +306,4 @@ func UpdateArticleAvatarUrl(babyid int64, avatarUrl string) {
 	article.AvatarUrl = avatarUrl
 	conn.Debug().Model(&article).Where("babyid = ?", babyid).Update("avatar_url", avatarUrl)
 }
+
