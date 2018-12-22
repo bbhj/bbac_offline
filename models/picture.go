@@ -14,3 +14,8 @@ type (
 
 	}
 )
+
+func GetPictureInfoList(babyid int64, uuid string) (pictureInfo []PictureInfo) {
+        conn.Debug().Where("babyid = ? or uuid = ?", babyid, uuid).Find(&pictureInfo)
+        return
+}

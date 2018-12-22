@@ -23,6 +23,7 @@ func init() {
 	// beego.InsertFilter(`((?!/lastest/wechatapi/wechat/login$).*)`, beego.BeforeRouter, func(ctx *context.Context) {
 	beego.InsertFilter("/*", beego.BeforeRouter, func(ctx *context.Context) {
 		beego.Info("request cookie token:", ctx.GetCookie("token"))
+		return
 		if "dev" != beego.AppConfig.String("runmode") {
 			return
 		}
@@ -55,6 +56,7 @@ func init() {
 		beego.NSNamespace("/lbs", beego.NSInclude(&controllers.BaiduLBSController{})),
 		beego.NSNamespace("/wechatapi/small/admin", beego.NSInclude(&controllers.AdminController{})),
 		beego.NSNamespace("/wechatapi/small/article", beego.NSInclude(&controllers.ArticleController{})),
+		beego.NSNamespace("/wechatapi/small/image", beego.NSInclude(&controllers.ImageController{})),
 		beego.NSNamespace("/wechatapi/small/comment", beego.NSInclude(&controllers.CommentController{})),
 		beego.NSNamespace("/wechatapi/small/contact", beego.NSInclude(&controllers.ContactController{})),
 		beego.NSNamespace("/wechatapi/small/user", beego.NSInclude(&controllers.UserController{})),
