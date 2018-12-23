@@ -249,15 +249,24 @@ func (u *ArticleController) Put() {
 }
 
 // @Title Delete article by uuid
-// @Description delete the artile by uuid
+// @Description 使用场景：管理员清空测试数据使用
 // @Param	uuid		query 	string	true		"The uuid you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 uid is empty
 // @router /delete [get]
 func (u *ArticleController) Delete() {
+	babyid,_ := u.GetInt64("babyid")
 	uuid := u.GetString("uuid")
-	models.DeleteArticle(uuid)
-	u.Data["json"] = "delete success!"
+	// type := u.GetString("type")
+	if babyid == 0 && uuid == "" {
+		beego.Error("delete babyid or uuid is null")
+	}
+	models.DeleteArticle(babyid, uuid)
+	var ret models.RetMsg
+	// ret.Status = -1
+	ret.Msg = "Delete success, uuid=" + uuid
+    // ret.Errmsg = "Delete failed, uuid="	
+	u.Data["json"] = ret
 	u.ServeJSON()
 }
 

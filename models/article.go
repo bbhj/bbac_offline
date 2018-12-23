@@ -173,9 +173,12 @@ func UpdateArticle(article Article) {
 }
 
 // 根据 uuid 删除 article
-func DeleteArticle(uuid string) (flag bool) {
+func DeleteArticle(babyid int64, uuid string) (flag bool) {
 	beego.Info("delete uuid:", uuid)
-	conn.Debug().Where("uuid = ?", uuid).Delete(Article{})
+	// delete from ..  where uuid = .. or babyid = 11; 
+	// Unscoped()硬删除，管理员清理数据所用
+	conn.Debug().Unscoped().Where("uuid = ?", uuid).Or("babyid = ?", babyid).Delete(Article{})
+	conn.Debug().Unscoped().Where("uuid = ?", uuid).Or("babyid = ?", babyid).Delete(ArticleSummary{})
 
 	return
 }

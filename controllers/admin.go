@@ -69,20 +69,6 @@ func (u *AdminController) Get() {
 // 	u.ServeJSON()
 // }
 
-// @Title Delete
-// @Description delete the user
-// @Param	uuid		path 	string	true		"The uid you want to delete"
-// @Success 200 {string} delete success!
-// @Failure 403 uuid is empty
-// @router /:uuid [delete]
-func (u *AdminController) Delete() {
-	uuid := strings.TrimLeft(u.GetString(":uuid"), ":")
-	models.DeleteSummary(uuid)
-	models.DeleteArticle(uuid)
-	u.Data["json"] = "delete success!"
-	u.ServeJSON()
-}
-
 // @Title Login
 // @Description Logs user into the system
 // @Param	username		query 	string	true		"The username for login"
