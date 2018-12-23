@@ -276,7 +276,7 @@ func UpdateArticleVisit(babyid int64) ( status int8) {
 }
 
 func UpdateArticleComment(babyid int64) (status int8) {
-	db := conn.Table("article_summaries").Where("babyid = ?", babyid).UpdateColumn("Comment", gorm.Expr("comment + ?", 1))
+	db := conn.Table("article_summaries").Where("babyid = ?", babyid).UpdateColumn("Comment", gorm.Expr("comment - ?", 1))
 	if db.Error != nil {
 		// db有错误，则为-1
 		status = -1

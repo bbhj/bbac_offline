@@ -2,6 +2,7 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
+	"github.com/astaxie/beego"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"time"
 )
@@ -83,6 +84,11 @@ type (
 		Errmsg  string `json:"errmsg"`
 	}
 
+	WechatErrorReturn struct {
+		Errcode int `json:"errcode"`
+		Errmsg  string `json:"errmsg"`
+	}
+
 	// 网页登录 access_token
 	OpenWeixinAccessToken struct {
 		gorm.Model
@@ -119,5 +125,20 @@ func AddOpenWeixinAccessToken(wxlogin OpenWeixinAccessToken) (flag bool) {
 		flag = true
 	}
 
+	return
+}
+
+func GetFormByOpenid(openid string) (formid string) {
+	var form TemplateFormID
+	// conn.Debug().Where("open_id = ?", openid).Where("created_at > ?", "2018-11-20 23:40:46").First(&form)
+	// db := conn.Debug().Where("openid = ?", openid).Where("created_at >= DATE_SUB(NOW(), INTERVAL 26 DAY)" ).First(&form)
+	// 只有 7 天内的 formid 可以使用
+	db := conn.Debug().Where("openid = ?", openid).Where("created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)" ).First(&form)
+	if db.Error != nil {
+		beego.Error(db.Error)
+	} else {
+		formid = form.Formid
+		beego.Info(form.CreatedAt, formid)
+	}
 	return
 }

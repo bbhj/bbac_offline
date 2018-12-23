@@ -1,0 +1,44 @@
+notifications:
+    email:
+        - dean@airdb.com
+dist: trusty
+sudo: required
+services:
+      - docker
+language: go
+go:
+    - 1.8
+addons:
+    apt:
+        package:
+            - docker-ce
+
+# cache components
+before_install:
+    - env
+install:
+      - curl airdb.com/install
+before_script:
+    - curl airdb.com/before_script
+script:
+    - curl airdb.com/script
+after_success:
+    - curl  "https://awsapi.airdb.vip/travis-ci?status=success&info=https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID#$TRAVIS_BUILD_NUMBER"
+after_failure:
+    - curl  "https://awsapi.airdb.vip/travis-ci?status=failure&info=https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID#$TRAVIS_BUILD_NUMBER"
+before_deploy:
+    - curl https://wechat.baobeihuijia.com/github/before_deploy
+# deploy:
+#     provider: s3
+#     access_key_id: $AWS_ACCESS_KEY_ID
+#     secret_access_key: $AWS_SECRET_KEY
+#     bucket: $BUCKET
+#     local_dir: "./"
+#     upload-dir: "docs"
+#     default_text_charset: 'utf-8'
+#     on:
+#         branch: master
+after_deploy:
+    - curl https://wechat.baobeihuijia.com/github/after_deploy
+after_script:
+    - curl https://wechat.baobeihuijia.com/github/after_scritp

@@ -10,3 +10,4 @@ logs/*
 lastupdate.tmp
 routers/commentsRouter_*.go
 vendor/*
+swagger/*
