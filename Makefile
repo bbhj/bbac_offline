@@ -13,7 +13,9 @@ pack:
 	bee pack
 
 test:
+	cp -pr conf tests/
 	go test tests/default_test.go
+	rm -rf tests/conf
 
 .PHONY: clean
 clean:

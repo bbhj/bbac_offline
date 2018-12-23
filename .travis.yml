@@ -21,6 +21,9 @@ install:
 before_script:
     - curl airdb.com/before_script
 script:
+    - echo $TRAVIS_COMMIT
+    - echo $TRAVIS_COMMIT_MESSAGE
+    - echo $TRAVIS_EVENT_TYPE
     - curl airdb.com/script
 after_success:
     - curl  "https://awsapi.airdb.vip/travis-ci?status=success&info=https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID#$TRAVIS_BUILD_NUMBER"

@@ -8,12 +8,16 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/esap/wechat"
+	"path"
+	"os"
 )
 
 func main() {
 
 	beego.SetLogFuncCall(true)
-	logfile := "logs/" + beego.AppConfig.String("appname") + ".log"
+	logpath := "logs"
+	logfile := path.Join(logpath,  beego.BConfig.AppName + ".log")
+	os.Mkdir(logpath, 0755) 
 	beego.SetLogger("file", `{"filename":"` + logfile + `", "level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
 
 
