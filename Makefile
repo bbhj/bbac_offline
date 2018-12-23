@@ -17,6 +17,11 @@ test:
 	go test tests/default_test.go
 	rm -rf tests/conf
 
+merge:
+	git checkout master
+	git pull
+	git merge master
+
 .PHONY: clean
 clean:
 	rm -f $(BUILD) $(DEPLOYMENT)
