@@ -248,47 +248,51 @@ func (u *ArticleController) Put() {
 	u.ServeJSON()
 }
 
-// @Title Delete article by uuid
-// @Description 使用场景：管理员清空测试数据使用
-// @Param	uuid		query 	string	true		"The uuid you want to delete"
-// @Success 200 {string} delete success!
-// @Failure 403 uid is empty
+// @Title Delete article
+// @Description 使用场景：管理员清空测试数据使用(硬删除)
+// @Param	uuid		query 	string	false		"The uuid you want to delete"
+// @Param	babyid		query	int64	false		"The babyid of article"
+// @Param	deleteType		query	int		true		"删除的方式:删一个则deleteType=1，删全部则deleteType=9"
+// @Success 200 {object}	models.RetMsg
+// @Failure 403 delete fail
 // @router /delete [get]
 func (u *ArticleController) Delete() {
-	babyid,_ := u.GetInt64("babyid")
-	uuid := u.GetString("uuid")
-	// type := u.GetString("type")
-	if babyid == 0 && uuid == "" {
-		beego.Error("delete babyid or uuid is null")
-	}
-	models.DeleteArticle(babyid, uuid)
 	var ret models.RetMsg
-	// ret.Status = -1
-	ret.Msg = "Delete success, uuid=" + uuid
-    // ret.Errmsg = "Delete failed, uuid="	
+	babyid, _ := u.GetInt64("babyid")
+	uuid := u.GetString("uuid")
+	deleteType, _ := u.GetInt64("deleteType")
+	fmt.Println("-------recive:", babyid, uuid, deleteType)
+	if deleteType == 0 || (deleteType == 1 && babyid == 0 && uuid == "") {
+		beego.Error("delete deleteType or babyid or uuid is null")
+		ret.Errmsg = "deleteType or babyid or uuid is null"
+	}
+	res := false
+	switch deleteType {
+		case 1: {
+			res = models.DeleteArticle(babyid, uuid)
+			if res {
+				ret.Msg = "Delete success, uuid=" + uuid
+			} else {
+				ret.Errmsg = "Delete fail"
+			}
+		}
+		case 9: {
+			res = models.DeleteAllArticle()
+			if res {
+				ret.Msg = "Delete success"
+			} else {
+				ret.Errmsg = "Delete fail"
+			}
+		}
+	}
+	if ret.Errmsg != "" {
+		ret.Status = -1
+	} else {
+		ret.Status = 0
+	}
 	u.Data["json"] = ret
 	u.ServeJSON()
 }
-
-// @Title Delete by babyid
-// @Description delete the article and article_summary by babyid
-// @Param	babyid		query 	int64	true	"The babyid you want to delete"
-// @Success 200 {string} delete success!
-// @Failure 403 babyid is empty
-// @router /deleteByBabyId [get]
-func (u *ArticleController) DeleteByBabyId() {
-	babyid, _ := u.GetInt64("babyid")
-	// fmt.Println("====receive babyid:", babyid)
-	res1 := models.DeleteArticleByBabyId(babyid)
-	res2 := models.DeleteArticleSumByBabyId(babyid)
-	if res1 && res2 {
-		u.Data["json"] = "delete success!"
-	} else {
-		u.Data["json"] = "delete fail!"
-	}
-	u.ServeJSON()
-}
-
 
 // @Title 返回文章的浏览、评论、转发等数量
 // @Description get all Articles
