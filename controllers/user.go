@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/logs"
 )
 
 const (
@@ -154,11 +153,10 @@ func (u *UserController) Login() {
 // @Failure 403 forbidden
 // @router /formid [post]
 func (u *UserController) FormID() {
-	fmt.Println("===form====:")
 	var tform models.TemplateFormID
 	json.Unmarshal(u.Ctx.Input.RequestBody, &tform)
 	fmt.Println("===form====:", tform)
-	logs.Info("wechat formid: ", tform)
+	beego.Info("wechat formid: ", tform)
 	models.AddTemplateFormID(tform)
 
 	u.Data["json"] = "status: 0"
@@ -207,7 +205,7 @@ func (u *UserController) WxLogin() {
 	wxauth.ShareTicket = u.GetString("shareTicket")
 
 	// json.Unmarshal(u.Ctx.Input.RequestBody, &wxauth)
-	logs.Info("-------------", wxauth)
+	beego.Info("-------------", wxauth)
 	if "" == wxauth.Code {
 		return
 	}
@@ -234,14 +232,14 @@ func (u *UserController) WxLogin() {
 
 		// r, _ := req.Get(apiurl)
 		// beego.Error("=========nul == wxauth.Scene", r)
-		// // logs.Info(r)
+		// // beego.Info(r)
 		// r.ToJSON(&wxlogin)
 		// if wxlogin.Openid == "" {
 		// 	wxlogin.Openid = "oa05b03KtOVAv8OeGbx11iYjZHHU"
 		// }
 		wxlogin.Openid = "oa05b03KtOVAv8OeGbx11iYjZHHU"
 		models.AddOpenWeixinAccessToken(wxlogin)
-		logs.Info("weixin login: ", wxlogin)
+		beego.Info("weixin login: ", wxlogin)
 
 		// get userinfo
 		apiurl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + wxlogin.AccessToken + "&openid=" + wxlogin.Openid
@@ -249,7 +247,7 @@ func (u *UserController) WxLogin() {
 		var webuserinfo models.User
 		r.ToJSON(&webuserinfo)
 		models.AddUserInfo(webuserinfo)
-		logs.Info("get weixin userinfo: ", webuserinfo)
+		beego.Info("get weixin userinfo: ", webuserinfo)
 
 		// u.Ctx.SetCookie("access_token", wxlogin.AccessToken, 7200)
 		u.Ctx.SetCookie("token", wxlogin.AccessToken, 7200)

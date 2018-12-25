@@ -133,7 +133,9 @@ func GetFormByOpenid(openid string) (formid string) {
 	// conn.Debug().Where("open_id = ?", openid).Where("created_at > ?", "2018-11-20 23:40:46").First(&form)
 	// db := conn.Debug().Where("openid = ?", openid).Where("created_at >= DATE_SUB(NOW(), INTERVAL 26 DAY)" ).First(&form)
 	// 只有 7 天内的 formid 可以使用
-	db := conn.Debug().Where("openid = ?", openid).Where("created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)" ).First(&form)
+	// db := conn.Debug().Where("openid = ?", openid).Where("created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)" ).First(&form)
+	// status = 1 表示初始化
+	db := conn.Debug().Not("formid", "the formId is a mock one").Where("status = 1 and openid = ?", openid).Where("created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)" ).First(&form)
 	if db.Error != nil {
 		beego.Error(db.Error)
 	} else {
@@ -141,4 +143,11 @@ func GetFormByOpenid(openid string) (formid string) {
 		beego.Info(form.CreatedAt, formid)
 	}
 	return
+}
+
+func UpdateFromidStatus(formid string) {
+	var form TemplateFormID
+	form.Formid = formid
+	form.Status = 0
+	conn.Debug().Model(&form).Where("formid = ?", formid).UpdateColumn("status", form.Status)
 }

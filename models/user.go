@@ -124,3 +124,8 @@ func GetUserProfile(openid string) (profile Profile) {
 	beego.Info("=====", openid, profile)
 	return
 }
+
+func GetAdminList() (profile []Profile) {
+	conn.Debug().Where("is_admin = true").Find(&profile)
+	return
+}

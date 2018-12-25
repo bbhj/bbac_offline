@@ -8,8 +8,16 @@ import (
 )
 
 func SendWechatTemplateMessage() {
+	beego.Info("====", models.GetAdminList())
+	for _,user := range models.GetAdminList() {
+		sendWechatTemplateMessageByOpenid(user.Openid)
+	}
+}
+func sendWechatTemplateMessageByOpenid(openid string) {
 	var tm models.TemplateMessage
-	tm.Touser = "oPPbr0M2h0geV-jgzUPve9g3x3jg"
+	tm.Touser = openid
+	// tm.Touser = "oPPbr0M2h0geV-jgzUPve9g3x3jg"
+	// tm.Touser = "oPPbr0K3mnqZD3Ykc0l9j9JYlaJ0"
 	// tm.TemplateID = "nYL5mnIUq5aybu8uZWaF1qwWPp_6Up4EhhUmrbHXWmc"
 	// tm.Page = "/pages/home/main"
 	// tm.EmphasisKeyword = ""
@@ -37,7 +45,13 @@ func SendWechatTemplateMessage() {
 	if err != nil {
 		beego.Error("post api failed, send wechat template message failed!")
 	}
+
 	var errret models.WechatErrorReturn
 	a2.ToJSON(&errret)
-	beego.Info("-----", errret)
+	if 0 == errret.Errcode {
+		models.UpdateFromidStatus(tm.FormID)
+		beego.Info("send wechat template message success. openid:", openid)
+	} else {
+		beego.Error("send wechat template message fail. msg:", errret, ", openid:", openid)
+	}
 }
