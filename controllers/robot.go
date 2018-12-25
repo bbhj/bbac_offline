@@ -4,13 +4,11 @@ import (
 	"github.com/bbhj/bbac/models"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
-	"strconv"
 
 	_ "encoding/json"
 	_ "crypto/hmac"
 	_ "crypto/sha1"
 	_ "encoding/base64"
-	"fmt"
 	_ "io"
 	_ "math/rand"
 	_ "time"
@@ -33,21 +31,25 @@ func (u *RobotController) QQ() {
 	// rmessage.Command = u.GetString("command")
 	// rmessage.Message = u.GetString("message")
 
-	var infoList []models.PreForumPost
-
 	keyword := u.GetString("message")
-
 	logs.Info("the reqeust keyword message: ",  keyword)
-	if ("" != keyword) {
-		infoList = models.GetAllPreForumPostByKeyword(keyword)
-	} else {
-		infoList = models.GetAllPreForumPostList()
-	}
 	msg := ""
-	for _, info := range infoList {
-		datafrom := fmt.Sprintf("https://bbs.baobeihuijia.com/thread-%s-1-1.html", strconv.FormatInt(int64(info.Tid), 10))
-		logs.Info("PreForumPost info: ", datafrom, info.Subject)
-		msg += info.Subject +"\n" + datafrom  + "\n"	
+	if ("" != keyword) {
+		for _, info := range models.GetArticleByKeyword(keyword) {
+			msg += info.Subject +"\n" + info.DataFrom  + "\n"	
+		}
+	}
+	if "" == msg {
+		if ("" != keyword) {
+			msg += "您的查询的信息，暂时无结果，可能是后台同步论坛数据失败。\n"
+		}
+
+		msg += "bbhj 机器人使用帮助\n"
+		msg += "示例1：bbhj 4407\n"
+		msg += "示例2：bbhj 山西 4407\n"
+		msg += "示例3：bbhj 山西 运城 张\n"
+		msg += "\n"
+		msg += "说明：bbhj命令支持最多3个关键字的查询; 命令及各关键字只能以空格分隔。"
 	}
 	msg += "(出处: 宝贝回家论坛)\n"
 	u.Ctx.WriteString(msg)

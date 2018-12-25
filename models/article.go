@@ -5,8 +5,9 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"time"
 	"strconv"
+	"strings"
+	"time"
 )
 
 type (
@@ -26,6 +27,7 @@ type (
 		Address  string
 		// Title      string `gorm:"size:60"`
 		Title           string
+		Subject         string
 		Characters      string
 		Details         string
 		DataFrom        string
@@ -103,7 +105,7 @@ func AddArticle(article Article) (uuid string) {
 }
 
 func AddArticleSummary(articleSummary ArticleSummary) {
-	conn.Debug().FirstOrCreate(&articleSummary , ArticleSummary{Babyid: articleSummary.Babyid})
+	conn.Debug().FirstOrCreate(&articleSummary, ArticleSummary{Babyid: articleSummary.Babyid})
 	conn.Save(&articleSummary)
 	return
 }
@@ -187,7 +189,7 @@ func DeleteArticle(babyid int64, uuid string) (flag bool) {
 	if err2.Error != nil {
 		beego.Error("delete articleSummary fail, error is:", err2.Error)
 		flag = false
-	} 
+	}
 	return
 }
 
@@ -204,7 +206,7 @@ func DeleteAllArticle() (flag bool) {
 	if err2.Error != nil {
 		beego.Error("delete articleSummary fail, error is:", err2.Error)
 		flag = false
-	} 
+	}
 	return
 }
 
@@ -250,7 +252,7 @@ func GetArticleOverviewByPage(page int) (overviews []ArticleOverview) {
 	step := 2
 	sqltext := "select * from articles, article_summaries where articles.babyid = article_summaries.babyid"
 	sqltext += " limit " + strconv.Itoa(step)
-	sqltext += " offset " + strconv.Itoa(step * page)
+	sqltext += " offset " + strconv.Itoa(step*page)
 	sqltext += " ;"
 	rows, _ := conn.Debug().Raw(sqltext).Rows()
 	var overview ArticleOverview
@@ -262,8 +264,27 @@ func GetArticleOverviewByPage(page int) (overviews []ArticleOverview) {
 	return
 }
 
+func GetArticleByKeyword(keyword string) (articles []Article) {
+	keys := strings.Split(keyword, " ")
+	beego.Error(keys)
+	if len(keys) == 3 {
+		keys[0] = "%" + keys[0] + "%"
+		keys[1] = "%" + keys[1] + "%"
+		keys[2] = "%" + keys[2] + "%"
+		conn.Debug().Where("subject like ? and subject like ? and subject like ? ", keys[0], keys[1], keys[2]).Select("subject, data_from").Order("missed_at desc").Limit(5).Find(&articles)
+	} else if len(keys) == 2 {
+		keys[0] = "%" + keys[0] + "%"
+		keys[1] = "%" + keys[1] + "%"
+		conn.Debug().Where("subject like ? and subject like ? ", keys[0], keys[1]).Select("subject, data_from").Order("missed_at desc").Limit(5).Find(&articles)
+	} else {
+		keys[0] = "%" + keys[0] + "%"
+		conn.Debug().Where("subject like ?", keys[0]).Select("subject, data_from").Order("missed_at desc").Limit(5).Find(&articles)
+	}
+	return
+}
+
 // 更新总览
-func UpdateArticleVisit(babyid int64) ( status int8) {
+func UpdateArticleVisit(babyid int64) (status int8) {
 	db := conn.Table("article_summaries").Where("babyid = ?", babyid).UpdateColumn("Visit", gorm.Expr("visit + ?", 1))
 	if db.Error != nil {
 		// db有错误，则为-1
