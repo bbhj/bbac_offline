@@ -63,7 +63,7 @@ func GetAllBBSInfo() (preForumPost []PreForumPost) {
 	//sqltext += " and subject like '%3313%' "
 	// sqltext += " and tid = 6485 "
 	sqltext += " order by pid desc"
-	sqltext += " limit 10 offset 0"
+	sqltext += " limit 1 offset 0"
 	bbsconn.Table("pre_forum_post").Raw(sqltext).Scan(&preForumPost)
 	return
 }

@@ -41,8 +41,8 @@ func trimHtml(src string) string {
 	src = re.ReplaceAllString(src, "")
 
 	// //去除连续的换行符
-	re, _ = regexp.Compile("\\s{4,}")
-	src = re.ReplaceAllString(src, "\n")
+	// re, _ = regexp.Compile("\\s{4,}")
+	// src = re.ReplaceAllString(src, "\n")
 
 	return strings.TrimSpace(src)
 }
@@ -51,6 +51,7 @@ func formatTime(tstr string) (tm time.Time, err error) {
 	// timeFormats := []string{"2006-01-02 15:04:05", "2006-01-0215:04:05", "2006-01", "2006-1-02", "2006-01-2", "2006-1-2", "2006-01-02", "2006-0102", "2006年1月2日", "2006年1月02日", "2006年01月2日", "2006年01月02日", "2006年01月**日", "2006年1月", "2006年"}
 	// timeFormats := []string{"2006-01-02 15:04:05", "2006-01-02150405", "2006-01-0215:04:05", "2006-01", "2006-1-02", "2006-01-2", "2006-1-2", "2006-01-02", "2006-0102", "2006--01-02", "2006年1月2日", "2006年1月02日", "2006年01月2日", "2006年01月02日", "2006年01月**日", "2006年1月", "2006年", "2006年01月02", "2006年01月02月", "2006月01月02日", "2006年01年02月", "2006年01年02日", "2006年1月02", "2006"}
 	timeFormats := []string{"2006-1月", "2006-01月", "2006年01", "2006年1", "006-1-2", "06年1月2", "20060102", "2006年1月2", "06>年1月2日", "2006", "2006-01-02 15:04:05", "2006-01-0215:04:05", "2006-01", "2006-1-02", "2006-01-2", "2006-1-2", "2006-01-02", "2006-0102", "2006--01-02", "2006年1月2日", "2006年1月02日", "2006年01月2日", "2006年01月02日", "2006年01月**日", "2006年1月", "2006年", "2006年01月02", "2006年01月02月", "2006月01月02日", "2006年01年02月", "2006年01年02日", "2006年1月02"}
+
 	for _, timeFormat := range timeFormats {
 		tm, err = time.ParseInLocation(timeFormat, tstr, time.Local)
 		if err == nil {
@@ -115,17 +116,18 @@ func parseHtml(datafrom, title, msg string) (article models.Article) {
 		// 格式化key, value
 		// exp = regexp.MustCompile(`(\[.+?\])|(\^M)|：|:|(\s)|(\r)`)
 		exp = regexp.MustCompile(`(\[.+?\])|(\^M)|：|:|(\s)`)
-		key = exp.ReplaceAllString(key, "")
 		value = exp.ReplaceAllString(value, "")
+		key = exp.ReplaceAllString(key, "")
 		// beego.Error(key)
 
-		// // 删除key中的非汉字和空格
-		// exp = regexp.MustCompile(`[^\p{Han}]| `)
-		// key = exp.ReplaceAllString(key, "")
+		// 删除key中的非汉字和空格
+		exp = regexp.MustCompile(`[^\p{Han}]| `)
+		key = exp.ReplaceAllString(key, "")
 
 		// tmexp := regexp.MustCompile(`[（|(].*[）|)]|农历|阳历|不准确|大概|日期不确定|不确定|约|X日|份左右|期不详。|。|具体.+?|失踪|宋振彪|宋振邦2008年|.*身份证日期|左右|号|阴历|某天|夏.*|年底|腊月.*|九.*|八.*|天已记不清楚|冬月.*|正.*|初.*|下午1点半|大|生`)
 		tmexp := regexp.MustCompile(`[（|(].*[）|)]|农历|公历|古历|阳历|旧历|不准确|大概|日期不确定|不确定|约|X日|份左右|期不
 详。|。|具体.*|失踪.*|宋振彪|宋振邦2008年|.*身份证日期|左右|号|阴历|某天|夏.*|年底|腊月.*|九.*|八.*|天已记不清楚|冬月.*|正.*|初.*|下>午.*|大|0{4,}|生.*|出.*|元月.*|上午.*|晚上.*|十.*|七.*|五.*|一.*|二.*|三.*|四.*|~.*|、.*|或.*|&.*|失|————|到.*|暑假|是|和.*|《.*|（.*|冬天|之间|早上.*|深秋|底|春.*|秋.*|·`)
+
 		switch key {
 		case "寻亲类别", "类别":
 			article.Category = value
@@ -163,11 +165,12 @@ func parseHtml(datafrom, title, msg string) (article models.Article) {
 			if err != nil {
 				beego.Error("出生日期", value, err)
 			}
-			// beego.Info(key, value, ", 格式化:", article.BirthedAt)
+			beego.Info(key, value, ", 格式化:", article.BirthedAt)
 		case "失踪日期", "失踪时间":
 			value = tmexp.ReplaceAllString(value, "")
 			value = strings.Replace(value, "—", "", -1)
 			article.MissedAt, err = formatTime(value)
+			// tm = tm.Format("2006-01-02 15:04:05")
 			if err != nil {
 				beego.Error("失踪日期", value, err)
 			}
@@ -183,7 +186,7 @@ func parseHtml(datafrom, title, msg string) (article models.Article) {
 			}
 		}
 	}
-	beego.Info("Babyid:", article.Babyid, ", 数据来源:", article.MissedAddress)
+	beego.Info("Babyid:", article.Babyid, ", 数据来源:", article.Nickname)
 	return
 }
 
@@ -204,9 +207,9 @@ func syncFrombbs() {
 			continue
 		}
 
-			article.UUID = uuid.New().String()
-			models.AddArticle(article)
-			models.SyncPictureFromBbs(preForumPost.Tid, preForumPost.Pid, article.Babyid, article.UUID)
+		article.UUID = uuid.New().String()
+		models.AddArticle(article)
+		models.SyncPictureFromBbs(preForumPost.Tid, preForumPost.Pid, article.Babyid, article.UUID)
 		// if beego.BConfig.RunMode == "prod" {
 		// }
 		// return

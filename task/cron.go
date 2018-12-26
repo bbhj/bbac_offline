@@ -11,7 +11,7 @@ import (
 )
 
 func CronTask() {
-	// syncFrombbs()
+	syncFrombbs()
 	// SendWechatTemplateMessage()
 	// return
 

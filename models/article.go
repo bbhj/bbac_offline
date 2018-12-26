@@ -43,7 +43,7 @@ type (
 		MissedAddress  string
 		MissedAt       time.Time
 		Handler        string
-		Babyid         int64 `gorm:"type:int64;unique_index"`
+		Babyid         int64 
 		Category       string
 		Height         string
 	}

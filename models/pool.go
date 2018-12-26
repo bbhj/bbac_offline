@@ -32,7 +32,7 @@ func Close() {
 func Init() (flag bool, errmsg string) {
 	
 	var db *gorm.DB
-	db = conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Article{})
+	db = conn.Debug().Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Article{})
 	db = conn.Debug().Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ArticleSummary{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Contact{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Login{})
