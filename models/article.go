@@ -21,10 +21,10 @@ type (
 		Nickname  string
 		// 值为1时是男性，值为2时是女性，值为0时是未知
 		Gender   uint
-		Province string
-		City     string
-		Country  string
-		Address  string
+		// Province string
+		// City     string
+		// Country  string
+		// Address  string
 		// Title      string `gorm:"size:60"`
 		Title           string
 		Subject         string

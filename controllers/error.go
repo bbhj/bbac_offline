@@ -2,7 +2,7 @@ package controllers
 
 import (
 	_ "encoding/json"
-	_ "github.com/bbhj/bbac/models"
+	"github.com/bbhj/bbac/models"
 	_ "strings"
 
 	"github.com/astaxie/beego"
@@ -15,16 +15,25 @@ type ErrorController struct {
 }
 
 func (u *ErrorController) Error404() {
-	u.Data["json"] = map[string]string{"msg": "404 page not found"}
+	var ret models.RetMsg
+	ret.Status = -1
+	ret.Errmsg = "404 page not found."
+	u.Data["json"] = ret
 	u.ServeJSON()
 }
 
 func (u *ErrorController) Error501() {
-	u.Data["json"] = map[string]string{"msg": "404 page not found"}
+	var ret models.RetMsg
+	ret.Status = -1
+	ret.Errmsg = "404 page not found."
+	u.Data["json"] = ret
 	u.ServeJSON()
 }
 
 func (u *ErrorController) ErrorDB() {
-	u.Data["json"] = map[string]string{"msg": "404 page not found"}
+	var ret models.RetMsg
+	ret.Status = -1
+	ret.Errmsg = "404 page not found."
+	u.Data["json"] = ret
 	u.ServeJSON()
 }

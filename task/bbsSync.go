@@ -4,24 +4,12 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/bbhj/bbac/models"
 	"github.com/google/uuid"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "log"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
-)
-
-type (
-	PreForumPost struct {
-		gorm.Model
-		Message string `json:"message"`
-		Subject string `json:"subject"`
-		Useip   string `json:"useip"`
-		Pid     int64  `json:"pid"`
-		Tid     int64  `json:"tid"`
-	}
 )
 
 // 去掉html中所有标签
@@ -100,7 +88,7 @@ func parseHtml(datafrom, title, msg string) (article models.Article) {
 
 	infoList := strings.Split(msg, "\r")
 	if len(infoList) <= 1 {
-		beego.Error("=======fail", datafrom, "==========")
+		// beego.Error("=======fail", datafrom, "==========")
 		// beego.Error(msg)
 		infoList = strings.Split(msg, "\n")
 	}
@@ -108,6 +96,7 @@ func parseHtml(datafrom, title, msg string) (article models.Article) {
 		if "" == info {
 			continue
 		}
+		// beego.Error("====", info)
 
 		exp := regexp.MustCompile(`：.*|:.*`)
 		valueList := exp.FindAllString(info, -1)
@@ -159,9 +148,9 @@ func parseHtml(datafrom, title, msg string) (article models.Article) {
 		case "失踪时身高":
 			article.Height = value
 		case "失踪人所在省", "籍贯":
-			article.Province = value
+			article.MissedProvince = value
 		case "失踪地点", "失踪地址", "地址":
-			article.Address = value
+			article.MissedAddress = value
 		case "失踪者特征描述":
 			article.Characters = value
 		case "失踪人户籍所在地":
@@ -194,7 +183,7 @@ func parseHtml(datafrom, title, msg string) (article models.Article) {
 			}
 		}
 	}
-	beego.Info("Babyid:", article.Babyid, ", 数据来源:", article.Details)
+	beego.Info("Babyid:", article.Babyid, ", 数据来源:", article.MissedAddress)
 	return
 }
 

@@ -131,12 +131,12 @@ func (u *CustomerController) Post() {
 				nickname := customertextmsg.Content
 				fmt.Println("isChinese true, nickname: ", nickname)
 				temp, _ := models.GetArticleBySearchBar(nickname, "")
-				msg = temp[0].Nickname + "地址：" + temp[0].Province + temp[0].City + temp[0].Address
+				msg = temp[0].Nickname + "地址：" + temp[0].MissedProvince + temp[0].MissedCity + temp[0].MissedAddress
 
 			} else if isInt(customertextmsg.Content) {
 				babyid := customertextmsg.Content
 				temp, _ := models.GetArticleBySearchBar("", babyid)
-				msg = temp[0].Nickname + "地址：" + temp[0].Province + temp[0].City + temp[0].Address
+				msg = temp[0].Nickname + "地址：" + temp[0].MissedProvince + temp[0].MissedCity + temp[0].MissedAddress
 				msg = `<a href="CustomerBot" data-miniprogram-appid="` + wechat_appid + `" data-miniprogram-path="pages/article/main?data=">` + strconv.FormatInt(temp[0].Babyid, 10) + "-" + temp[0].Nickname + `, 点击进入</a>`
 			}
 		} else {

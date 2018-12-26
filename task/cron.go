@@ -11,8 +11,9 @@ import (
 )
 
 func CronTask() {
-	SendWechatTemplateMessage()
-	return
+	// syncFrombbs()
+	// SendWechatTemplateMessage()
+	// return
 
 	timeStr := "0/5 * * * * *" //每隔3秒执行
 
@@ -30,7 +31,6 @@ func CronTask() {
 
 	toolbox.AddTask("tk1", t1)
 	toolbox.StartTask()
-	// syncFrombbs()
 }
 
 func weixinData() {
