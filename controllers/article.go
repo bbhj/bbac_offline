@@ -210,16 +210,13 @@ func (u *ArticleController) GetTopics() {
 // @router /checkid [get]
 func (u *ArticleController) CheckId() {
 	var retmsg models.RetMsg
-	babyid, err := u.GetInt64("id")
-	if err != nil {
-		retmsg.Errmsg = fmt.Sprintf("baby id not int, id: %d", babyid)
-		retmsg.Status = -1
-	}
+	// babyid, err := u.GetInt64("id")
+	babyid := u.GetString("id")
 
 	if models.IsExistsBabyid(babyid) {
-		retmsg.Msg = fmt.Sprintf("baby id is exists, id: %d", babyid)
+		retmsg.Msg = fmt.Sprintf("baby id is exists, id: %s", babyid)
 	} else {
-		retmsg.Errmsg = fmt.Sprintf("baby id is not exists, id: %d", babyid)
+		retmsg.Errmsg = fmt.Sprintf("baby id is not exists, id: %s", babyid)
 		retmsg.Status = -1
 	}
 	u.Data["json"] = retmsg

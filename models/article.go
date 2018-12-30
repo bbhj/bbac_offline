@@ -20,7 +20,7 @@ type (
 		AvatarUrl string
 		Nickname  string
 		// 值为1时是男性，值为2时是女性，值为0时是未知
-		Gender   uint
+		Gender uint
 		// Province string
 		// City     string
 		// Country  string
@@ -35,22 +35,23 @@ type (
 		BirthedCity     string
 		BirthedCountry  string
 		BirthedAddress  string
-		BirthedAt       time.Time
+		BirthedAt       time.Time `gorm:"type:datetime"`
 
 		MissedCountry  string
 		MissedProvince string
 		MissedCity     string
 		MissedAddress  string
-		MissedAt       time.Time
+		MissedAt       time.Time `gorm:"column:missed_at;type:datetime"`
 		Handler        string
-		Babyid         int64 
+		Babyid         string
 		Category       string
 		Height         string
+		SyncStatus     int	`gorm:"column:syncstatus;default:0"`
 	}
 
 	ArticleSummary struct {
 		gorm.Model
-		Babyid int64 // `gorm:"type:int64"`
+		Babyid string // `gorm:"type:int64"`
 		// UUID        string `gorm:"type:string;unique_index"`
 		UUID string
 		// status, 0 未找到， 1 已找回, 其他预留，如紧急
@@ -61,7 +62,7 @@ type (
 	}
 
 	ArticleOverview struct {
-		Babyid int64
+		Babyid string
 		UUID   string
 		// status, 0 未找到， 1 已找回, 其他预留，如紧急
 		Status    int `gorm:"type:int;default:0"`
@@ -88,10 +89,7 @@ type (
 )
 
 func AddArticle(article Article) (uuid string) {
-	// err := conn.Debug().Where(Article{Babyid: article.Babyid}).FirstOrCreate(&article)
-	// err := conn.Debug().FirstOrCreate(&article, Article{Babyid: article.Babyid})
-	beego.Error(article.Babyid)
-	err := conn.Debug().FirstOrCreate(&article, Article{Babyid: article.Babyid})
+	err := conn.FirstOrCreate(&article, Article{Babyid: article.Babyid})
 	if err.Error != nil {
 		beego.Error("AddArticle error", err.Error)
 	} else {
@@ -104,8 +102,16 @@ func AddArticle(article Article) (uuid string) {
 	return
 }
 
+func AddArticleDataFrom(article Article) (uuid string) {
+	err := conn.FirstOrCreate(&article, Article{DataFrom: article.DataFrom})
+	if err.Error != nil {
+		beego.Error("AddArticle error", err.Error)
+	}
+	return
+}
+
 func AddArticleSummary(articleSummary ArticleSummary) {
-	conn.Debug().FirstOrCreate(&articleSummary, ArticleSummary{Babyid: articleSummary.Babyid})
+	conn.FirstOrCreate(&articleSummary, ArticleSummary{Babyid: articleSummary.Babyid})
 	conn.Save(&articleSummary)
 	return
 }
@@ -149,7 +155,7 @@ func GetArticlesByCity(province, city string, page int) (articles []Article) {
 	return
 }
 
-func IsExistsBabyid(babyid int64) (flag bool) {
+func IsExistsBabyid(babyid string) (flag bool) {
 	count := 0
 	conn.Debug().Table("articles").Where("babyid = ?", babyid).Count(&count)
 	fmt.Println("cound: ", count)
@@ -321,7 +327,7 @@ func UpdateArticleStatus(babyid int64) (status int8) {
 	return
 }
 
-func UpdateArticleAvatarUrl(babyid int64, avatarUrl string) {
+func UpdateArticleAvatarUrl(babyid, avatarUrl string) {
 	var article Article
 	article.Babyid = babyid
 	article.AvatarUrl = avatarUrl
