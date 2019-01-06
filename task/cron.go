@@ -12,8 +12,8 @@ import (
 
 func CronTask() {
 	// SendWechatTemplateMessage()
-	syncFrombbs()
-	return
+	// syncFrombbs()
+	// return
 
 	// timeStr := "0/5 * * * * *" //每隔3秒执行
 	timeStr := "0 */5 * * * *" // 每隔5分钟执行

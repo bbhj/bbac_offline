@@ -17,20 +17,20 @@ addons:
 before_install:
     - env
 install:
-      - curl airdb.com/install
+      - echo airdb.com/install
 before_script:
-    - curl airdb.com/before_script
+    - echo airdb.com/before_script
 script:
     - echo $TRAVIS_COMMIT
     - echo $TRAVIS_COMMIT_MESSAGE
     - echo $TRAVIS_EVENT_TYPE
-    - curl airdb.com/script
+    - echo airdb.com/script
 after_success:
-    - curl  "https://awsapi.airdb.vip/travis-ci?status=success&info=https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID#$TRAVIS_BUILD_NUMBER"
+    - echo "https://awsapi.airdb.vip/travis-ci?status=success&info=https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID#$TRAVIS_BUILD_NUMBER"
 after_failure:
-    - curl  "https://awsapi.airdb.vip/travis-ci?status=failure&info=https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID#$TRAVIS_BUILD_NUMBER"
+    - echo "https://awsapi.airdb.vip/travis-ci?status=failure&info=https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID#$TRAVIS_BUILD_NUMBER"
 before_deploy:
-    - curl https://wechat.baobeihuijia.com/github/before_deploy
+    - ehco https://wechat.baobeihuijia.com/github/before_deploy
 # deploy:
 #     provider: s3
 #     access_key_id: $AWS_ACCESS_KEY_ID
@@ -42,6 +42,6 @@ before_deploy:
 #     on:
 #         branch: master
 after_deploy:
-    - curl https://wechat.baobeihuijia.com/github/after_deploy
+    - echo https://wechat.baobeihuijia.com/github/after_deploy
 after_script:
-    - curl https://wechat.baobeihuijia.com/github/after_scritp
+    - echo https://wechat.baobeihuijia.com/github/after_scritp
