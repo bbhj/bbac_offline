@@ -8,6 +8,6 @@ plugins/*.so
 bbac
 logs/*
 lastupdate.tmp
-routers/commentsRouter_*.go
+routers/commentsRouter__*.go
 vendor/*
 swagger/*
