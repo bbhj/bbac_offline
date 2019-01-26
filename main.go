@@ -28,10 +28,6 @@ func main() {
 	wechat.Debug = false
 	wechat.Set(beego.AppConfig.String("wechat_token"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), beego.AppConfig.String("wechat_aeskey"))
 
-	// openid := "oPPbr0M2h0geV-jgzUPve9g3x3jg"
-	// msg := "xxx"
-	// wechat.SendText(openid, 0, msg)
-
 	go task.CronTask()
 	if beego.BConfig.RunMode != "prod" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
