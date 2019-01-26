@@ -1,28 +1,24 @@
 # This is the first stage, for building things that will be required by the
 # final stage (notably the binary)
 
-FROM airdb/beego:1.8.4
+FROM airdb/beego
 MAINTAINER Dean dean@airdb.com
-
-# RUN go get github.com/tools/godep
-# RUN go get github.com/astaxie/beego
-# RUN go get github.com/beego/bee
-# RUN go get github.com/bbhj/bbac
-# RUN godep get
 
 WORKDIR  /go/src/github.com/bbhj/bbac
 COPY go.mod go.sum ./
 RUN go mod download
 
 ADD . $WORKDIR
-RUN godep get -v
 
+RUN go build -o main
+# RUN pwd
 # The second and final stage
-FROM scratch
+# FROM scratch
+FROM centos
 
 # Copy the binary from the builder stage
-COPY --from=0 /myapp /myapp
+COPY --from=0 /go/src/github.com/bbhj/bbac/main /srv/
 
 EXPOSE 8080
 
-CMD ["bee run -downdoc=true -gendoc=true"]
+CMD ["/srv/main"]
