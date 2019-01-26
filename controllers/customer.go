@@ -12,7 +12,6 @@ import (
 	"io"
 	"regexp"
 	"sort"
-	"strconv"
 	"strings"
 )
 
@@ -137,7 +136,7 @@ func (u *CustomerController) Post() {
 				babyid := customertextmsg.Content
 				temp, _ := models.GetArticleBySearchBar("", babyid)
 				msg = temp[0].Nickname + "地址：" + temp[0].MissedProvince + temp[0].MissedCity + temp[0].MissedAddress
-				msg = `<a href="CustomerBot" data-miniprogram-appid="` + wechat_appid + `" data-miniprogram-path="pages/article/main?data=">` + strconv.FormatInt(temp[0].Babyid, 10) + "-" + temp[0].Nickname + `, 点击进入</a>`
+				msg = `<a href="CustomerBot" data-miniprogram-appid="` + wechat_appid + `" data-miniprogram-path="pages/article/main?data=">` + temp[0].Babyid + "-" + temp[0].Nickname + `, 点击进入</a>`
 			}
 		} else {
 		}

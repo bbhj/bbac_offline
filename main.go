@@ -15,11 +15,10 @@ import (
 func main() {
 
 	beego.SetLogFuncCall(true)
-	logpath := "logs"
-	logfile := path.Join(logpath,  beego.BConfig.AppName + ".log")
+	logpath := path.Join(beego.AppPath, "logs")
 	os.Mkdir(logpath, 0755) 
+	logfile := path.Join(logpath,  beego.BConfig.AppName + ".log")
 	beego.SetLogger("file", `{"filename":"` + logfile + `", "level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
-
 
 	models.Connect()
 	defer models.Close()

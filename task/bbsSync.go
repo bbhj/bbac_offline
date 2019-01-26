@@ -19,6 +19,10 @@ func trimHtml(src string) string {
 	re, _ := regexp.Compile("\\<[\\S\\s]+?\\>")
 	src = re.ReplaceAllStringFunc(src, strings.ToLower)
 
+	re, _ = regexp.Compile("\\[align=left\\]")
+	// src = re.ReplaceAllString(src, "\n\\[align=left\\]")
+	src = re.ReplaceAllString(src, "\n")
+
 	// //去除STYLE
 	re, _ = regexp.Compile("\\<style[\\S\\s]+?\\</style\\>")
 	src = re.ReplaceAllString(src, "")
@@ -30,6 +34,7 @@ func trimHtml(src string) string {
 	// [attach]
 	// src = strings.Replace(src, "[attach]", "[attach]图片ID：", -1)
 	src = strings.Replace(src, "&nbsp;", "", -1)
+	src = strings.Replace(src, "· ", "\r", -1)
 
 	// 去掉[]标签, 如 [color=#000000]
 	re, _ = regexp.Compile("\\[[\\S\\s]+?\\]")
@@ -41,8 +46,8 @@ func trimHtml(src string) string {
 	src = re.ReplaceAllString(src, "")
 
 	// //去除连续的换行符
-	re, _ = regexp.Compile("\\s{4,}")
-	src = re.ReplaceAllString(src, "\n")
+	// re, _ = regexp.Compile("\\s{4,}")
+	// src = re.ReplaceAllString(src, "\n")
 
 	return strings.TrimSpace(src)
 }
@@ -51,6 +56,7 @@ func formatTime(tstr string) (tm time.Time, err error) {
 	// timeFormats := []string{"2006-01-02 15:04:05", "2006-01-0215:04:05", "2006-01", "2006-1-02", "2006-01-2", "2006-1-2", "2006-01-02", "2006-0102", "2006年1月2日", "2006年1月02日", "2006年01月2日", "2006年01月02日", "2006年01月**日", "2006年1月", "2006年"}
 	// timeFormats := []string{"2006-01-02 15:04:05", "2006-01-02150405", "2006-01-0215:04:05", "2006-01", "2006-1-02", "2006-01-2", "2006-1-2", "2006-01-02", "2006-0102", "2006--01-02", "2006年1月2日", "2006年1月02日", "2006年01月2日", "2006年01月02日", "2006年01月**日", "2006年1月", "2006年", "2006年01月02", "2006年01月02月", "2006月01月02日", "2006年01年02月", "2006年01年02日", "2006年1月02", "2006"}
 	timeFormats := []string{"2006-1月", "2006-01月", "2006年01", "2006年1", "006-1-2", "06年1月2", "20060102", "2006年1月2", "06>年1月2日", "2006", "2006-01-02 15:04:05", "2006-01-0215:04:05", "2006-01", "2006-1-02", "2006-01-2", "2006-1-2", "2006-01-02", "2006-0102", "2006--01-02", "2006年1月2日", "2006年1月02日", "2006年01月2日", "2006年01月02日", "2006年01月**日", "2006年1月", "2006年", "2006年01月02", "2006年01月02月", "2006月01月02日", "2006年01年02月", "2006年01年02日", "2006年1月02"}
+
 	for _, timeFormat := range timeFormats {
 		tm, err = time.ParseInLocation(timeFormat, tstr, time.Local)
 		if err == nil {
@@ -61,79 +67,72 @@ func formatTime(tstr string) (tm time.Time, err error) {
 }
 
 func parseHtml(datafrom, title, msg string) (article models.Article) {
-	reg := regexp.MustCompile(`\r`)
-	msg = reg.ReplaceAllString(msg, "\n")
-
-	// 剔除msg中无用的头尾
-	// 登记信息/d ---.*-- /d站务电话
-	reg = regexp.MustCompile(`(.*\n)*.*登记信息.*\n`)
-	msg = reg.ReplaceAllString(msg, "")
-
-	// reg = regexp.MustCompile(`站务电话(.*\n)*.*`)
-	reg = regexp.MustCompile(`站务电话(.*\n)*.*|宝贝回家志愿者(.*\n)*.*`)
-	//reg = regexp.MustCompile(`站务电话(.*\n)*.*`)
-	msg = reg.ReplaceAllString(msg, "")
-
-	msg = strings.Trim(msg, "\n")
-
-	beego.Info("=======", datafrom, "==========")
-	beego.Info("=======", title, "==========")
-
-	// var article models.Article
 	article.DataFrom = datafrom
 	article.Title = title
+	article.Subject = title
 
 	var err error
-	var detailFlag bool
 
 	infoList := strings.Split(msg, "\r")
 	if len(infoList) <= 1 {
 		// beego.Error("=======fail", datafrom, "==========")
-		// beego.Error(msg)
 		infoList = strings.Split(msg, "\n")
 	}
+
+	var start bool
+	var end bool
+	var detailFlag bool
+	// 因为详细描述多行都是value, 所以要在外层定义
+	var key string
+	var value string
 	for _, info := range infoList {
-		if "" == info {
+		info = strings.TrimLeft(info, "\n")
+
+		if "" == info || strings.Contains(info, "本帖最后由") {
+			if strings.Contains(info, "本帖最后由") {
+				start = false
+			}
+			if !start {
+				end = false
+			}
 			continue
 		}
-		// beego.Error("====", info)
 
-		exp := regexp.MustCompile(`：.*|:.*`)
-		valueList := exp.FindAllString(info, -1)
-		value := ""
-		if len(valueList) == 1 {
-			value = valueList[0]
-		} else {
-			exp := regexp.MustCompile(`:.*`)
-			valueList = exp.FindAllString(info, -1)
-			if len(valueList) == 1 {
-				value = valueList[0]
-			}
+		if !start && (strings.Contains(info, "：") || strings.Contains(info, ":")) {
+			start = true
 		}
-		key := strings.Replace(info, value, "", -1)
 
-		// 格式化key, value
-		// exp = regexp.MustCompile(`(\[.+?\])|(\^M)|：|:|(\s)|(\r)`)
-		exp = regexp.MustCompile(`(\[.+?\])|(\^M)|：|:|(\s)`)
-		key = exp.ReplaceAllString(key, "")
-		value = exp.ReplaceAllString(value, "")
-		// beego.Error(key)
+		// 如果没有标记为开始, 就已经标记为结束了，则退出
+		if !start || end {
+			continue
+		}
+		if strings.Contains(info, "站务电话") || strings.Contains(info, "注册时间") {
+			detailFlag = false
+		}
+		if !detailFlag {
+			exp := regexp.MustCompile(`.*：|.*:`)
+			// 最短匹配 key, 去除 key 的部分就是 value 或是 value 的一部分
+			key = exp.FindString(info)
+			value = strings.Replace(info, key, "", -1)
 
-		// // 删除key中的非汉字和空格
-		// exp = regexp.MustCompile(`[^\p{Han}]| `)
-		// key = exp.ReplaceAllString(key, "")
+			// 处理key 和 value
+			// 删除key中的非汉字和空格
+			exp = regexp.MustCompile(`(\[.+?\])|(\^M)|：|:|(\s)|[^\p{Han}]| `)
+			key = exp.ReplaceAllString(key, "")
+		} else {
+			value = info
+		}
+		beego.Error(key, detailFlag, value)
 
 		// tmexp := regexp.MustCompile(`[（|(].*[）|)]|农历|阳历|不准确|大概|日期不确定|不确定|约|X日|份左右|期不详。|。|具体.+?|失踪|宋振彪|宋振邦2008年|.*身份证日期|左右|号|阴历|某天|夏.*|年底|腊月.*|九.*|八.*|天已记不清楚|冬月.*|正.*|初.*|下午1点半|大|生`)
 		tmexp := regexp.MustCompile(`[（|(].*[）|)]|农历|公历|古历|阳历|旧历|不准确|大概|日期不确定|不确定|约|X日|份左右|期不
-详。|。|具体.*|失踪.*|宋振彪|宋振邦2008年|.*身份证日期|左右|号|阴历|某天|夏.*|年底|腊月.*|九.*|八.*|天已记不清楚|冬月.*|正.*|初.*|下>午.*|大|0{4,}|生.*|出.*|元月.*|上午.*|晚上.*|十.*|七.*|五.*|一.*|二.*|三.*|四.*|~.*|、.*|或.*|&.*|失|————|到.*|暑假|是|和.*|《.*|（.*|冬天|之间|早上.*|深秋|底|春.*|秋.*|·`)
+详。|。|具体.*|失踪.*|宋振彪|宋振邦2008年|.*身份证日期|左右|号|阴历|某天|夏.*|年底|腊月.*|九.*|八.*|天已记不清楚|冬月.*|正.*|初.*|下>午.*|大|0{4,}|生.*|出.*|元月.*|上午.*|晚上.*|十.*|七.*|五.*|一.*|二.*|三.*|四.*|~.*|、.*|或.*|&.*|失|————|到.*|暑假|是|和.*|《.*|（.*|冬天|之间|早上.*|深秋|底|春.*|秋.*|●|·`)
+
 		switch key {
 		case "寻亲类别", "类别":
 			article.Category = value
-		case "宝贝回家编号":
-			article.Babyid, err = strconv.ParseInt(value, 10, 64)
-			if err != nil {
-				beego.Error("宝贝回家编号", value, err)
-			}
+		case "宝贝回家编号", "编号", "寻亲编号":
+			article.Babyid = value
 		case "姓名":
 			article.Nickname = value
 		case "性别":
@@ -147,13 +146,11 @@ func parseHtml(datafrom, title, msg string) (article models.Article) {
 			}
 		case "失踪时身高":
 			article.Height = value
-		case "失踪人所在省", "籍贯":
-			article.MissedProvince = value
 		case "失踪地点", "失踪地址", "地址":
 			article.MissedAddress = value
 		case "失踪者特征描述":
 			article.Characters = value
-		case "失踪人户籍所在地":
+		case "失踪人户籍所在地", "失踪人所在省", "籍贯":
 			article.BirthedProvince = value
 		case "采血情况":
 		case "出生日期":
@@ -168,22 +165,23 @@ func parseHtml(datafrom, title, msg string) (article models.Article) {
 			value = tmexp.ReplaceAllString(value, "")
 			value = strings.Replace(value, "—", "", -1)
 			article.MissedAt, err = formatTime(value)
+			// tm = tm.Format("2006-01-02 15:04:05")
 			if err != nil {
 				beego.Error("失踪日期", value, err)
 			}
 			// beego.Info(key, value, ", 格式化:", article.MissedAt)
-		case "注册时间":
-
-		case "其他资料", "其他情况":
-			article.Details = value
+		case "注册时间", "站务电话":
+			end = true
+			detailFlag = false
+			break
+		case "其他资料", "其他情况", "共同经历资料":
 			detailFlag = true
+			article.Details += value
 		default:
-			if detailFlag {
-				article.Details += value
-			}
+			// beego.Error("this is default", key)
 		}
 	}
-	beego.Info("Babyid:", article.Babyid, ", 数据来源:", article.MissedAddress)
+	beego.Info("Babyid:", article.Babyid, ", 数据来源:", article.DataFrom )
 	return
 }
 
@@ -191,24 +189,33 @@ func syncFrombbs() {
 	// preForumPosts := models.GetLastBBSInfo()
 	preForumPosts := models.GetAllBBSInfo()
 
-	for _, preForumPost := range preForumPosts {
+	for i, preForumPost := range preForumPosts {
 		datafrom := "https://bbs.baobeihuijia.com/thread-"
 		datafrom += strconv.FormatInt(int64(preForumPost.Tid), 10) + "-1-1.html"
+		beego.Info(i, datafrom, preForumPost.Subject)
+		var art models.Article
+		art.Subject = preForumPost.Subject	
+		art.DataFrom = datafrom
+
+		models.AddArticleDataFrom(art)
+		continue
 		// beego.Info("====", datafrom)
 
 		// beego.Error(preForumPost.Tid, preForumPost.Pid)
 		msg := trimHtml(preForumPost.Message)
 		article := parseHtml(datafrom, preForumPost.Subject, msg)
-		if article.Babyid == 0 {
-			beego.Critical("this babyid is null.", article.DataFrom)
+		if article.Babyid == "" {
+			beego.Critical("update datafrom only, this babyid is null.", article.DataFrom)
+			article.SyncStatus = -1
+			models.AddArticleDataFrom(article)
 			continue
 		}
 
-			article.UUID = uuid.New().String()
-			models.AddArticle(article)
-			models.SyncPictureFromBbs(preForumPost.Tid, preForumPost.Pid, article.Babyid, article.UUID)
-		// if beego.BConfig.RunMode == "prod" {
-		// }
-		// return
+		article.UUID = uuid.New().String()
+		models.AddArticle(article)
+		models.SyncPictureFromBbs(preForumPost.Tid, preForumPost.Pid, article.Babyid, article.UUID)
+		if beego.BConfig.RunMode == "prod" {
+		}
+		return
 	}
 }

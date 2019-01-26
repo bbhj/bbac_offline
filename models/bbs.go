@@ -59,16 +59,18 @@ func GetLastBBSInfo() (preForumPost []PreForumPost) {
 func GetAllBBSInfo() (preForumPost []PreForumPost) {
 	sqltext := ""
 	sqltext = "select * from pre_forum_post where  subject != '' "
-	sqltext += " and message like '%登记信息%宝贝回家编号%' "
+	// sqltext += " and message like '%登记信息%宝贝回家编号%' "
+	// sqltext += " and message like '%登记信息%编号%' "
+	sqltext += " and message like '%本网站及志愿者提供的寻人服务均是免费%' "
 	//sqltext += " and subject like '%3313%' "
-	// sqltext += " and tid = 6485 "
+	// sqltext += " and tid = 193856 "
 	sqltext += " order by pid desc"
 	sqltext += " limit 10 offset 0"
-	bbsconn.Table("pre_forum_post").Raw(sqltext).Scan(&preForumPost)
+	bbsconn.Debug().Table("pre_forum_post").Raw(sqltext).Scan(&preForumPost)
 	return
 }
 
-func SyncPictureFromBbs (tid, pid, babyid int64, uuid string) () {
+func SyncPictureFromBbs (tid, pid int64,  babyid, uuid string) () {
 	tidstr := strconv.FormatInt(tid, 10)
 	pidstr := strconv.FormatInt(pid, 10)
 	sqltext := ""
