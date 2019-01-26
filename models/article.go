@@ -102,10 +102,10 @@ func AddArticle(article Article) (uuid string) {
 	return
 }
 
-func AddArticleDataFrom(article Article) (uuid string) {
+func AddArticleDataFrom(article Article) (flag bool) {
 	err := conn.FirstOrCreate(&article, Article{DataFrom: article.DataFrom})
-	if err.Error != nil {
-		beego.Error("AddArticle error", err.Error)
+	if err.Error == nil {
+		flag = true
 	}
 	return
 }

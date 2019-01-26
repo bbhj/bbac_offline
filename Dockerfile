@@ -1,13 +1,14 @@
 # This is the first stage, for building things that will be required by the
 # final stage (notably the binary)
 
-FROM airdb/beego:1.8.4
+#FROM airdb/beego:1.8.4
+FROM golang
 MAINTAINER Dean dean@airdb.com
 
 # RUN go get github.com/tools/godep
-# RUN go get github.com/astaxie/beego
-# RUN go get github.com/beego/bee
-# RUN go get github.com/bbhj/bbac
+RUN go get github.com/astaxie/beego
+RUN go get github.com/beego/bee
+RUN go get github.com/bbhj/bbac
 # RUN godep get
 
 WORKDIR  /go/src/github.com/bbhj/bbac

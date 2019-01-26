@@ -15,7 +15,7 @@ func CronTask() {
 	// syncFrombbs()
 	// return
 
-	// timeStr := "0/5 * * * * *" //每隔3秒执行
+	// timeStr := "0/3 * * * * *" //每隔3秒执行
 	timeStr := "0 */5 * * * *" // 每隔5分钟执行
 
 	t1 := toolbox.NewTask("timeTask", timeStr, func() error {

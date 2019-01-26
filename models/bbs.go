@@ -61,11 +61,11 @@ func GetAllBBSInfo() (preForumPost []PreForumPost) {
 	sqltext = "select * from pre_forum_post where  subject != '' "
 	// sqltext += " and message like '%登记信息%宝贝回家编号%' "
 	// sqltext += " and message like '%登记信息%编号%' "
-	sqltext += " and message like '%网站不保证寻亲人酬金承诺的有效性%' "
+	sqltext += " and message like '%本网站及志愿者提供的寻人服务均是免费%' "
 	//sqltext += " and subject like '%3313%' "
 	// sqltext += " and tid = 193856 "
-	// sqltext += " order by pid desc"
-	// sqltext += " limit 10 offset 0"
+	sqltext += " order by pid desc"
+	sqltext += " limit 10 offset 0"
 	bbsconn.Debug().Table("pre_forum_post").Raw(sqltext).Scan(&preForumPost)
 	return
 }

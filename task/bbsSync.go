@@ -189,9 +189,16 @@ func syncFrombbs() {
 	// preForumPosts := models.GetLastBBSInfo()
 	preForumPosts := models.GetAllBBSInfo()
 
-	for _, preForumPost := range preForumPosts {
+	for i, preForumPost := range preForumPosts {
 		datafrom := "https://bbs.baobeihuijia.com/thread-"
 		datafrom += strconv.FormatInt(int64(preForumPost.Tid), 10) + "-1-1.html"
+		beego.Info(i, datafrom, preForumPost.Subject)
+		var art models.Article
+		art.Subject = preForumPost.Subject	
+		art.DataFrom = datafrom
+
+		models.AddArticleDataFrom(art)
+		continue
 		// beego.Info("====", datafrom)
 
 		// beego.Error(preForumPost.Tid, preForumPost.Pid)
@@ -207,8 +214,8 @@ func syncFrombbs() {
 		article.UUID = uuid.New().String()
 		models.AddArticle(article)
 		models.SyncPictureFromBbs(preForumPost.Tid, preForumPost.Pid, article.Babyid, article.UUID)
-		// if beego.BConfig.RunMode == "prod" {
-		// }
-		// return
+		if beego.BConfig.RunMode == "prod" {
+		}
+		return
 	}
 }
