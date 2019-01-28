@@ -347,7 +347,7 @@ func init() {
 		beego.ControllerComments{
 			Method: "SaveErrorLogger",
 			Router: `/save_error_logger`,
-			AllowHTTPMethods: []string{"post"},
+			AllowHTTPMethods: []string{"post", "options"},
 			MethodParams: param.Make(),
 			Params: nil})
 
