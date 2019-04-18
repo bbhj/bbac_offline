@@ -80,7 +80,7 @@ type (
 	}
 
 	QRCodeReturn struct {
-		Errcode string `json:"errcode"`
+		Errcode int `json:"errcode"`
 		Errmsg  string `json:"errmsg"`
 	}
 
