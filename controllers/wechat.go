@@ -2,7 +2,7 @@ package controllers
 
 import (
 	_ "encoding/json"
-	"reflect"
+	_ "reflect"
 
 	_ "fmt"
 	"github.com/astaxie/beego/logs"
@@ -40,26 +40,32 @@ func (u *WechatController) CreateQRcode() {
 
 	param := req.Param{
 		// "access_token": wechat.GetAccessToken(),
-		"page":  "pages/home/main",
-		"scene": "foward=test&uuid=1111111111111111",
-		"width": "",
-		// "auto_color": false,
-		// "is_hyaline": false,
+		"page":  "pages/profile/main",
+		"scene": "forward?user=1111",
+		"width": 430,
+		"auto_color": false,
+		"is_hyaline": false,
 	}
-	logs.Info("=========%s\n", param)
 
 	// req.Debug = false
-	// r, err:= req.Post(apiurl, "application/x-www-form-urlencoded", param)
-	r, err := req.Post(apiurl, "application/json", req.BodyJSON(param))
+	
+	// r, err := req.Post(apiurl, "application/json", req.BodyJSON(param))
+	r, err := req.Post(apiurl, req.BodyJSON(param))
 	if err != nil {
-		logs.Error(err)
+		beego.Error(err)
 	}
 
 	r.ToJSON(&ret)
-	logs.Info("%+v", r)
-	logs.Info(reflect.TypeOf(r))
+	if ret.Errcode != 0 {
+		beego.Error("get qr code from wechat failed, ", ret)
+		u.ServeJSON()
+		return
+	}
+	// beego.Error(r)
 
-	u.ServeJSON()
+	r.ToFile("qq3.jpg")
+
+	// u.Ctx.WriteString()
 	return
 }
 
