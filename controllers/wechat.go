@@ -2,6 +2,7 @@ package controllers
 
 import (
 	_ "encoding/json"
+	"encoding/base64"
 	_ "reflect"
 
 	_ "fmt"
@@ -62,10 +63,17 @@ func (u *WechatController) CreateQRcode() {
 		return
 	}
 	// beego.Error(r)
+	// Read entire JPG into byte slice.
+	// reader := bufio.NewReader(r)
 
-	r.ToFile("qq3.jpg")
+	// Encode as base64.
+	encoded := base64.StdEncoding.EncodeToString(r.Bytes())
 
-	// u.Ctx.WriteString()
+	// beego.Error(encoded)
+
+	// r.ToFile("qq3.jpg")
+
+	u.Ctx.WriteString(encoded)
 	return
 }
 
