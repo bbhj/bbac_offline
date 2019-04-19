@@ -5,7 +5,6 @@ import (
 	"github.com/astaxie/beego"
 )
 
-// Operations about Articles
 type DBController struct {
 	beego.Controller
 }

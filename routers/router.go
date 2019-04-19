@@ -63,6 +63,8 @@ func init() {
 		beego.NSNamespace("/wechatapi/user", beego.NSInclude(&controllers.UserController{})),
 		beego.NSNamespace("/wechatapi/small/location", beego.NSInclude(&controllers.LocationController{})),
 		beego.NSNamespace("/wechatapi/small/config", beego.NSInclude(&controllers.ConfigController{})),
+		beego.NSNamespace("/wechatapi/small/reliefstation",
+beego.NSInclude(&controllers.ReliefStationController{})),
 		beego.NSNamespace("/wechatapi/qcloud/wecos", beego.NSInclude(&controllers.WecosController{})),
 		beego.NSNamespace("/wechatapi/wechat/template/message", beego.NSInclude(&controllers.SendWechatTemplateMessage{})),
 		// beego.NSNamespace("/wechatapi/small/profile", beego.NSInclude(&controllers.ProfileController{})),

@@ -32,8 +32,8 @@ func Close() {
 func Init() (flag bool, errmsg string) {
 	
 	var db *gorm.DB
-	db = conn.Debug().Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Article{})
-	db = conn.Debug().Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ArticleSummary{})
+	// db = conn.Debug().Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Article{})
+	// db = conn.Debug().Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ArticleSummary{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Contact{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Login{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&User{})
@@ -46,10 +46,11 @@ func Init() (flag bool, errmsg string) {
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&TemplateFormID{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ServiceTime{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Volunteer{})
-	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Profile{})
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Profile{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&OpenWeixinAccessToken{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Comment{})
-	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&PictureInfo{})
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&PictureInfo{})
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ReliefStation{})
 
 	if (db.Error == nil){
 		flag = true

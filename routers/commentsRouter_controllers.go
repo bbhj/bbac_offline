@@ -343,6 +343,14 @@ func init() {
 			MethodParams: param.Make(),
 			Params: nil})
 
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ReliefStationController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ReliefStationController"],
+		beego.ControllerComments{
+			Method: "Get",
+			Router: `/add`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
 	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ReportController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ReportController"],
 		beego.ControllerComments{
 			Method: "SaveErrorLogger",
