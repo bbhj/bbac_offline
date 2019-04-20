@@ -3,6 +3,7 @@ package models
 import (
 	_ "fmt"
 	"github.com/astaxie/beego"
+	"errors"
 	_ "github.com/google/uuid"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -28,6 +29,14 @@ func AddVolunteer(user Volunteer) () {
 	return
 }
 
-func GetVolunteer() (flag bool) {
+func CheckVolunteer(openid string) (flag bool) {
+	var user Volunteer
+	ret := conn.Debug().Where("openid = ?", openid).Find(&user)
+
+	if (  0 == ret.RowsAffected || ret.Error == errors.New("record not found") ) {
+	} else {
+		flag = true
+	}
+
         return
 }

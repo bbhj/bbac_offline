@@ -47,11 +47,17 @@ func (u *VolunteerController) Get() {
 // @Failure 403 body is empty
 // @router /check [get]
 func (u *VolunteerController) CheckVolunteer() {
-
+	openid := u.GetString("openid")
 	var ret models.RetMsg
-	ret.Status = 0
-	ret.Msg = "add volunteer successfully."
+
+	if models.CheckVolunteer(openid) {
+		ret.Msg = "volunteer's openid is exits."
+	} else {
+		ret.Errcode = -1
+		ret.Msg = "Voluntter's openid not exits."
+	}
 	u.Data["json"] = ret
+
 	u.ServeJSON()
 	return
 }
