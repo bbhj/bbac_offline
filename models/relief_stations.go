@@ -26,3 +26,13 @@ func AddReliefStation(station ReliefStation) {
 	beego.Info("add....")
 	return
 }
+
+
+func GetReliefStations() (stations []ReliefStation) {
+	page := 0 
+        stepsize := 5
+        offset := (page - 1) * stepsize
+        conn.Offset(offset).Limit(stepsize).Find(&stations)
+        return
+}
+

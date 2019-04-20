@@ -30,3 +30,18 @@ func (u *ReliefStationController) Get() {
 	u.Ctx.WriteString(msg)
 	return
 }
+
+// @Title Get Relief Stations
+// @Description Relief Stations
+// @Param       body            body    models.User     true            "body for user content"
+// @Success 200 {int} models.User.Id
+// @Failure 403 body is empty
+// @router / [get]
+func (u *ReliefStationController) GetReliefStations() {
+	stations := models.GetReliefStations()
+	beego.Info("======", stations)
+	u.Data["json"] = stations
+
+	u.ServeJSON()
+	return
+}

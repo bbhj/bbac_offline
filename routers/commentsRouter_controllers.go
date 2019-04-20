@@ -345,6 +345,14 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ReliefStationController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ReliefStationController"],
 		beego.ControllerComments{
+			Method: "GetReliefStations",
+			Router: `/`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ReliefStationController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:ReliefStationController"],
+		beego.ControllerComments{
 			Method: "Get",
 			Router: `/add`,
 			AllowHTTPMethods: []string{"get"},
