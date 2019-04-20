@@ -305,8 +305,8 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:DBController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:DBController"],
 		beego.ControllerComments{
-			Method: "Get",
-			Router: `/`,
+			Method: "InitDB",
+			Router: `/init`,
 			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})
@@ -548,6 +548,22 @@ func init() {
 			Method: "UpdateUserInfo",
 			Router: `/updateUserInfo`,
 			AllowHTTPMethods: []string{"post"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:VolunteerController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:VolunteerController"],
+		beego.ControllerComments{
+			Method: "Get",
+			Router: `/add`,
+			AllowHTTPMethods: []string{"Post"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:VolunteerController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:VolunteerController"],
+		beego.ControllerComments{
+			Method: "CheckVolunteer",
+			Router: `/check`,
+			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})
 

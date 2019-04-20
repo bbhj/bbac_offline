@@ -31,8 +31,9 @@ type WechatController struct {
 // @Failure 403 body is empty
 // @router /createqrcode [post]
 func (u *WechatController) CreateQRcode() {
+	beego.Info("create qr code ====")
 	var params models.QRCodeRequestParms
-	var ret models.QRCodeReturn
+	var qrret models.QRCodeReturn
 
 	params.AccessToken = wechat.GetAccessToken()
 	params.Page = "/pages/home/main"
@@ -56,9 +57,15 @@ func (u *WechatController) CreateQRcode() {
 		beego.Error(err)
 	}
 
-	r.ToJSON(&ret)
-	if ret.Errcode != 0 {
+	var ret models.RetMsg
+	r.ToJSON(&qrret)
+	if qrret.Errcode != 0 {
 		beego.Error("get qr code from wechat failed, ", ret)
+		ret.Status = -1
+        	ret.Errcode= qrret.Errcode
+		ret.Errmsg = qrret.Errmsg
+		
+		u.Data["json"] = ret
 		u.ServeJSON()
 		return
 	}

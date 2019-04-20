@@ -13,8 +13,9 @@ type DBController struct {
 // @Param	uid		path 	string	true		"The key for staticblock"
 // @Success 200 {object} models.Article
 // @Failure 403 :uid is empty
-// @router / [get]
-func (u *DBController) Get() {
+// @router /init [get]
+func (u *DBController) InitDB() {
+	beego.Info("===init db ==")
 	var msg models.RetMsg
 	flag, dbmsg :=  models.Init() 
 	msg.Data = dbmsg

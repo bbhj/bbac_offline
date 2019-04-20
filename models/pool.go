@@ -45,13 +45,16 @@ func Init() (flag bool, errmsg string) {
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&BaiduLBS{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&TemplateFormID{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ServiceTime{})
-	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Volunteer{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Profile{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&OpenWeixinAccessToken{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Comment{})
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&PictureInfo{})
-	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ReliefStation{})
 
+	// 2019.04.
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ReliefStation{})
+	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Volunteer{})
+
+	beego.Error("init db in pool", db)
 	if (db.Error == nil){
 		flag = true
 	} else {

@@ -44,4 +44,4 @@ before_deploy:
 after_deploy:
     #- curl https://wechat.baobeihuijia.com/github/after_deploy
 after_script:
-    - curl https://mina.baobeihuijia.com/github/after_scritp
+    #- curl https://mina.baobeihuijia.com/github/after_scritp
