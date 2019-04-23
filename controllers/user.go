@@ -78,6 +78,53 @@ func (u *UserController) Delete() {
 
 // @Title Login
 // @Description Logs user into the system
+// @Param       username                query   string  true            "The
+// username for login"
+// @Param       password                query   string  true            "The
+// password for login"
+// @Success 200 {string} login success
+// @Failure 403 user not exist
+// @router /code [post]
+func (u *UserController) Code() {
+        beego.Error("==code==")
+
+	var wxlogin models.WechatLogin
+	json.Unmarshal(u.Ctx.Input.RequestBody, &wxlogin)
+	apiurl := fmt.Sprintf("%sappid=%s&secret=%s&&js_code=%s&grant_type=authorization_code", beego.AppConfig.String("WechatAuthUrl"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), wxlogin.Code)
+
+	req.SetTimeout(50 * time.Second)
+	a, _ := req.Get(apiurl)
+
+	var id models.WechatID
+	a.ToJSON(&id)
+	beego.Error(id)
+
+	u.Data["json"] = id
+	u.ServeJSON()
+
+}
+
+// @Title wechat login scene
+// @Description Logs user into the system
+// @Param       username                query   string  true            "The
+// username for login"
+// @Param       password                query   string  true            "The
+// password for login"
+// @Success 200 {string} login success
+// @Failure 403 user not exist
+// @router /scene [post]
+func (u *UserController) Scene() {
+        beego.Error("=!!!!!!=scene==")
+
+	var scene models.WechatLoginScene
+	json.Unmarshal(u.Ctx.Input.RequestBody, &scene )
+	beego.Error("==!!!!!==", scene)
+	u.Data["json"] = scene
+	u.ServeJSON()
+}
+
+// @Title Login
+// @Description Logs user into the system
 // @Param	username		query 	string	true		"The username for login"
 // @Param	password		query 	string	true		"The password for login"
 // @Success 200 {string} login success
@@ -85,6 +132,7 @@ func (u *UserController) Delete() {
 // @router /login [post]
 func (u *UserController) Login() {
 	beego.Info("111111======")
+	beego.Error("====",u.Ctx.Input.RequestBody)
 
 	var wxlogin models.WechatLogin
 	json.Unmarshal(u.Ctx.Input.RequestBody, &wxlogin)
@@ -96,6 +144,7 @@ func (u *UserController) Login() {
 	a, _ := req.Get(apiurl)
 
 	a.ToJSON(&wxlogin.User)
+
 
 	models.AddUserInfo(wxlogin.User)
 
@@ -133,7 +182,7 @@ func (u *UserController) Login() {
 	auth.Rights = 3
 	fmt.Println("====auth: ", wechat.GetAccessToken())
 	auth.Token = "dean"
-	auth.AccessToken = wechat.GetAccessToken()
+	// auth.AccessToken = wechat.GetAccessToken()
 	auth.WeCosUrl = fmt.Sprintf("https://%s.file.myqcloud.com/files/v2/%s/%s/%s", beego.AppConfig.String("QcloudCosRegion"), beego.AppConfig.String("QcloudCosAPPID"), beego.AppConfig.String("QcloudCosBucket"), beego.AppConfig.String("QcloudCosUploadDir"))
 	fmt.Println("====auth: ", auth)
 

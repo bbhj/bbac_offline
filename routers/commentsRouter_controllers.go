@@ -457,17 +457,17 @@ func init() {
 
 	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
-			Method: "Post",
+			Method: "GetAll",
 			Router: `/`,
-			AllowHTTPMethods: []string{"post"},
+			AllowHTTPMethods: []string{"get"},
 			MethodParams: param.Make(),
 			Params: nil})
 
 	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
 		beego.ControllerComments{
-			Method: "GetAll",
+			Method: "Post",
 			Router: `/`,
-			AllowHTTPMethods: []string{"get"},
+			AllowHTTPMethods: []string{"post"},
 			MethodParams: param.Make(),
 			Params: nil})
 
@@ -492,6 +492,14 @@ func init() {
 			Method: "Delete",
 			Router: `/:uid`,
 			AllowHTTPMethods: []string{"delete"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
+		beego.ControllerComments{
+			Method: "Code",
+			Router: `/code`,
+			AllowHTTPMethods: []string{"post"},
 			MethodParams: param.Make(),
 			Params: nil})
 
@@ -539,6 +547,14 @@ func init() {
 		beego.ControllerComments{
 			Method: "Logout",
 			Router: `/logout`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams: param.Make(),
+			Params: nil})
+
+	beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"] = append(beego.GlobalControllerRouter["github.com/bbhj/bbac/controllers:UserController"],
+		beego.ControllerComments{
+			Method: "Scene",
+			Router: `/scene`,
 			AllowHTTPMethods: []string{"post"},
 			MethodParams: param.Make(),
 			Params: nil})

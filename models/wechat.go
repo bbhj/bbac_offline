@@ -100,6 +100,17 @@ type (
 		Scope        string `json:"scope"`
 		SessionKey   string `json:"session_key"` // 小程序登录session_key
 	}
+
+	WechatID struct {
+		Openid	     string `json:"openid"`	
+		Unionid      string `json:"unionid"`
+	}
+
+	WechatLoginScene struct {
+		Scene        int    `json:"scene"`
+		Path         string `json:"path"`	
+		ShareTicket  string `json:"shareTicket"`
+	}
 )
 
 func AddTemplateFormID(tformid TemplateFormID) {
