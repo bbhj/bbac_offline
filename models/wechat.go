@@ -108,10 +108,10 @@ type (
 
 	WechatLoginScene struct {
 		gorm.Model
+		Code	     string `json:code"`
 		Openid	     string `json:"openid"`
 		Scene        int    `json:"scene"`
 		Path         string `json:"path"`	
-		ShareTicket  string `json:"shareTicket"`
 	}
 )
 

@@ -88,8 +88,9 @@ func (u *UserController) Delete() {
 func (u *UserController) Code() {
         beego.Error("==code==")
 
-	var wxlogin models.WechatLogin
+	var wxlogin models.WechatLoginScene
 	json.Unmarshal(u.Ctx.Input.RequestBody, &wxlogin)
+	beego.Error(string(u.Ctx.Input.RequestBody))
 	apiurl := fmt.Sprintf("%sappid=%s&secret=%s&&js_code=%s&grant_type=authorization_code", beego.AppConfig.String("WechatAuthUrl"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), wxlogin.Code)
 
 	req.SetTimeout(50 * time.Second)
@@ -119,8 +120,21 @@ func (u *UserController) Scene() {
 	var scene models.WechatLoginScene
 	json.Unmarshal(u.Ctx.Input.RequestBody, &scene )
 	beego.Error("==!!!!!==", scene)
+
+	apiurl := fmt.Sprintf("%sappid=%s&secret=%s&&js_code=%s&grant_type=authorization_code", beego.AppConfig.String("WechatAuthUrl"), beego.AppConfig.String("wechat_appid"), beego.AppConfig.String("wechat_secret"), scene.Code)
+
+	req.SetTimeout(50 * time.Second)
+	a, _ := req.Get(apiurl)
+
+	var id models.WechatID
+	a.ToJSON(&id)
+	beego.Error(id)
+
+	scene.Openid = id.Openid
+	beego.Error("==!!!!!==", scene)
+
 	models.AddWechatLoginScene(scene)
-	u.Data["json"] = scene
+	u.Data["json"] = id
 	u.ServeJSON()
 }
 
