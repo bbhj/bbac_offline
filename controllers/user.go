@@ -119,6 +119,7 @@ func (u *UserController) Scene() {
 	var scene models.WechatLoginScene
 	json.Unmarshal(u.Ctx.Input.RequestBody, &scene )
 	beego.Error("==!!!!!==", scene)
+	models.AddWechatLoginScene(scene)
 	u.Data["json"] = scene
 	u.ServeJSON()
 }

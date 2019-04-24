@@ -52,10 +52,11 @@ func Init() (flag bool, errmsg string) {
 
 	// 2019.04.
 	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&ReliefStation{})
-	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Volunteer{})
+	// conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&Volunteer{})
+	conn.Set("gorm:table_options", "CHARSET=utf8").AutoMigrate(&WechatLoginScene{})
 
 	beego.Error("init db in pool", db)
-	if (db.Error == nil){
+	if (db == nil || db.Error == nil){
 		flag = true
 	} else {
 		errmsg = fmt.Sprintf("%s", db.Error)

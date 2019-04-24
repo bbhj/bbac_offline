@@ -107,6 +107,8 @@ type (
 	}
 
 	WechatLoginScene struct {
+		gorm.Model
+		Openid	     string `json:"openid"`
 		Scene        int    `json:"scene"`
 		Path         string `json:"path"`	
 		ShareTicket  string `json:"shareTicket"`
@@ -161,4 +163,11 @@ func UpdateFromidStatus(formid string) {
 	form.Formid = formid
 	form.Status = 0
 	conn.Debug().Model(&form).Where("formid = ?", formid).UpdateColumn("status", form.Status)
+}
+
+
+func AddWechatLoginScene (scene WechatLoginScene) (flag bool) {
+        conn.Save(&scene)
+	flag = true
+        return
 }
