@@ -17,9 +17,9 @@ addons:
 before_install:
     - env
 install:
-      - curl airdb.com/install
+    #- curl airdb.com/install
 before_script:
-    - curl airdb.com/before_script
+    #- curl airdb.com/before_script
 script:
     - echo $TRAVIS_COMMIT
     - echo $TRAVIS_COMMIT_MESSAGE
